@@ -72,6 +72,7 @@
 
 - 进了页面的（重点或快讯）→ `pub`，URL 必须和页面上 `a.src` 的 href **逐字相同**。
 - 看过、没过筛或被合并的 → `skip`。
+- **changelog 类信源**（`CHANGELOG.md`、`/changelog` 页）每天 URL 都一样，必须加版本或日期锚点区分条目：`…/CHANGELOG.md#2.1.323`、`…/codex/changelog#2026-11-06`。锚点用页面上真实存在的版本号/日期，`a.src` 与 seen 行用同一个带锚点的 URL。
 
 `publish.sh` 会核对：页面上每个出处都是本次新增的 pub 行；pub 行都在页面上；没有一个 URL 在以前出现过。**不发布的日子不写 seen.tsv**（下次会重新判断，这是故意的：有的帖子第二天才被讨论出价值）。
 
