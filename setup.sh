@@ -34,8 +34,8 @@ github|https://api.github.com/repos/openai/codex/releases?per_page=1
 github|https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md
 ecosystem|https://github.blog/changelog/feed/
 ecosystem|https://cursor.com/changelog
-discovery|https://simonwillison.net/atom/everything/
-discovery|https://hn.algolia.com/api/v1/search?tags=front_page
+community|https://simonwillison.net/atom/everything/
+community|https://hn.algolia.com/api/v1/search?tags=front_page
 "
 
 RESULTS=""
@@ -47,7 +47,7 @@ while IFS='|' read -r g u; do
 done <<< "$PROBES"
 
 NONGITHUB=0
-for g in anthropic openai google ecosystem discovery; do
+for g in anthropic openai google ecosystem community; do
   [ "$(eval echo \${OK_$g:-0})" = "1" ] && NONGITHUB=1
 done
 
@@ -55,7 +55,7 @@ done
   echo "# preflight — written by setup.sh"
   echo "checked_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo ""
-  for g in anthropic openai google github ecosystem discovery; do
+  for g in anthropic openai google github ecosystem community; do
     if [ "$(eval echo \${OK_$g:-0})" = "1" ]; then echo "$g: OK"; else echo "$g: BLOCKED"; fi
   done
   echo ""

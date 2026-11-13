@@ -26,9 +26,10 @@ BigCat 维护这份清单，引擎**只读不改**（`publish.sh` 会拦下改�
 - https://github.blog/changelog/feed/ — GitHub（Copilot、Actions 等）
 - https://cursor.com/changelog — Cursor
 
-## 二线：只用来发现，不能当唯一出处
+### 社区一手（2026-11-12 起升为一线）
+- https://simonwillison.net/atom/everything/ — Simon Willison。**他自己的东西可以直接当出处**：亲手做的实验、工具发布（llm、datasette 插件等）、带数据的测评、他对官方帖的独立分析。他只是转述某个官方帖时，出处放官方原帖，他的补充判断可以写进 `.cold` 或正文并另附他的链接。
+- https://news.ycombinator.com/ 首页（`hn.algolia.com/api/v1/search?tags=front_page`，再按 `points` 和标题里的 AI / LLM / agent / Claude / GPT / Codex 等词筛）。**HN 是入口，出处是它指向的那篇文章**：可以是任何团队或个人工程师的一手复盘（「我们用 agent 迁移了 40 万行代码」这类），不限于大厂。讨论串里有实质性的反证或补充数据时，可以在 `.cold` 里附讨论串链接。
 
-- https://simonwillison.net/atom/everything/ — 高信噪比的整理者，常第一时间读完官方帖
-- https://news.ycombinator.com/ — 看当天开发者真正在讨论什么（`hn.algolia.com/api/v1/search?tags=front_page`）
+社区来源同样要过第 2 节的判据，并且**必须是一手经验或一手数据**：作者自己做过、测过、量过。纯观点文、转述、「AI 将改变一切」类评论一律 skip。
 
-在二线看到线索 → **必须回到一线找到原帖**，页面上的出处链接只放原帖。找不到原帖的不写。
+HN 指向的文章打不开（域名被环境挡、付费墙、403）→ 这条 skip，**不要凭标题或讨论串里的转述来写**。
