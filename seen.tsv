@@ -1,19 +1,114 @@
 date	status	url	title
+2026-11-12	pub	https://techcommunity.microsoft.com/blog/appsonazureblog/from-copilots-to-coworkers-how-ai-agents-are-transforming-azure-networking-opera/4519850	From Copilots to Coworkers: How AI Agents Are Transforming Azure Networking Operations
+2026-11-12	pub	https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/	Building a general-purpose accessibility agent—and what we learned in the process
+2026-11-12	pub	https://claude.com/resources/articles/how-an-anthropic-sales-leader-uses-claude-cowork-to-run-a-4-000-account-book	How an Anthropic sales leader uses Claude Cowork to run a 4,000-account book
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropics-finance-team-uses-claude-to-shape-the-narrative-behind-the-numbers	How Anthropic's finance team uses Claude to shape the narrative behind the numbers
+2026-11-12	pub	https://www.anthropic.com/research/how-we-contain-claude	How we contain Claude across products
+2026-11-12	pub	https://nolanlawson.com/2026/05/25/using-ai-to-write-better-code-more-slowly/	Using AI to write better code more slowly
+2026-11-12	pub	https://openai.com/index/building-self-improving-tax-agents-with-codex/	Building self-improving tax agents with Codex
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropic-enables-self-service-data-analytics-with-claude	How Anthropic enables self-service data analytics with Claude
+2026-11-12	pub	https://claude.dev/blog/lessons-from-building-claude-code-how-we-use-skills/	Lessons from building Claude Code: How we use skills
+2026-11-12	pub	https://claude.com/resources/articles/running-an-ai-native-engineering-org	Running an AI-native engineering org
+2026-11-12	pub	https://claude.com/resources/articles/best-practices-for-getting-started-with-claude-cowork	Best practices for getting started with Claude Cowork
+2026-11-12	pub	https://simonwillison.net/2026/Jun/3/uber-caps-usage/	Uber Caps Usage of AI Tools Like Claude Code to Manage Costs
+2026-11-12	pub	https://www.anthropic.com/institute/recursive-self-improvement	When AI builds itself
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/measuring-the-impact-of-our-ai-investments-in-it-at-microsoft/	Measuring the impact of our AI investments in IT at Microsoft
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropic-uses-claude-gtm-engineering	How one Anthropic seller rebuilt his team's workflows with Claude Code
+2026-11-12	pub	https://ladybird.org/posts/changing-how-we-develop-ladybird/	Changing How We Develop Ladybird
+2026-11-12	pub	https://blog.gitbutler.com/true-grit	Grit: rewriting Git in Rust with agents
+2026-11-12	pub	https://simonwillison.net/2026/Jun/11/fable-is-relentlessly-proactive/	Claude Fable is relentlessly proactive
+2026-11-12	pub	https://deepmind.google/blog/securing-the-future-of-ai-agents/	Securing the future of AI agents
+2026-11-12	pub	https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/	How we built an internal data analytics agent
+2026-11-12	pub	https://github.blog/developer-skills/github/i-automated-my-job-and-it-made-me-a-better-leader/	I automated my job (and it made me a better leader)
+2026-11-12	pub	https://claude.com/resources/articles/building-effective-human-agent-teams	Building effective human-agent teams
+2026-11-12	pub	https://posthog.com/blog/sql-parser	I wrote a 70x faster SQL parser while barely looking at the code
+2026-11-12	pub	https://openai.com/index/how-agents-are-transforming-work/	How agents are transforming work
+2026-11-12	pub	https://engineering.fb.com/2026/06/25/security/privacy-aware-infrastructure-in-the-ai-native-era-an-asset-classification-case-study/	Privacy-Aware Infrastructure in the AI-Native Era: An Asset Classification Case Study
+2026-11-12	pub	https://devblogs.microsoft.com/blog/learn-from-microsoft-transform-software-development-through-an-agentic-platform/	Learn from Microsoft: Transform software development through an agentic platform
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/taming-our-python-dependencies-at-microsoft-with-ai/	Taming our Python dependencies at Microsoft with AI
+2026-11-12	pub	https://simonwillison.net/2026/Jul/5/sqlite-utils-fable/	sqlite-utils 4.0rc2, mostly written by Claude Fable (for about $149.25)
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropics-marketing-operations-team-uses-claude-cowork-to-automate-reporting-and-campaign-builds	How Anthropic's marketing operations team uses Claude Cowork to automate reporting and campaign builds
+2026-11-12	pub	https://github.blog/ai-and-ml/github-copilot/automating-cross-repo-documentation-with-github-agentic-workflows/	Automating cross-repo documentation with GitHub Agentic Workflows
+2026-11-12	pub	https://bun.com/blog/bun-in-rust	Rewriting Bun in Rust
+2026-11-12	pub	https://twitter.com/kentonvarda/status/2074924213983740233	Kenton Varda: moratorium on AI-written change descriptions
+2026-11-12	pub	https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase	Benchmarking Coding Agents on Databricks’ Multi-Million Line Codebase
+2026-11-12	pub	https://openai.com/index/codex-collaborator-creative-team/	How Codex became a collaborator for OpenAI’s creative team
+2026-11-12	pub	https://twitter.com/thsottiaux/status/2077630111499882637	Thibault Sottiaux on GPT-5.6 unexpected file deletions in Codex
+2026-11-12	pub	https://claude.com/resources/articles/ciso-guide-to-agentic-ai	Zero risk isn't the job: a CISO's guide to agentic AI
+2026-11-12	pub	https://github.blog/engineering/the-cost-of-saying-yes-has-changed/	The cost of saying yes has changed
+2026-11-12	pub	https://openai.com/index/safety-alignment-long-horizon-models/	Safety and alignment in an era of long-horizon models
+2026-11-12	pub	https://developers.openai.com/blog/custom-code-review-rules-for-codex	Custom Code Review rules for Codex
+2026-11-12	pub	https://cursor.com/blog/agent-swarm-model-economics	Agent swarms and the new model economics
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropic-secures-its-ai-native-software-development-lifecycle	How Anthropic secures its AI-native software development lifecycle
+2026-11-12	pub	https://simonwillison.net/2026/Jul/21/cat-and-thariq/	A Fireside Chat with Cat and Thariq from the Claude Code team
+2026-11-12	pub	https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q2-2026/	Q2 2026 earnings call: Remarks from our CEO
+2026-11-12	pub	https://claude.com/resources/articles/how-the-product-designer-who-built-claude-design-uses-it-to-explore-ideas-before-building-them	How the product designer who built Claude Design uses it to explore ideas before building them
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/making-ai-testing-work-at-scale-at-microsoft-with-enterprise-test-platform/	Making AI testing work at scale at Microsoft with Enterprise Test Platform
+2026-11-12	pub	https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals	Investigating three real-world incidents in our cybersecurity evaluations
+2026-11-12	pub	https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/	How the GitHub legal team used Copilot CLI to streamline their workflows
+2026-11-12	pub	https://scalex.dev/blog/ai-agent-permissions-stats/	Humans missed 1 in 3 threats approving AI agent commands across 40,000 plays
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropics-business-development-team-uses-claude-to-run-inbound-and-outbound-at-scale	How Anthropic's business development team uses Claude to run inbound and outbound at scale
+2026-11-12	pub	https://claude.com/resources/articles/auto-mode-default-in-claude-code	Auto mode is now the default in Claude Code for Pro, Max, Ultra, and Team plans
+2026-11-12	pub	https://www.databricks.com/blog/managing-ai-coding-costs-scale	Managing AI Coding Costs at Scale
+2026-11-12	pub	https://openai.com/index/building-an-ai-native-finance-function/	What building an AI-native finance function taught me
+2026-11-12	pub	https://openai.com/index/how-enterprises-put-ai-to-work/	From assistance to execution: How enterprises put AI to work
+2026-11-12	pub	https://claude.com/resources/articles/self-service-data-analytics-in-slack-how-anthropic-deploys-claude-tag-for-ad-hoc-questions	Self-service data analytics in Slack: how Anthropic deploys Claude Tag for ad-hoc questions
+2026-11-12	pub	https://www.anthropic.com/research/multiagent-systems	Patterns and problems in emerging multiagent systems
+2026-11-12	pub	https://claude.com/resources/articles/ai-ci-cd-on-call	Claude on call: How Claude Tag serves as Anthropic’s first responder for CI/CD failures
+2026-11-12	pub	https://claude.com/resources/articles/anthropics-approach-to-teaching-and-learning-ai	Anthropic’s approach to teaching and learning AI
+2026-11-12	pub	https://claude.com/resources/articles/how-an-anthropic-field-marketer-uses-claude-code-to-send-weekly-personalized-updates-to-every-sales-rep	How an Anthropic field marketer uses Claude Code to send weekly personalized updates to every sales rep
+2026-11-12	pub	https://developers.openai.com/blog/automating-repetitive-work-at-openai-with-codex	Automating repetitive work at OpenAI with Codex
+2026-11-12	pub	https://openai.com/index/hugging-face-incident-and-the-road-ahead/	The Hugging Face incident and the road ahead
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropic-employees-use-claude-tag	How Anthropic employees use Claude Tag
+2026-11-12	pub	https://engineering.fb.com/2026/09/02/ml-applications/organizational-second-brain-ai-learns-from-experts/	An Organizational Second Brain: Building an AI That Learns From Experts
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/engineering-the-frontier-firm-sharing-our-ai-native-approach-to-software-development/	Engineering the Frontier Firm: Sharing our AI-native approach to software development
+2026-11-12	pub	https://openai.com/index/research-acceleration-view-inside-openai/	Research acceleration: The view inside OpenAI
+2026-11-12	pub	https://danluu.com/agentic-testing/	How well do agents use test and verification techniques?
+2026-11-12	pub	https://shopify.engineering/back-to-native	Native is now the future of mobile at Shopify
+2026-11-12	pub	https://github.blog/ai-and-ml/github-copilot/marketing-ops-as-code-automating-events-from-planning-to-follow-up-on-github/	Marketing ops as code: Automating events from planning to follow-up on GitHub
+2026-11-12	pub	https://datasette.io/blog/2026/september-security-releases/	Datasette 1.0a39 and 0.65.4 security releases
+2026-11-12	pub	https://twitter.com/bcherny/status/2098217573276131577	Boris Cherny on the quality bar for Claude-written production code
+2026-11-12	pub	https://claude.com/resources/articles/agentic-coding-is-straining-ci-heres-how-we-scaled-test-impact-analysis-at-anthropic	Agentic coding is straining CI. Here’s how we scaled test impact analysis at Anthropic
+2026-11-12	pub	https://www.anthropic.com/institute/measuring-pace-of-ai-development	Measurements for understanding the pace of AI development inside frontier labs
+2026-11-12	pub	https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/	Migrating the GitHub Copilot runtime to Rust, using Copilot
+2026-11-12	pub	https://linear.app/now/ci-bottleneck-reworked	AI coding has made CI a bottleneck, so we reworked ours to keep up
+2026-11-12	pub	https://claude.dev/blog/how-we-made-claude-ai-faster/	How we made claude.ai 3x faster in two weeks
+2026-11-12	pub	https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot	An agent used DNS to reach an external chatbot
+2026-11-12	pub	https://claude.com/resources/articles/how-anthropics-sales-team-rebuilt-inbound-with-claude-managed-agents	How Anthropic's sales team rebuilt inbound with Claude Managed Agents
+2026-11-12	pub	https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/	Gemini 4 Argon: our next era of frontier intelligence
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/rebuilding-our-microsoft-foundry-labs-site-with-a-three-people-build-team-and-ai/	Rebuilding our Microsoft Foundry Labs site with a three-people build team and AI
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/boosting-product-manager-productivity-at-microsoft-with-ai/	Boosting product manager productivity at Microsoft with AI
+2026-11-12	pub	https://www.anthropic.com/research/investigating-unintended-model-actions	Investigating unintended model actions
+2026-11-12	pub	https://www.cockroachlabs.com/blog/experiment-running-hospital-code/	Five months treating bugs like patients and coding agents like a medical team
+2026-11-12	pub	https://www.anthropic.com/research/redesigning-source-control	Redesigning source control at Anthropic
+2026-11-12	pub	https://developers.openai.com/blog/maintaining-software-with-the-gpt-6-family	Maintaining software with the GPT-6 family
+2026-11-12	pub	https://claude.dev/blog/solving-code-review-at-anthropic/	How the Claude Code team does code review
+2026-11-12	pub	https://engineering.fb.com/2026/10/15/ml-applications/how-meta-built-forum-ai-native-engineering/	How Meta Built Forum With AI-Native Engineering
+2026-11-12	pub	https://www.microsoft.com/insidetrack/blog/automating-engineering-operations-at-microsoft-with-a-smart-dri-agent/	Automating engineering operations at Microsoft with a Smart DRI Agent
+2026-11-12	pub	https://claude.com/resources/articles/how-an-anthropic-japan-business-development-representative-runs-his-day	How an Anthropic BDR in Japan runs his day with Claude Managed Agents
+2026-11-12	pub	https://www.anthropic.com/research/employment-at-anthropic	How employment is changing at Anthropic
+2026-11-12	pub	https://www.anthropic.com/research/ai-expectations-gap	The AI expectations gap
+2026-11-12	pub	https://engineering.fb.com/2026/10/19/ml-applications/thin-orchestrator-ai-agent-architecture/	The Thin Orchestrator: How We Made Our AI Agents More Reliable by Giving the Router Less to Do
+2026-11-12	pub	https://openai.com/index/building-chatgpt-ad-stack/	How we built ChatGPT’s novel ad stack for user trust and relevance
+2026-11-12	pub	https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/	Today's PHP Security Release, and How We're Strengthening PHP Security
+2026-11-12	pub	https://openai.com/index/forward-deployed-engineering-means/	What FDE means at OpenAI
+2026-11-12	pub	https://openai.com/index/securing-our-frontier-model-training-environment/	Securing our frontier model training environment
+2026-11-12	pub	https://openai.com/index/openai-cut-incident-investigation/	How Ultrafast cut incident investigation from hours to minutes at OpenAI
+2026-11-12	pub	https://www.aboutamazon.com/news/company-news/amazon-software-engineer-role-guideline-ai	An update from Amazon engineering leadership on the role of the developer in the age of AI
+2026-11-12	pub	https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q3-2026/	Q3 2026 earnings call: Remarks from our CEO
+2026-11-12	pub	https://github.blog/news-insights/octoverse/octoverse-commits-pushes-reach-new-highs-in-2026-as-developers-build-with-agents/	Octoverse: Commits, pushes, reach new highs in 2026 as developers build with agents
+2026-11-12	pub	https://openai.com/index/how-we-detect-frontier-model-misalignment/	How we detect frontier model misalignment
+2026-11-12	pub	https://engineering.fb.com/2026/10/29/security/catching-bugs-before-they-land-jittestings-human-on-the-loop-approach-at-full-scale/	Catching Bugs Before They Land: JiTTesting’s Human-on-the-Loop Approach at Full Scale
+2026-11-12	pub	https://twitter.com/sgondala2/status/2115832070274723875	Building an AI-native engineering org
+2026-11-12	pub	https://twitter.com/jsnnsa/status/2115623382721126826	How I Built the Most AI-Pilled Company in the World
+2026-11-12	pub	https://openai.com/index/scaling-git-at-openai/	Scaling Git at OpenAI
+2026-11-12	pub	https://openai.com/index/preparing-our-next-security-sprint-to-harden-openai/	Preparing our next security sprint to harden OpenAI
+2026-11-12	pub	https://openai.com/index/a-thousand-fewer-paths-to-root/	A thousand fewer paths to root
+2026-11-12	pub	https://evanxmerz.com/post/ai-usage-generates-a-fragile-codebase/	AI usage generates a fragile codebase
 2026-11-12	pub	https://www.anthropic.com/claude-fable-and-mythos-5-2	Introducing Claude Fable 5.2 and Claude Mythos 5.2
-2026-11-12	pub	https://www.anthropic.com/research/components-of-agent-memory	The components of agent memory
-2026-11-12	pub	https://claude.com/resources/articles/self-hosted-claude-managed-agents	Operate Claude Managed Agents inside your security perimeter
-2026-11-12	pub	https://claude.com/resources/articles/interactive-connectors-full-tool	Open your apps in Claude and work in them together
-2026-11-12	pub	https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md#2.1.323	Claude Code 2.1.323 changelog
-2026-11-12	pub	https://developers.openai.com/codex/changelog#2026-11-06	Codex CLI 0.167.0 / 0.168.0
-2026-11-12	pub	https://cursor.com/changelog/voice-chat	Voice Chat with Agents
-2026-11-12	skip	https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2	What's new in Claude Fable 5.2 (merged into announcement)
-2026-11-12	skip	https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot	Claude Fable 5.2 in GitHub Copilot (merged)
-2026-11-12	skip	https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/	Quoting Prompting Claude Fable 5.2 (secondary)
-2026-11-12	skip	https://claude.com/resources/articles/sheets-whiteboards-data	Introducing Claude Whiteboards, Claude Sheets, and Claude Data
-2026-11-12	skip	https://claude.com/resources/articles/how-curative-is-building-a-national-provider-network-with-agents-on-claude	How Curative is building a national provider network with agents on Claude
-2026-11-12	skip	https://claude.com/resources/articles/jpmorganchase-expands-claude-code	JPMorganChase expands Claude Code
-2026-11-12	skip	https://claude.com/resources/articles/claude-for-manufacturing	Introducing Claude for Manufacturing
-2026-11-12	skip	https://claude.com/resources/articles/claude-meetings	Introducing Claude Meetings
-2026-11-12	skip	https://www.anthropic.com/news/roadshow-launch	Anthropic launches roadshow for proposed IPO
-2026-11-12	skip	https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot	Gemini 4 Carbon in GitHub Copilot
-2026-11-12	skip	https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/	Cost per task (2026-11-03, outside window)
+2026-11-12	pub	https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/	Safely scaling multi-agent teams with Claude Fable 5.2
+2026-11-12	pub	https://openai.com/index/control-room/	Control Room: A central system to track and stop model workloads across our research infrastructure
+2026-11-12	pub	https://fion.ac/jellyfish.pdf	Artificial Intelligence in the Firm: Bottlenecks in Software Production
+2026-11-12	pub	https://simonwillison.net/2026/Nov/9/details-summary/	Hide your slop PR descriptions behind <details><summary>
+2026-11-12	pub	https://www.allthingsdistributed.com/2026/11/aws-emulator-and-the-engineers-job-when-agents-write-the-code.html	AWS Emulator and the engineer's job when agents write the code
+2026-11-12	pub	https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai	Securing persistent agents like OpenClaw at OpenAI

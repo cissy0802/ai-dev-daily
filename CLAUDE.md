@@ -1,94 +1,94 @@
-# CLAUDE.md — AI 开发者日报 · ai-dev-daily
+# CLAUDE.md — AI-native 转型笔记 · ai-dev-daily
 
-这是云端 routine 的执行说明。你是引擎本身，**自主完成、不等任何人确认**。当前工作目录已挂载本仓库。
+这是云端 routine 的执行说明。你是引擎本身，**自主完成、不等任何人确认**。当前工作目录已挂载本仓库（仓库名沿用 `ai-dev-daily`，站名已改为「AI-native 转型笔记」）。
 
-**定位**：每晚一期，收集**过去几天 AI 一线团队和社区工程师发出的、对开发者有用的东西**，重点是 Anthropic 和 OpenAI，Simon Willison 的博客和 HN 首页上的一手复盘也算。读者是一位资深工程师、技术 TLM（AI / 分布式背景），每天在用 Claude Code 这类工具写代码、带团队。她要的是这几类：
+## 定位
 
-1. **工程实践复盘，尤其带硬数字的**：一线团队或某个工程团队/个人自己怎么用 AI 开发、流程怎么变了、结果是多少（大厂帖和 HN 上的个人一手复盘同等对待，看的是一手数据，不是名气）。典型例子是「某团队一周合并了多少个 PR / change」「多少比例的代码由 agent 写」「评审流程怎么改的」。**这类是本站最高优先级**，哪怕发布于几天前、只要没写过就写。
-2. **开发工具和集成的新功能**：Claude Code、Codex、Claude for Sheets / Excel / Chrome、Agent SDK、MCP、Cursor、Copilot 等——新功能是什么、怎么用、有什么限制。
-3. **API / 平台变化**：新模型的开发者侧细节（价格、上下文、限流、工具调用、编码基准）、新端点、弃用通知。
-4. **研究里能直接拿来用的**：agent 评测方法、提示工程/上下文工程的官方指南、可靠性研究。
+读者是一家大型非 AI-lab 科技公司的资深工程 TLM，正在带团队做 AI-native 转型。她要学的是：**先进 AI lab（Anthropic、OpenAI、Google DeepMind 等）和一线工程团队自己是怎么变成 AI-native 的，别的组织能从中借走什么。**
 
-**不写**：融资、估值、人事、诉讼、政策、公司八卦、纯消费者功能（除非直接影响开发者）、没有新信息的观点文。
+这**不是新闻站**。模型发布、降价、API 变化、新功能本身都**不重要**，除非帖子里有关于「这个组织自己怎么干活」的一手信息（比如一篇模型发布帖里顺带说了「核心代码库九成的合并改动由 Claude 写」——那一句就要，其余不要）。
 
-**这不是新闻聚合器，是筛选器。** 宁缺毋滥：没有值得写的，当天就不发。
+站点是一个**按类别组织、持续修订的知识库**。每天的检查做三件事之一：**新增**一条来源、**修改**已有条目（新数据、更正、后续进展）、**修订**某个类别的综合结论。什么都不够格就什么都不做。
 
----
+## 数据和页面
 
-## 0. 开工第一件事：自己跑 `bash setup.sh`
+- `data/categories.json`：类别清单（`slug`、`file`、`name`、`question`、`synthesis`、`updated`）。**类别的增删改名是 BigCat 的决定**，引擎只改 `synthesis` 和 `updated`。
+- `data/entries.jsonl`：每行一篇来源。字段：
+  - `id`（`[a-z0-9-]+`，短而可读，如 `anthropic-90pct-merged-changes`）、`url`、`date`（原帖日期）、`org`、`title`（原帖原标题）
+  - `category`（必填）、`category2`（可选，确实同时属于两类才填）
+  - `headline`：中文一句话，**这条来源教会我们什么**（不是原标题的翻译）
+  - `what_they_do`：2–4 句，这个组织具体做了什么、改了什么
+  - `numbers`：原帖里带数字的句子，**逐字复制的英文原句**，一个字不改；没有就 `[]`
+  - `denominator_notes`：中文，每个数字的口径、缺什么分母
+  - `transferable`：别的组织能借走什么、前提是什么
+  - `caveats`：厂商自报、单一团队、lab 特有条件等
+  - `added`（加入本站的日期）；修改过的条目另加 `updated` 和 `update_note`
+  - `commentary_url`（可选，Simon Willison 等的独立分析）
+  - 文本字段里只允许 `<strong>` `<em>` `<b>` `<code>` 和站内锚点 `<a href="#e-ID">`，不写 Markdown。
+- `data/changelog.jsonl`：每次新增/修改一行 `{"date", "id", "action": "add"|"update", "note"}`，只追加。
+- `seen.tsv`：看过的 URL 账本，`date	status	url	title`，只追加。
+- **页面全部由 `python3 build.py` 从数据生成**，不要手改任何 `.html`（下次构建会覆盖）。
 
-**每次都自己跑**，它会重写 `.preflight`。不要信环境里留下的旧文件（本 routine 和别的站共用环境）。
+## 0. 开工：自己跑 `bash setup.sh`
 
-- `egress: BLOCKED` 或 `egress: CORE_BLOCKED` → **立刻停**，不建、不改任何文件。PushNotification 列出 `.preflight` 里 BLOCKED 的域名，说明需要在环境的 Network access → Custom → Allowed domains 加上，然后结束。**绝不退回凭记忆或二手报道写。**
-- `egress: OK` 但有某组 BLOCKED → 照常做，但页面底部的 `.gaps` 行和推送里都要写清哪组没读到。**不要拿二手报道填那一组的空。**
+每次都自己跑，别信环境留下的 `.preflight`。
+- `egress: BLOCKED` / `CORE_BLOCKED` → 立刻停，不改任何文件，PushNotification 列出 BLOCKED 的域名，结束。**绝不凭记忆或二手报道写。**
+- 部分组 BLOCKED → 照做，推送里注明哪组没读到。
 
-读法：优先 RSS 和 changelog 原文件；页面用 `curl -sSL -A '<UA>'`（UA 见 `setup.sh`），用 `python3` 去标签后存 `/tmp/` 再读。WebFetch 被挡就换 curl，不要反复换 UA 硬闯。
+读法：优先 RSS / changelog；页面用 `curl -sSL -A '<UA>'`（UA 见 `setup.sh`），`python3` 去标签后存 `/tmp/` 再读。
 
 ## 1. 收集候选
 
-1. 读 `SOURCES.md`，把所有信源全部扫一遍（Simon Willison 和 HN 也是一线，具体读法和出处规则见 `SOURCES.md` 的「社区一手」一节）。**`SOURCES.md` 只读不改。**
-2. **时间窗**：发布日期在本次运行前 **72 小时内** 的帖子。`seen.tsv` 只有表头（第一期）时放宽到 **7 天**。第 1 类（工程实践复盘）不受时间窗限制，往回看 30 天，只要没进过 `seen.tsv` 都算候选。
-3. **去重**：`seen.tsv` 里已有的 URL（不管 pub 还是 skip）一律跳过。同一件事有多个帖子（官方博客 + 文档 + changelog）合并成一条，出处放最权威的那一个，其余 URL 记成 skip。
-4. 日期要从原帖本身读（页面上的日期、RSS 的 pubDate、changelog 的版本日期），读不到日期就不算进时间窗。
+- 按 `SOURCES.md` 扫所有信源（**只读不改**）。
+- **时间窗**：发布在过去 **72 小时**内的帖子；lab 的工程博客（anthropic.com/engineering 等）往回看 **14 天**，防止前几天漏掉。
+- `seen.tsv` 里出现过的 URL（pub 或 skip）一律跳过——**例外**：已收录来源的同一组织发了后续帖，那是新 URL，照常处理。
+- 二手线索（HN、Simon）必须回到它指向的原文；打不开就 skip，不凭标题或评论写。
 
-## 2. 筛选和深读
+## 2. 判断：够不够格
 
-对每个候选问一句：**一个每天写代码、带团队的工程师，读了它会不会做点什么不一样的事？**（试一个功能、改一个流程、换一个模型、重新评估一个假设。）不会 → 记 skip。
+问一句：**这篇有没有关于某个组织「自己怎么用 AI 干活」的一手信息，能让一个正在转型的工程组织学到东西？**
 
-过了筛的：
+够格的形状：内部使用数据（多少代码/PR 由 agent 写）、流程怎么变了（评审、规划、on-call、发布）、组织和角色怎么变了、怎么度量（包括负面结果）、内部 agent 运维（并行、长任务、harness、上下文/记忆）、内部的护栏和事故、非工程职能的变化、有内部数据支撑的推广方法论。
 
-- **把原帖从头读完**，不读摘要、不读二手报道替代。从 HN 来的，原帖是它链接的那篇文章，不是讨论串；从 Simon 来的，他转述官方帖时原帖是官方帖。功能名、命令、参数、价格、限制、日期全部从原帖取。
-- **硬数字只能原样引用原帖里的那句话**，放进 `.nums`，并用中文写清它的口径（分母是什么、哪个团队、什么时间段）。原帖没给口径的，在 `.cold` 里说出来。**一个数字都不许凭印象写。**
-- 厂商自己的数字是厂商自己的数字：有利益相关、缺对照组、口径含糊的，`.cold` 里点出来。这不是唱反调，是读者需要的判断。
+不够格：产品发布、模型发布、定价、API 变化、benchmark、融资、政策、观点文、预测、厂商写别家客户的案例。**一篇不够格的帖子里有一句够格的数据 → 只收那一句**（`what_they_do` 写清它出自哪类帖子）。
 
-**排序**：最多 3 条进「重点」（`article.item`），按对开发者的重要性排；其余最多 8 条进「也值得知道」，每条一两句。第 1 类有就优先放重点。
+## 3. 动作：新增 / 修改 / 修订
 
-**当天一条都没过筛 → 不发布。** 不建页面、不改任何文件、不提交。发一条 PushNotification：`AI 开发者日报今日无更新：扫了 N 个信源，M 个候选都不够格`，然后结束。**不要为了有一期而降低门槛。**
+对每个够格的候选，先 `grep` 一下 `data/entries.jsonl`，看是不是已有条目讲的同一件事：
 
-## 3. 页面
+- **新的事 → 新增条目**。读完原帖全文，按上面的字段写。`numbers` 只能复制原句。归到最贴切的一个类别。
+- **已有条目的后续 → 修改那一条**：同一组织更新了数字、发了更正、说明了后续结果、或者新证据推翻了旧条目的某句话。改正文，填 `updated`（今天）和 `update_note`（一句话说改了什么、依据是哪篇——新依据 URL 写进 `update_note` 的文字里，并在 `seen.tsv` 记一行 `skip`）。**不删条目、不改 url。**
+- **然后看综合结论**：新增或修改的条目会不会改变该类别 `synthesis` 里的某一条？
+  - `synthesis` 是 3–7 条「目前能学到的」，每条一句到两句，**必须用 `<a href="#e-ID">` 引用至少一个条目**，并在末尾标证据强度：`（多个组织）` / `（单一组织）` / `（厂商自报）`。
+  - 新证据**支持**某条 → 把新条目加进引用，必要时升级证据强度。
+  - 新证据**冲突** → 改写那条，写清分歧在哪，changelog 的 note 里说明。
+  - 真正的新结论 → 加一条；超过 7 条就合并最相近的两条。
+  - 改了 synthesis 就把该类别的 `updated` 设为今天。
+- 每个新增/修改的条目在 `changelog.jsonl` 追加一行。
 
-文件名 `ai-dev-{YYYY-MM-DD}-day{N}.html`，日期用本次运行的 **America/Los_Angeles 当地日期**，**N = 现有最大 N + 1**。**只写中文页，没有英文版。** 从 `TEMPLATE.html` 复制起步，删掉所有 TEMPLATE 注释。
+**宁缺毋滥**：没有任何够格的候选 → 不改任何文件、不跑 `publish.sh`，PushNotification `AI-native 转型笔记今日无变更：扫了 N 个信源`，结束。
 
-- **header**：h1 是今天最值得知道的那件事，写成一句话（不是「今日 AI 新闻」这种栏目名）；h2 列出今天的条目。
-- **`.intro`**（可选）：只有当今天几条真有共同线索时才写，两三句。没有就删掉，别硬串。
-- **重点 `article.item`**（1–3 条），每条：
-  - h2：中文一句话说清发生了什么。
-  - `.meta`：机构 · 原帖日期 · `<a class="src" href="原帖">原帖英文标题</a>`。
-  - 正文 2–4 段：发生了什么、具体怎么用、限制是什么。产品名、命令名、API 字段保持英文原样。
-  - `.nums`（可选）：原帖里带数字的原句 + 口径说明。
-  - `.so`（必写）：**「对你」**——能拿它做什么、值不值得现在试、对带团队的流程意味着什么。具体到动作（「在 CI 里把 X 换成 Y 试一周」），不写「值得关注」。
-  - `.cold`（可选）：口径问题、没说的东西、已知坑。
-- **`.brief` 也值得知道**（0–8 条）：`<li><b>机构 · 一句话</b>：一两句 <a class="src" href="原帖">原文</a></li>`。没有就整节删掉。
-- **`.gaps`**：只在 `.preflight` 有组 BLOCKED 时写。
-- **每个 `a.src` 都要 `curl -sIL` 验证能打开**（2xx/3xx），打不开的换同一件事的另一个一手出处，换不到就不写这条。
+## 4. 记账
 
-**篇幅**：中文约 1500–2500 字，`publish.sh` 上限 3500（`.maxchars`）。超了先砍「也值得知道」，再砍重点里的次要段落。
+- 收录为新条目的 URL → `seen.tsv` 一行 `pub`（与条目 `url` 逐字相同）。
+- 看过但不够格、或用于修改旧条目的 URL → `skip`。
+- changelog 类信源（`CHANGELOG.md`、`/changelog`）URL 每天一样，必须加真实存在的版本/日期锚点：`…/CHANGELOG.md#2.1.323`。
 
-**腔调**：口语化、短句、信息密度高。不写元叙述（「今天我们来看看」），不写腰封词（「重磅」「炸裂」「颠覆」「王炸」）。不假设读者的年龄、性别和身份。术语不翻译成别扭的中文：agent、eval、context window、PR 照写。
+## 5. 发布
 
-## 4. 记账：`seen.tsv`
+1. `python3 build.py --check`，有错就改数据。
+2. `./publish.sh`：它核对账本、changelog、条目不被删除，然后重新构建全部页面并推送。报错就按报错改，**不绕过闸门**（不改 `publish.sh`/`build.py`、不手动 `git push`）。
+3. **不要**手动加 `comments.js` 等共享脚本（GitHub Action 自动注入）。
 
-制表符分隔，表头 `date	status	url	title`，**只追加、不改旧行**。本次看过并做了判断的每个 URL 都追加一行：
+## 6. 写作
 
-- 进了页面的（重点或快讯）→ `pub`，URL 必须和页面上 `a.src` 的 href **逐字相同**。
-- 看过、没过筛或被合并的 → `skip`。
-- **changelog 类信源**（`CHANGELOG.md`、`/changelog` 页）每天 URL 都一样，必须加版本或日期锚点区分条目：`…/CHANGELOG.md#2.1.323`、`…/codex/changelog#2026-11-06`。锚点用页面上真实存在的版本号/日期，`a.src` 与 seen 行用同一个带锚点的 URL。
+- 口语化、短句、信息密度高；不写元叙述，不写腰封词（「重磅」「颠覆」「王炸」）。
+- 产品名、术语保持英文（agent、PR、eval、harness、context window）。
+- **厂商的数字是厂商的数字**：没分母、没时间段、利益相关，都要在 `denominator_notes` / `caveats` 里说出来。这不是唱反调，是读者做决策需要的。
+- `transferable` 要具体到动作和前提（「先在一个团队把 PR 评审改成 X，前提是已有 Y」），不写「值得关注」「值得借鉴」。
+- 不假设读者的年龄、性别和身份。
 
-`publish.sh` 会核对：页面上每个出处都是本次新增的 pub 行；pub 行都在页面上；没有一个 URL 在以前出现过。**不发布的日子不写 seen.tsv**（下次会重新判断，这是故意的：有的帖子第二天才被讨论出价值）。
+## 7. 完成后
 
-## 5. index 和发布
-
-- 在 `index.html` 的 `<!-- ISSUES ... -->` 注释**下一行**插入本期（最新的在最上面）：
-
-  ```html
-  <a class="entry" href="ai-dev-2026-11-13-day1.html" data-updated="2026-11-13"><span class="d">2026-11-13 · 4 条</span><span class="t">h1 那句话</span><span class="s">h2 那行</span></a>
-  ```
-- **不要**手动加 `comments.js` / `search.js` / `index-button.js` / `i18n-tts.js` / `lightbox.js`（GitHub Action 自动注入），不写 `← Hub`。
-- 用 `./publish.sh` 发布。它报错就按报错改，**不要绕过闸门**（不改 `publish.sh`、不手动 `git push`）。git 身份是 `user.name=BigCat` / `user.email=chengchen0802@gmail.com`。
-
-## 6. 完成后
-
-PushNotification（`status:"proactive"`，一行，少于 200 字，不用 markdown）：
-`AI 开发者日报 11-13：<h1 那句话> 等 N 条 · hub.cissychen.com/ai-dev-daily`
-
-有组 BLOCKED 时在末尾加 `（未读到：openai）`。
+PushNotification（`status:"proactive"`，一行 <200 字，无 markdown）：
+`AI-native 转型笔记：新增 N 条、修改 M 条 · <最重要那条的 headline> · hub.cissychen.com/ai-dev-daily`

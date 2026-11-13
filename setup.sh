@@ -22,18 +22,17 @@ probe() {
 
 # group|url  — a group is OK if any of its URLs answers 2xx/3xx
 PROBES="
+anthropic|https://claude.dev/blog
+anthropic|https://www.anthropic.com/research
 anthropic|https://www.anthropic.com/news
-anthropic|https://www.anthropic.com/engineering
 anthropic|https://claude.com/blog
-anthropic|https://platform.claude.com/docs/en/release-notes/overview
 openai|https://openai.com/news/rss.xml
-openai|https://developers.openai.com/changelog
-google|https://developers.googleblog.com/
-google|https://deepmind.google/discover/blog/
-github|https://api.github.com/repos/openai/codex/releases?per_page=1
-github|https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md
-ecosystem|https://github.blog/changelog/feed/
-ecosystem|https://cursor.com/changelog
+openai|https://developers.openai.com/blog
+openai|https://r.jina.ai/https://openai.com/news/
+bigtech|https://engineering.fb.com/
+bigtech|https://github.blog/engineering/
+bigtech|https://devblogs.microsoft.com/
+bigtech|https://research.google/blog/
 community|https://simonwillison.net/atom/everything/
 community|https://hn.algolia.com/api/v1/search?tags=front_page
 "
@@ -47,7 +46,7 @@ while IFS='|' read -r g u; do
 done <<< "$PROBES"
 
 NONGITHUB=0
-for g in anthropic openai google ecosystem community; do
+for g in anthropic openai bigtech community; do
   [ "$(eval echo \${OK_$g:-0})" = "1" ] && NONGITHUB=1
 done
 
@@ -55,7 +54,7 @@ done
   echo "# preflight — written by setup.sh"
   echo "checked_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo ""
-  for g in anthropic openai google github ecosystem community; do
+  for g in anthropic openai bigtech community; do
     if [ "$(eval echo \${OK_$g:-0})" = "1" ]; then echo "$g: OK"; else echo "$g: BLOCKED"; fi
   done
   echo ""
@@ -74,8 +73,8 @@ done
   else
     echo "egress: OK"
     echo ""
-    echo "  Any group marked BLOCKED above must be named on the page (.gaps line)"
-    echo "  and in the push. Do not fill its slot from second-hand coverage."
+    echo "  Any group marked BLOCKED above must be named in the push notification"
+    echo "  Do not fill its slot from second-hand coverage."
   fi
   echo ""
   echo "probes:"
