@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <!-- TEMPLATE — copy to ai-dev-{YYYY-MM-DD}-day{N}.html, fill every {{…}}, delete every TEMPLATE comment.
      Chinese only (no .en page). Structure and limits: CLAUDE.md §3. -->
 <html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -44,16 +45,15 @@ footer a{color:#4fd1c5;text-decoration:none}
 <div class="container">
 <header>
 <span class="tag">AI DEV DAILY · {{YYYY-MM-DD}}</span>
-<h1>{{今天最值得知道的一件事，写成一句话，不是栏目名}}</h1>
-<h2>{{今日 N 条：A · B · C}}</h2>
+<h1 data-tts="54f8be17e4a17f4e">{{今天最值得知道的一件事，写成一句话，不是栏目名}}</h1>
+<h2 data-tts="8f8d73a0e7e9e58c">{{今日 N 条：A · B · C}}</h2>
 <div class="date">{{YYYY-MM-DD}} · BigCat</div>
 </header>
 <!-- OPTIONAL: only when today's items share a real thread. Otherwise delete. -->
 <div class="intro"><p>{{两三句：今天这几条连起来说明了什么}}</p></div>
-
 <!-- 重点 1–3 条，每条一个 article.item。顺序 = 对开发者的重要性。 -->
 <article class="item">
-<h2>{{中文标题：发生了什么，一句话}}</h2>
+<h2 data-tts="c50fc6758c53f1d5">{{中文标题：发生了什么，一句话}}</h2>
 <div class="meta"><span class="org">{{Anthropic}}</span>{{YYYY-MM-DD}} · <a class="src" href="{{原帖 URL}}" target="_blank">{{原帖英文标题}}</a></div>
 <p>{{发生了什么：2–4 句，具体到功能名、命令、价格、限制}}</p>
 <!-- OPTIONAL: only numbers that appear in the source text read this run, quoted verbatim. -->
@@ -64,23 +64,20 @@ footer a{color:#4fd1c5;text-decoration:none}
 <!-- OPTIONAL: when the claim is vendor marketing, the number lacks a denominator, or there's a real catch. -->
 <div class="cold"><b>冷水：</b>{{口径问题、没说的东西、已知限制}}</div>
 </article>
-
 <!-- 0–8 条一句话快讯。没有就整节删掉。 -->
 <section class="brief">
-<h3>// 也值得知道</h3>
+<h3 data-tts="7d939b4aa3b6fa6c">// 也值得知道</h3>
 <ul>
 <li><b>{{Org · 一句话}}</b>：{{一两句}} <a class="src" href="{{原帖 URL}}" target="_blank">原文</a></li>
 </ul>
 </section>
-
 <!-- REQUIRED only when a source group was BLOCKED in .preflight; otherwise delete. -->
 <p class="gaps">今日未能读到：{{openai（openai.com 403）}}</p>
-
 <footer>BigCat · AI 开发者日报 · <a href="index.html">← 往期</a></footer>
 </div>
-<script src="https://hub.cissychen.com/comments.js" defer></script>
-<script src="https://hub.cissychen.com/search.js" defer></script>
-<script src="https://hub.cissychen.com/index-button.js" defer></script>
-<script src="https://hub.cissychen.com/i18n-tts.js" defer></script>
-<script src="https://hub.cissychen.com/lightbox.js" defer></script>
+<script defer="" src="https://hub.cissychen.com/comments.js"></script>
+<script defer="" src="https://hub.cissychen.com/search.js"></script>
+<script defer="" src="https://hub.cissychen.com/index-button.js"></script>
+<script defer="" src="https://hub.cissychen.com/i18n-tts.js"></script>
+<script defer="" src="https://hub.cissychen.com/lightbox.js"></script>
 </body></html>

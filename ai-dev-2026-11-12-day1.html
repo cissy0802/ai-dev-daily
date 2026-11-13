@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>11-12 · Fable 5.2 降价两成，但会对改历史的代码报 400 — AI 开发者日报</title>
 <style>
@@ -42,13 +43,12 @@ footer a{color:#4fd1c5;text-decoration:none}
 <div class="container">
 <header>
 <span class="tag">AI DEV DAILY · 2026-11-12</span>
-<h1>Fable 5.2 降价两成，但会对改历史的代码报 400</h1>
-<h2>今日 7 条：Fable 5.2 迁移要点 · Anthropic 的 agent 记忆与 dreaming 实验 · 自托管 Managed Agents · MCP Apps 整页嵌入 · Claude Code Code Mode · Codex agents 指挥台 · Cursor 语音 agent</h2>
+<h1 data-tts="320c03610ad30fee">Fable 5.2 降价两成，但会对改历史的代码报 400</h1>
+<h2 data-tts="40fbb3651de45a91">今日 7 条：Fable 5.2 迁移要点 · Anthropic 的 agent 记忆与 dreaming 实验 · 自托管 Managed Agents · MCP Apps 整页嵌入 · Claude Code Code Mode · Codex agents 指挥台 · Cursor 语音 agent</h2>
 <div class="date">2026-11-12 · BigCat</div>
 </header>
-
 <article class="item">
-<h2>Claude Fable 5.2 上线：$8/$40，更快更便宜，但 API 规则收紧，自己拼 messages 的代码要先自查</h2>
+<h2 data-tts="cf5e32686bc45032">Claude Fable 5.2 上线：$8/$40，更快更便宜，但 API 规则收紧，自己拼 messages 的代码要先自查</h2>
 <div class="meta"><span class="org">Anthropic</span>2026-11-09 · <a class="src" href="https://www.anthropic.com/claude-fable-and-mythos-5-2" target="_blank">Introducing Claude Fable 5.2 and Claude Mythos 5.2</a></div>
 <p>Fable 5.2（<code>claude-fable-5-2</code>）和 Mythos 5.2 是同一个底模，Mythos 只给通过验证计划的机构。1M context window、128k 最大输出、adaptive thinking 常开。价格从 Fable 5.1 的 $10/$50 降到 <strong>$8/$40</strong> 每百万 token，batch 减半；fast mode 最高 2.5 倍出 token 速度，$16/$80，请求里加 <code>speed: "fast"</code>，不用 beta header。Claude Code 2.1.321 起它就是默认的 Fable 模型。</p>
 <p>真正要动手的是开发者文档「What's new」里列的破坏性变化：<strong>prefix check 对所有账号强制</strong>——你的代码只要改过 system、tools 或任何一条更早的 message，再把 Fable 5.2 的 thinking block 送回去，就是 400（报错信息 <em>The block is bound to a different conversation</em>）。临时绕过是 <code>thinking-binding-controls-2026-08-01</code> header 加 <code>prefix_mismatch_behavior: "drop_block"</code>，代价是输出 token 可能上涨。另外：<code>tool_choice</code> 强制工具调用（<code>any</code> / 指定 tool）直接 400，要结构化输出改用 <code>strict: true</code> 或 JSON outputs；computer use 必须换成 <code>computer_toolset_20260801</code>（Bedrock 例外）；advisor tool 里 Fable 5.2 当执行者时，advisor 只能是 Fable 5.2 / Mythos 5.2。</p>
@@ -61,9 +61,8 @@ footer a{color:#4fd1c5;text-decoration:none}
 <div class="so"><b>对你：</b>如果你们是 Claude Code / Agent SDK / Managed Agents 构建请求，文档明说什么都不用改。自己拼 messages 的（自研 harness、中途换 tools、做历史裁剪的），切模型前先跑一遍迁移指南里的 prefix check 测试，再把 <code>tool_choice</code> 强制调用全局 grep 一遍。模型路由：Anthropic 自己的建议仍是 Opus 5.5 打底，Opus 高 effort 的 eval 过不了再上 Fable；按 FrontierCode 那组数，Fable High 的成本接近 Opus Max 的一半，值得在你最贵的那类长任务上做一次 effort sweep（从默认 high 开始）对比。</div>
 <div class="cold"><b>冷水：</b>90% 是厂商自报、没有分母，也不等于人省了 90% 的活——评审和「guidance」的人力没算。基准分大多是各模型最高 effort、开 safeguards，CyScenarioBench 各家题目不同不可直比。Fable 和 Mythos 都要求 30 天数据留存，ZDR 组织默认用不了；开了客户自管密钥的组织连 structured outputs 都没有。</div>
 </article>
-
 <article class="item">
-<h2>Anthropic 拆解 agent 记忆：告诉模型记忆是干什么用的，别规定它怎么记；再用 dreaming 回放 transcript 纠错</h2>
+<h2 data-tts="a7d29d501d43d0aa">Anthropic 拆解 agent 记忆：告诉模型记忆是干什么用的，别规定它怎么记；再用 dreaming 回放 transcript 纠错</h2>
 <div class="meta"><span class="org">Anthropic</span>2026-11-06 · <a class="src" href="https://www.anthropic.com/research/components-of-agent-memory" target="_blank">The components of agent memory</a></div>
 <p>这篇工程博客把「agent 记忆」限定为跨 session、存成可读 context 的经验（不含权重、in-context、compaction），用 CL-Bench、Pokémon、内部文档问答和 Harvey LAB 几组实验拆了三件事：写什么、怎么纠错、怎么组织。</p>
 <p>结论一：对强模型，只说「有个 memory 目录可用」效果最好；硬性规则反而伤性能。老模型则相反，需要明确提示「回答前先读记忆、再验证假设」。结论二：在线写下的笔记可能一开始就是错的，「dreaming」——离线拿原始 transcript 校验记忆、改写笔记——能把错误纠回来。结论三：dreaming 可以把记忆整理成互相链接的 wiki，在需要跨文档综合的问题上明显好于纯搜索，但在单文档就能答的任务上没收益，还出现过 wiki 比原文还大、什么都没抽象的情况。并行写同一张共享表会互相覆盖，改成「一个 agent 一份合同、原文逐字引用」后才不丢事实。</p>
@@ -76,9 +75,8 @@ footer a{color:#4fd1c5;text-decoration:none}
 <div class="so"><b>对你：</b>翻一下你们 CLAUDE.md / 系统 prompt 里关于「记什么」的硬规则，在新模型上 A/B 一次删掉它们。自己的 agent 有记忆目录的，加一个定期的离线任务：拿最近 transcript 对一遍记忆笔记，修正和去重。让多个 subagent 并发写同一份笔记的设计要改成按实体分片、单写者。MEMORY.md 当索引用，控制在 200 行内，细节下沉到子文件。</div>
 <div class="cold"><b>冷水：</b>多数实验是单次运行、小样本（25 题、24 题），有的是游戏环境；作者也承认 dreaming 要花算力，什么时候跑、校验哪些记忆还是开放问题。</div>
 </article>
-
 <section class="brief">
-<h3>// 也值得知道</h3>
+<h3 data-tts="d4b48d7f61f64ae6">// 也值得知道</h3>
 <ul>
 <li><b>Anthropic · Managed Agents 可以整套自托管了</b>：harness、sandbox、凭据、session 历史都跑在你自己的云或机房，模型请求可发往 Anthropic、Bedrock、Google、Foundry 或自建网关；步骤记录走 OpenTelemetry 导出。私有 beta，找客户经理申请。 <a class="src" href="https://claude.com/resources/articles/self-hosted-claude-managed-agents" target="_blank">原文</a></li>
 <li><b>Anthropic · MCP Apps 能把整个应用嵌进 Claude</b>：Claude 支持了更多 MCP Apps 扩展（app tools、嵌入站点），开发者侧 public preview；同一个 MCP App 也能跑在其他支持该扩展的客户端里。做内部工具的团队可以评估把 UI 直接挂成 connector。 <a class="src" href="https://claude.com/resources/articles/interactive-connectors-full-tool" target="_blank">原文</a></li>
@@ -87,7 +85,6 @@ footer a{color:#4fd1c5;text-decoration:none}
 <li><b>Cursor · 可以和 agent 实时语音通话</b>：IDE、Agents Window、web、iOS 都有；语音 agent 把编码任务转交给聊天里的 agent，跑的时候还能问 diff、查进度。底层是 Grok Voice，Privacy Mode 下零数据留存。 <a class="src" href="https://cursor.com/changelog/voice-chat" target="_blank">原文</a></li>
 </ul>
 </section>
-
 <footer>BigCat · AI 开发者日报 · <a href="index.html">← 往期</a></footer>
 </div>
 <script src="https://hub.cissychen.com/comments.js" defer></script>
