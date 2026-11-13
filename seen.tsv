@@ -1,1 +1,19 @@
 date	status	url	title
+2026-11-12	pub	https://www.anthropic.com/claude-fable-and-mythos-5-2	Introducing Claude Fable 5.2 and Claude Mythos 5.2
+2026-11-12	pub	https://www.anthropic.com/research/components-of-agent-memory	The components of agent memory
+2026-11-12	pub	https://claude.com/resources/articles/self-hosted-claude-managed-agents	Operate Claude Managed Agents inside your security perimeter
+2026-11-12	pub	https://claude.com/resources/articles/interactive-connectors-full-tool	Open your apps in Claude and work in them together
+2026-11-12	pub	https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md#2.1.323	Claude Code 2.1.323 changelog
+2026-11-12	pub	https://developers.openai.com/codex/changelog#2026-11-06	Codex CLI 0.167.0 / 0.168.0
+2026-11-12	pub	https://cursor.com/changelog/voice-chat	Voice Chat with Agents
+2026-11-12	skip	https://platform.claude.com/docs/en/models/fable-5-2/whats-new-fable-5-2	What's new in Claude Fable 5.2 (merged into announcement)
+2026-11-12	skip	https://github.blog/changelog/2026-11-09-claude-fable-5-2-in-github-copilot	Claude Fable 5.2 in GitHub Copilot (merged)
+2026-11-12	skip	https://simonwillison.net/2026/Nov/10/prompting-claude-fable-52/	Quoting Prompting Claude Fable 5.2 (secondary)
+2026-11-12	skip	https://claude.com/resources/articles/sheets-whiteboards-data	Introducing Claude Whiteboards, Claude Sheets, and Claude Data
+2026-11-12	skip	https://claude.com/resources/articles/how-curative-is-building-a-national-provider-network-with-agents-on-claude	How Curative is building a national provider network with agents on Claude
+2026-11-12	skip	https://claude.com/resources/articles/jpmorganchase-expands-claude-code	JPMorganChase expands Claude Code
+2026-11-12	skip	https://claude.com/resources/articles/claude-for-manufacturing	Introducing Claude for Manufacturing
+2026-11-12	skip	https://claude.com/resources/articles/claude-meetings	Introducing Claude Meetings
+2026-11-12	skip	https://www.anthropic.com/news/roadshow-launch	Anthropic launches roadshow for proposed IPO
+2026-11-12	skip	https://github.blog/changelog/2026-11-10-gemini-4-carbon-in-github-copilot	Gemini 4 Carbon in GitHub Copilot
+2026-11-12	skip	https://developers.googleblog.com/cost-per-task-using-cheap-classifiers-to-route-across-gemini-models-and-thinking-levels/	Cost per task (2026-11-03, outside window)
