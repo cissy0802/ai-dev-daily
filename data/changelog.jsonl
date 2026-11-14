@@ -111,3 +111,8 @@
 {"date": "2026-11-12", "id": "simon-hide-slop-pr-descriptions-behind", "action": "add", "note": "回填：过去半年"}
 {"date": "2026-11-12", "id": "aws-aws-emulator-engineer-s-job", "action": "add", "note": "回填：过去半年"}
 {"date": "2026-11-12", "id": "openai-securing-persistent-agents-like-openclaw", "action": "add", "note": "回填：过去半年"}
+{"date": "2026-11-13", "id": "microsoft-copilot-cowork-adoption-stick", "action": "add", "note": "Microsoft 内部推 Cowork 的上线后复盘；推广打法 synthesis 引入"}
+{"date": "2026-11-13", "id": "google-antigravity-teamwork-internal-infra", "action": "add", "note": "Google /teamwork 的上下文切分、证伪器与内部基础设施收益；agent 运维 synthesis 引入"}
+{"date": "2026-11-13", "id": "meta-intelligent-delivery-agents-optimization", "action": "add", "note": "Meta 广告服务调优中 agent 承担的工程比例；agent 运维 synthesis 引入"}
+{"date": "2026-11-13", "id": "anthropic-investigating-three-real-world-inciden", "action": "update", "note": "补充事故后处置（暂停联网评测、实时监控）"}
+{"date": "2026-11-13", "id": "deepmind-gemini-4-argon-next-era", "action": "update", "note": "补充 Zircon 改写完成、内存优化超 1 PiB 估计的后续"}

@@ -112,3 +112,19 @@ date	status	url	title
 2026-11-12	pub	https://simonwillison.net/2026/Nov/9/details-summary/	Hide your slop PR descriptions behind <details><summary>
 2026-11-12	pub	https://www.allthingsdistributed.com/2026/11/aws-emulator-and-the-engineers-job-when-agents-write-the-code.html	AWS Emulator and the engineer's job when agents write the code
 2026-11-12	pub	https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai	Securing persistent agents like OpenClaw at OpenAI
+2026-11-13	pub	https://www.microsoft.com/insidetrack/blog/making-ai-adoption-stick-what-we-learned-after-launching-copilot-cowork-at-microsoft/	Making AI adoption stick: What we learned after launching Copilot Cowork at Microsoft
+2026-11-13	pub	https://research.google/blog/advancing-science-engineering-with-antigravitys-teamwork-feature/	Advancing science & engineering with Antigravity’s /teamwork
+2026-11-13	pub	https://engineering.fb.com/2026/11/11/ml-applications/intelligent-delivery-serve-better-ads/	Intelligent Delivery: Making Every Unit of Compute Serve Better Ads
+2026-11-13	skip	https://www.anthropic.com/research/building-strong-safety-evaluations	Building strong safety evaluations
+2026-11-13	skip	https://claude.com/resources/articles/claude-tag-guide-for-startups	The Claude Tag guide for startups
+2026-11-13	skip	https://www.anthropic.com/news/roadshow-launch	Anthropic launches roadshow for proposed initial public offering
+2026-11-13	skip	https://simonwillison.net/2026/Nov/11/anthropic-ipo-roadshow/	Anthropic's IPO roadshow video
+2026-11-13	skip	https://claude.dev/blog/which-claude-model-should-you-build-with/	Which Claude model should you build with?
+2026-11-13	skip	https://claude.com/resources/articles/using-claude-opus-5-5-as-your-daily-driver-for-knowledge-work	Which Claude model is best to use for knowledge work
+2026-11-13	skip	https://claude.com/resources/articles/building-always-on-agents	Building always-on agents
+2026-11-13	skip	https://claude.com/resources/articles/self-hosted-claude-managed-agents	Operate Claude Managed Agents inside your security perimeter
+2026-11-13	skip	https://www.anthropic.com/research/how-researchers-use-claude	How scientists use Claude
+2026-11-13	skip	https://www.anthropic.com/research/components-of-agent-memory	The components of agent memory
+2026-11-13	skip	https://deepmind.google/blog/introducing-gemini-4-hydrogen/	Introducing Gemini 4 Hydrogen
+2026-11-13	skip	https://engineering.fb.com/2026/11/10/open-source/tlx-a-hardware-native-gpu-compiler-for-production-ml/	How We Built TLX: A Hardware-Native GPU Compiler for Production ML at Scale
+2026-11-13	skip	https://engineering.fb.com/2026/11/13/android/cuttlefish-on-mac/	Cuttlefish on Mac
