@@ -62,7 +62,12 @@ if new_rows[:len(old_rows)] != old_rows: sys.exit("ERROR: seen.tsv is append-onl
 fresh = new_rows[len(old_rows):]
 bad = [r for r in fresh if len(r) != 4 or r[1] not in ("pub", "skip") or not r[2].startswith("http")]
 if bad: sys.exit(f"ERROR: malformed seen.tsv rows: {bad[:3]}")
-seen_before = {r[2] for r in old_rows}
+# Exception: a url whose earlier rows are ALL "skip" with a title starting
+# 待存档 (OpenAI post seen before its Web Archive copy existed) may now be
+# published. Any other earlier row blocks it.
+pending = {r[2] for r in old_rows if r[1] == "skip" and r[3].startswith("待存档")}
+blocking = {r[2] for r in old_rows if not (r[1] == "skip" and r[3].startswith("待存档"))}
+seen_before = blocking | (pending - {r[2] for r in fresh if r[1] == "pub"})
 dup = [r[2] for r in fresh if r[2] in seen_before]
 if dup: sys.exit(f"ERROR: urls already in seen.tsv from an earlier day: {dup}")
 pub = {r[2] for r in fresh if r[1] == "pub"}

@@ -4,7 +4,7 @@ BigCat 维护这份清单，引擎**只读不改**（`publish.sh` 会拦下改�
 
 要找的是**组织自己怎么用 AI 干活**的一手信息（见 CLAUDE.md 第 2 节），不是产品新闻。
 
-读法：优先 RSS / sitemap；页面用 `curl -sSL -A '<浏览器 UA>'`（UA 见 `setup.sh`）。
+读法：优先 RSS / sitemap；页面用 `curl -sSL -A '<浏览器 UA>'`（UA 见 `setup.sh`）。**任何站点出现人机验证 / bot 防护（Cloudflare challenge、CAPTCHA 等）一律不绕过**：换 RSS、官方存档或 Web Archive，都没有就 skip。
 
 ## Anthropic（最高产）
 - https://claude.dev/blog — **开发者博客，不在任何 sitemap 里**；Claude Code 团队的评审、skills、性能、多 agent 实践多半发在这里
@@ -14,7 +14,8 @@ BigCat 维护这份清单，引擎**只读不改**（`publish.sh` 会拦下改�
 - https://claude.com/blog 、https://claude.com/resources/articles — 「Anthropic 某团队怎么用 Claude」系列（销售、财务、市场、法务、数据）
 
 ## OpenAI
-- https://openai.com/news/rss.xml — 发现入口。**openai.com 的页面对 curl 一律 403**：读正文用 `https://r.jina.ai/<原 URL>`，被挡就用 `https://web.archive.org/web/2026/<原 URL>`；条目 `url` 仍记原 URL
+- https://openai.com/news/rss.xml — 发现入口，标题/日期/摘要都在 feed 里。**openai.com 的页面有 Cloudflare 人机验证（403 + `cf-mitigated: challenge`），不要设法绕过**：不用 r.jina.ai 之类的渲染代理，不换 UA 硬闯。读全文只用 Web Archive 的存档副本：先查 `https://archive.org/wayback/available?url=<原 URL>`，有存档就读 `archived_snapshots.closest.url`；条目 `url` 仍记原 URL。
+  - 还没有存档的新帖：本次只记 `skip`（标题写「待存档」），**不按摘要写条目**；它会在之后几天的 14 天回看窗口里被重新看到——账本里 skip 过的 URL 本会被跳过，所以「待存档」是唯一例外：标题以「待存档」开头的 skip 行，下次有存档时可以收录（写一行新的 pub）；仍无存档就什么都不记，等下一天。
 - https://developers.openai.com/blog — 「OpenAI 内部怎么用 Codex」类
 
 ## 其他大厂工程博客（只收第一手内部实践）

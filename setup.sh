@@ -28,7 +28,7 @@ anthropic|https://www.anthropic.com/news
 anthropic|https://claude.com/blog
 openai|https://openai.com/news/rss.xml
 openai|https://developers.openai.com/blog
-openai|https://r.jina.ai/https://openai.com/news/
+openai|https://archive.org/wayback/available?url=openai.com/news/
 bigtech|https://engineering.fb.com/
 bigtech|https://github.blog/engineering/
 bigtech|https://devblogs.microsoft.com/
