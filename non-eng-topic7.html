@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>非工程职能 — AI-native 转型笔记</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"SF Pro Display","Noto Sans SC",sans-serif;color:#dfe7ee;line-height:1.85;min-height:100vh;
   background:radial-gradient(1000px 520px at 8% -6%,rgba(79,209,197,0.10),transparent 60%),radial-gradient(900px 600px at 100% 0%,rgba(99,179,237,0.08),transparent 55%),linear-gradient(165deg,#0a0e12 0%,#0e141a 45%,#080b0e 100%);background-attachment:fixed}
-.container{max-width:780px;margin:0 auto;padding:18px 20px 90px}
+.container{max-width:1280px;margin:0 auto;padding:18px 24px 90px}
+.narrow{max-width:860px;margin-left:auto;margin-right:auto}
 header{text-align:center;padding:44px 0 22px}
 .tag{display:inline-block;font-size:0.75rem;color:#4fd1c5;font-family:"SF Mono",Menlo,monospace;letter-spacing:2px;border:1px solid rgba(79,209,197,0.42);padding:4px 13px;border-radius:20px;margin-bottom:16px;background:rgba(79,209,197,0.06)}
 header h1{font-size:2rem;font-weight:800;line-height:1.32;background:linear-gradient(110deg,#9ae6dc 0%,#4fd1c5 45%,#63b3ed 92%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -20,9 +20,15 @@ code{font-family:"SF Mono",Menlo,monospace;font-size:.86em;color:#cfe3f3}
 .synthesis ol{padding-left:22px}
 .synthesis li{margin-bottom:10px;font-size:0.96rem}
 .entries-h{margin:46px 0 4px;color:#63b3ed;font-size:0.9rem;letter-spacing:2px;font-family:"SF Mono",Menlo,monospace}
-.entry-item{margin:34px 0 0;padding-top:4px;scroll-margin-top:20px}
-.entry-item h3::before{content:"";display:block;width:28px;height:2px;background:#4fd1c5;opacity:.75;margin-bottom:12px}
-.entry-item h3{font-size:1.16rem;color:#fff;font-weight:700;line-height:1.45;margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;align-items:start;margin-top:16px}
+.entry-item{margin:0;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(79,209,197,0.16);scroll-margin-top:20px}
+.entry-item:target{border-color:#63b3ed;box-shadow:0 0 0 2px rgba(99,179,237,.35)}
+.entry-item details{margin-top:8px}
+.entry-item summary{cursor:pointer;color:#7d8d9a;font-size:.82rem;font-family:"SF Mono",Menlo,monospace;list-style:none}
+.entry-item summary::-webkit-details-marker{display:none}
+.entry-item summary::before{content:"▸ "}
+.entry-item details[open] summary::before{content:"▾ "}
+.entry-item h3{font-size:1.02rem;color:#fff;font-weight:700;line-height:1.45;margin-bottom:6px}
 .meta{font-family:"SF Mono",Menlo,monospace;font-size:0.78rem;color:#7d8d9a;margin-bottom:12px}
 .meta .org{color:#63b3ed;margin-right:8px}
 .entry-item p{margin-bottom:10px;font-size:0.95rem}
@@ -36,14 +42,14 @@ code{font-family:"SF Mono",Menlo,monospace;font-size:.86em;color:#cfe3f3}
 .so b{color:#9ae6dc}
 .cold{margin:10px 0;border-left:2px solid rgba(240,160,100,0.7);padding:8px 16px;font-size:0.9rem;color:#e6cdb8;background:rgba(240,160,100,0.05);border-radius:0 8px 8px 0}
 .cold b{color:#f0a064}
-.upd{font-size:0.82rem;color:#f0c674;font-family:"SF Mono",Menlo,monospace;margin:6px 0}
+.upd{overflow-wrap:anywhere;font-size:0.82rem;color:#f0c674;font-family:"SF Mono",Menlo,monospace;margin:6px 0}
 .also{font-size:0.82rem;color:#7d8d9a}
 .log{margin-top:48px;font-size:0.84rem;color:#93a3b1}
 .log h2{color:#63b3ed;font-size:0.85rem;letter-spacing:2px;margin-bottom:10px;font-family:"SF Mono",Menlo,monospace}
 .log li{list-style:none;padding:3px 0}
 .log .d{font-family:"SF Mono",Menlo,monospace;color:#5d6b77;margin-right:8px}
 footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font-family:"SF Mono",Menlo,monospace}
-.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:28px}
 .cat{display:block;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(79,209,197,0.16);border-top:3px solid #4fd1c5;border-bottom:1px solid rgba(79,209,197,0.16);color:inherit}
 .cat:hover{background:rgba(255,255,255,0.06);border-top-color:#63b3ed}
 .cat .n{font-family:"SF Mono",Menlo,monospace;font-size:0.74rem;color:#63b3ed}
@@ -54,205 +60,231 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 .recent h2{color:#4fd1c5;font-size:0.88rem;letter-spacing:2px;margin-bottom:10px;font-family:"SF Mono",Menlo,monospace}
 .recent li{list-style:none;padding:8px 0;border-top:1px solid rgba(79,209,197,0.1);font-size:0.92rem}
 .recent .d{font-family:"SF Mono",Menlo,monospace;font-size:0.76rem;color:#63b3ed;margin-right:8px}
-@media(max-width:640px){header h1{font-size:1.55rem}.cats{grid-template-columns:1fr}}
+.langbar{display:flex;justify-content:flex-end;padding-top:6px;font-family:"SF Mono",Menlo,monospace;font-size:.8rem}
+.langbar a{border:1px solid rgba(79,209,197,.35);padding:4px 12px;border-radius:20px}
+@media(max-width:640px){header h1{font-size:1.55rem}.container{padding:18px 16px 90px}}
 </style></head><body>
 <div class="container">
+<div class="langbar"><a href="non-eng-topic7.en.html">English →</a></div>
 <header>
 <span class="tag">AI-NATIVE · NON-ENG</span>
-<h1 data-tts="ca786ae6da6dc690">非工程职能</h1>
-<h2 data-tts="d0d6861150db04c5">销售、财务、法务、市场、数据等非工程团队，怎么把 agent 用到实处？</h2>
+<h1>非工程职能</h1>
+<h2>销售、财务、法务、市场、数据等非工程团队，怎么把 agent 用到实处？</h2>
 <div class="date">23 篇来源 · 更新于 2026-11-12 · BigCat</div>
 </header>
-<section class="synthesis"><h2 data-tts="04e7aded87123b21">// 目前能学到的</h2><ol><li>准确率主要是<strong>上下文和验证</strong>的工程问题，换更强的模型解决不了：<a href="#e-anthropic-anthropic-enables-self-service-data">Anthropic 数据团队</a>没有 skill 时 eval 准确率不超过 21%，加上 skill 后超过 95%，但一个月不维护就漂移到约 65%，于是把 skill 和数据模型放进同一个 PR；<a href="#e-github-built-internal-data-analytics-agent">GitHub Qubot</a>让各数据 owner 贡献上下文，每次变更都过 eval；<a href="#e-microsoft-boosting-product-manager-productivity">微软 PM 团队</a>遇到报告不准时先修源数据。（多个组织）</li><li>对外发送和对系统记录的修改，保留人工批准：<a href="#e-anthropic-anthropic-s-business-development-team">Anthropic BDR</a>的 CRM 更新走「提议+证据+人工批准」并记录驳回原因；<a href="#e-anthropic-anthropic-s-finance-team-uses">Anthropic 财务</a>和 <a href="#e-openai-building-ai-native-finance-function">OpenAI CFO</a>都是 AI 出初稿、人签字；<a href="#e-anthropic-anthropic-employees-use-claude-tag">Anthropic 法务</a>用 AI 初审、律师复核标记项的双层流程。<a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 市场</a>后来取消了发送前审批，非实验室组织要先评估错误外发的代价。（多个组织）</li><li>把每次人工纠正固化下来，让它长期生效：<a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 市场</a>第一周就把反馈写成 9 条显式规则（包括「绝不编造 URL」）；<a href="#e-anthropic-anthropic-employees-use-claude-tag">Anthropic 法务</a>每周让 Claude 根据律师反馈提议更新指令，批准后才生效；<a href="#e-meta-organizational-second-brain-building-ai">Meta</a>把专家修正走 eval、回归测试、PR 审核后再并入知识文件。（多个组织）</li><li>从窄而重复的任务起步：<a href="#e-anthropic-best-practices-getting-started-claude">Anthropic 增长营销</a>的「五要素」（多个输入、产出一个文件、会重复做、知道好结果什么样、中间是枯燥的汇编对账）可以直接用来挑首批任务；<a href="#e-github-github-legal-team-used-copilot">GitHub 法务</a>从一类通知的分诊起步，把方法论写成仓库里的纯文本指令；<a href="#e-openai-building-ai-native-finance-function">OpenAI 财务</a>用黑客松让一线带问题来、技术人员陪跑。（多个组织）</li><li>个人工具要经过验证再进团队共享库，并配人负责：<a href="#e-anthropic-anthropic-s-business-development-team">Anthropic BDR</a>的 skill 先个人验证再升进团队 plugin；<a href="#e-anthropic-one-anthropic-seller-rebuilt-his">Anthropic 销售</a>的工具打包成 plugin、作为新人入职默认配置，做工具的人转成了专职 GTM 架构师（「约 80% 销售在用」没有定义使用口径）；<a href="#e-microsoft-boosting-product-manager-productivity">微软 PM</a>出现重复造 agent 后改推可复用 skill。（多个组织）</li><li>运维护栏要按生产系统的标准来做：<a href="#e-anthropic-anthropic-bdr-japan-runs-his">Anthropic 日本 BDR</a>凭证集中托管、按 agent 最小授权、指令改动有版本；<a href="#e-anthropic-self-service-data-analytics-slack">Anthropic 数据 agent</a>只读治理层、PII 列级屏蔽、每条查询打请求人标签；<a href="#e-meta-privacy-aware-infrastructure-ai-native">Meta 隐私分类</a>先用确定性规则处理约 85% 请求，LLM 只兜底；<a href="#e-github-marketing-ops-as-code-automating">GitHub 市场</a>的定时任务因为没有失败告警，静默失败了五天。（多个组织）</li><li>这一类的效果数字几乎都是单人自估，而且来自厂商的推广系列：比如 <a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营</a>「两天缩到两小时」、<a href="#e-anthropic-anthropic-bdr-japan-runs-his">日本 BDR</a>「省约 60 小时」；<a href="#e-anthropic-anthropic-s-sales-team-rebuilt">Anthropic 购买 agent</a>「转化 2 倍」的对照组是客户自选的。可以借鉴做法，效果要用自己的基线重新测。（厂商自报）</li></ol></section>
-<h2 class="entries-h" data-tts="1318417b0a12804f">// 来源（新的在上）</h2>
+<section class="synthesis narrow"><h2>// 目前能学到的</h2><ol><li>准确率主要是<strong>上下文和验证</strong>的工程问题，换更强的模型解决不了：<a href="#e-anthropic-anthropic-enables-self-service-data">Anthropic 数据团队</a>没有 skill 时 eval 准确率不超过 21%，加上 skill 后超过 95%，但一个月不维护就漂移到约 65%，于是把 skill 和数据模型放进同一个 PR；<a href="#e-github-built-internal-data-analytics-agent">GitHub Qubot</a>让各数据 owner 贡献上下文，每次变更都过 eval；<a href="#e-microsoft-boosting-product-manager-productivity">微软 PM 团队</a>遇到报告不准时先修源数据。（多个组织）</li><li>对外发送和对系统记录的修改，保留人工批准：<a href="#e-anthropic-anthropic-s-business-development-team">Anthropic BDR</a>的 CRM 更新走「提议+证据+人工批准」并记录驳回原因；<a href="#e-anthropic-anthropic-s-finance-team-uses">Anthropic 财务</a>和 <a href="#e-openai-building-ai-native-finance-function">OpenAI CFO</a>都是 AI 出初稿、人签字；<a href="#e-anthropic-anthropic-employees-use-claude-tag">Anthropic 法务</a>用 AI 初审、律师复核标记项的双层流程。<a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 市场</a>后来取消了发送前审批，非实验室组织要先评估错误外发的代价。（多个组织）</li><li>把每次人工纠正固化下来，让它长期生效：<a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 市场</a>第一周就把反馈写成 9 条显式规则（包括「绝不编造 URL」）；<a href="#e-anthropic-anthropic-employees-use-claude-tag">Anthropic 法务</a>每周让 Claude 根据律师反馈提议更新指令，批准后才生效；<a href="#e-meta-organizational-second-brain-building-ai">Meta</a>把专家修正走 eval、回归测试、PR 审核后再并入知识文件。（多个组织）</li><li>从窄而重复的任务起步：<a href="#e-anthropic-best-practices-getting-started-claude">Anthropic 增长营销</a>的「五要素」（多个输入、产出一个文件、会重复做、知道好结果什么样、中间是枯燥的汇编对账）可以直接用来挑首批任务；<a href="#e-github-github-legal-team-used-copilot">GitHub 法务</a>从一类通知的分诊起步，把方法论写成仓库里的纯文本指令；<a href="#e-openai-building-ai-native-finance-function">OpenAI 财务</a>用黑客松让一线带问题来、技术人员陪跑。（多个组织）</li><li>个人工具要经过验证再进团队共享库，并配人负责：<a href="#e-anthropic-anthropic-s-business-development-team">Anthropic BDR</a>的 skill 先个人验证再升进团队 plugin；<a href="#e-anthropic-one-anthropic-seller-rebuilt-his">Anthropic 销售</a>的工具打包成 plugin、作为新人入职默认配置，做工具的人转成了专职 GTM 架构师（「约 80% 销售在用」没有定义使用口径）；<a href="#e-microsoft-boosting-product-manager-productivity">微软 PM</a>出现重复造 agent 后改推可复用 skill。（多个组织）</li><li>运维护栏要按生产系统的标准来做：<a href="#e-anthropic-anthropic-bdr-japan-runs-his">Anthropic 日本 BDR</a>凭证集中托管、按 agent 最小授权、指令改动有版本；<a href="#e-anthropic-self-service-data-analytics-slack">Anthropic 数据 agent</a>只读治理层、PII 列级屏蔽、每条查询打请求人标签；<a href="#e-meta-privacy-aware-infrastructure-ai-native">Meta 隐私分类</a>先用确定性规则处理约 85% 请求，LLM 只兜底；<a href="#e-github-marketing-ops-as-code-automating">GitHub 市场</a>的定时任务因为没有失败告警，静默失败了五天。（多个组织）</li><li>这一类的效果数字几乎都是单人自估，而且来自厂商的推广系列：比如 <a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营</a>「两天缩到两小时」、<a href="#e-anthropic-anthropic-bdr-japan-runs-his">日本 BDR</a>「省约 60 小时」；<a href="#e-anthropic-anthropic-s-sales-team-rebuilt">Anthropic 购买 agent</a>「转化 2 倍」的对照组是客户自选的。可以借鉴做法，效果要用自己的基线重新测。（厂商自报）</li></ol></section>
+<h2 class="entries-h">// 来源（新的在前）</h2>
+<div class="grid">
 <article class="entry-item" id="e-anthropic-anthropic-bdr-japan-runs-his">
-<h3 data-tts="01786fb5fbf498e6">Anthropic 日本 BDR 把日常工作拆给 5 个单职责 agent，共享记忆、凭证最小授权、指令改动有版本</h3>
+<h3>Anthropic 日本 BDR 把日常工作拆给 5 个单职责 agent，共享记忆、凭证最小授权、指令改动有版本</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-10-16 · <a class="src" href="https://claude.com/resources/articles/how-an-anthropic-japan-business-development-representative-runs-his-day" target="_blank">How an Anthropic BDR in Japan runs his day with Claude Managed Agents</a></div>
+<div class="so"><b>能借鉴的：</b>可借鉴的 agent 运维设计：一个 agent 一个职责、按需定时运行；共享记忆存储让一次纠正全队生效；凭证集中托管+按职责授权+一键撤销；只有 owner 能改指令、改动有版本、试验改动不影响已部署版本；按任务判断难度分配模型与 effort。前提是有托管 agent 平台或同等的调度/版本/密钥管理设施。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 日本 BDR 把日常工作拆成 5 个单一职责的定时 agent（线索分配、线索分级+CRM 更新+首封邮件、每小时回信草稿、商机记录更新、会后纪要与跟进）外加 1 个 coordinator，在 Managed Agents 上运行：共享一个 memory store，agent 比对自己的草稿与他实际发出的邮件并把差异记为写作笔记；凭证放托管 vault、按 agent 最小授权；只有他本人能在专用 Slack 频道提交改指令请求，由 coordinator 每约 15 分钟执行且每次改动有版本。需要后续动作的事项交给 Claude Tag 跟进并设置提醒；按判断难度给不同 agent 配 Sonnet/Opus 与 effort，高频回信 agent 用 Sonnet + Opus advisor 控成本。</p>
 <div class="nums"><ul><li><q>Looking at the weekly log of what the Nakama gets through and counting each task as the time it would have taken me to do manually, the fleet saves me around 60 hours of work.</q></li><li><q>It took a few hundred cheap rounds of drafting, fixing, and saving to get the drafts to sound like me.</q></li></ul><span class="note">口径：「约 60 小时」按「每项任务若手工需要的时间」累计估算（文中未明确是每周还是累计，表述为 weekly log），属于理论节省而非实测工时变化。</span></div>
-<div class="so"><b>能借鉴的：</b>可借鉴的 agent 运维设计：一个 agent 一个职责、按需定时运行；共享记忆存储让一次纠正全队生效；凭证集中托管+按职责授权+一键撤销；只有 owner 能改指令、改动有版本、试验改动不影响已部署版本；按任务判断难度分配模型与 effort。前提是有托管 agent 平台或同等的调度/版本/密钥管理设施。</div>
-<div class="cold"><b>冷水：</b>员工自述+产品推广（Managed Agents/Claude Tag 均为 beta）；节省时间为估算；单人个案，未报告错误或客户投诉情况。</div>
+<div class="cold"><b>冷水：</b>员工自述+产品推广（Managed Agents/Claude Tag 均为 beta）；节省时间为估算；单人个案，未报告错误或客户投诉情况。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-anthropic-anthropic-bdr-japan-runs-his">Agent 运维与编排</a></p></article>
 <article class="entry-item" id="e-microsoft-boosting-product-manager-productivity">
-<h3 data-tts="0b770dfe86871004">微软 PM 团队遇到 AI 报告不准时先修源数据，发现大家重复造 agent 后转为推广可复用 skill</h3>
+<h3>微软 PM 团队遇到 AI 报告不准时先修源数据，发现大家重复造 agent 后转为推广可复用 skill</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-10-08 · <a class="src" href="https://www.microsoft.com/insidetrack/blog/boosting-product-manager-productivity-at-microsoft-with-ai/" target="_blank">Boosting product manager productivity at Microsoft with AI</a></div>
-<p>Microsoft Digital 基础设施工程服务团队的 PM 用 AI 重塑“持续规划”：AI 汇总上月完成的 scenario，按战略优先级生成给领导的报告和看板；早期报告不准，团队没有把它当 AI 问题，而是改报告逻辑、提升源头数据质量，并做了第二个“数据卫生”agent 持续检查 Azure DevOps 数据缺口并提示补全。推广上用短视频教非技术 PM 自建 agent；出现多人重复造类似 agent 后，转向推广可复用 skill。个人层面用于自动月报、用量数据分析、用 Copilot Studio 做原型替代 Figma。</p>
 <div class="so"><b>能借鉴的：</b>PM 场景的两个可迁移经验：(1) AI 报告不准时先修源数据和流程，并用另一个 agent 守数据质量；(2) 鼓励个人实验后会出现重复造轮子，需要尽早建立 skill 共享与治理。</div>
-<div class="cold"><b>冷水：</b>定性案例，宣传稿。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
+<p>Microsoft Digital 基础设施工程服务团队的 PM 用 AI 重塑“持续规划”：AI 汇总上月完成的 scenario，按战略优先级生成给领导的报告和看板；早期报告不准，团队没有把它当 AI 问题，而是改报告逻辑、提升源头数据质量，并做了第二个“数据卫生”agent 持续检查 Azure DevOps 数据缺口并提示补全。推广上用短视频教非技术 PM 自建 agent；出现多人重复造类似 agent 后，转向推广可复用 skill。个人层面用于自动月报、用量数据分析、用 Copilot Studio 做原型替代 Figma。</p>
+
+<div class="cold"><b>冷水：</b>定性案例，宣传稿。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-microsoft-boosting-product-manager-productivity">组织与角色</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-s-sales-team-rebuilt">
-<h3 data-tts="d2e30f5c9d779a2f">Anthropic 的入站购买 agent 由工程管代码、销售直接改 prompt，每次改动可回滚</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-09-30 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-sales-team-rebuilt-inbound-with-claude-managed-agents" target="_blank">How Anthropic's sales team rebuilt inbound with Claude Managed Agents</a></div>
+<h3>Anthropic 的入站购买 agent 由工程管代码、销售直接改 prompt，每次改动可回滚</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-09-30 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-sales-team-rebuilt-inbound-with-claude-managed-agents" target="_blank">How Anthropic&#x27;s sales team rebuilt inbound with Claude Managed Agents</a></div>
+<div class="so"><b>能借鉴的：</b>可借鉴：面向客户的 agent 采用「工程拥有代码、业务 SME 直接改 prompt、staging→生产、版本可回滚」的协作模式；用「给目标不给规则」写 prompt；把每次 agent→人工的升级原因作为产品改进信号。前提：有托管 agent 平台或同等的会话/版本管理能力，以及合规可审的对外话术。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 每月数万条入站销售请求 BDR 处理不过来，于是用 Managed Agents 做了一个「购买 agent」放在 Contact Sales/定价页和产品内（客户可选择 agent 或真人）：回答价格/安全/合规问题、推荐方案和席位，直接结账、转人工（附完整对话）或简答。一名工程师几周做出初版；工程拥有代码，销售和内容负责人直接在 Console 改 system prompt，先进 staging 再上线，每次改动有版本可回滚。每次转人工都附原因，作为改进自助产品的反馈；销售代表的时间转向更早期的客户教育和线下活动。</p>
 <div class="nums"><ul><li><q>We had tens of thousands of inbound requests every month, and our inbound BDR team couldn’t keep up.</q></li><li><q>The customers it escalates to our team arrive educated and more ready to make purchase decisions: they turn into opportunities more than twice as often as leads from the old form, and close about five days faster.</q></li><li><q>One engineer built the initial buying agent on Managed Agents in just a few weeks.</q></li><li><q>We were on v7 about a week into internal testing, and we kept shipping prompt changes weekly after launch.</q></li><li><q>Those reasons shaped how we improve the experience, and the share of conversations that needed a person to help close the deal has fallen by about half.</q></li><li><q>For example, one of our inside sales reps, Ojas, used to exchange about 10 emails to close a deal; now it takes about six.</q></li><li><q>He’s been able to 2.5x his output on closed won deals since launching the Buying Agent as it allowed him to focus on highly educated and ready customers who just needed help getting across the line.</q></li></ul><span class="note">口径：「转化率 2 倍以上、快约 5 天」对比的是 agent 转介线索 vs 旧表单线索，两组存在自选择（客户自己选 agent 或真人），不是随机对照；「需人工的对话占比下降约一半」未给基数与时间窗；2.5x 为单个销售的个人产出。</span></div>
-<div class="so"><b>能借鉴的：</b>可借鉴：面向客户的 agent 采用「工程拥有代码、业务 SME 直接改 prompt、staging→生产、版本可回滚」的协作模式；用「给目标不给规则」写 prompt；把每次 agent→人工的升级原因作为产品改进信号。前提：有托管 agent 平台或同等的会话/版本管理能力，以及合规可审的对外话术。</div>
-<div class="cold"><b>冷水：</b>自家产品（Managed Agents）案例，带推广目的；转化数据有选择偏差；客户买的是 Anthropic 自己的产品，问答知识库天然齐全。</div>
+<div class="cold"><b>冷水：</b>自家产品（Managed Agents）案例，带推广目的；转化数据有选择偏差；客户买的是 Anthropic 自己的产品，问答知识库天然齐全。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-anthropic-anthropic-s-sales-team-rebuilt">组织与角色</a></p></article>
 <article class="entry-item" id="e-github-marketing-ops-as-code-automating">
-<h3 data-tts="041ac0af6f1b2e88">GitHub 市场把活动运营写成 AGENTS.md 和 Issue 流程，但定时任务因无告警静默失败了五天</h3>
+<h3>GitHub 市场把活动运营写成 AGENTS.md 和 Issue 流程，但定时任务因无告警静默失败了五天</h3>
 <div class="meta"><span class="org">GitHub</span>2026-09-11 · <a class="src" href="https://github.blog/ai-and-ml/github-copilot/marketing-ops-as-code-automating-events-from-planning-to-follow-up-on-github/" target="_blank">Marketing ops as code: Automating events from planning to follow-up on GitHub</a></div>
+<div class="so"><b>能借鉴的：</b>非工程团队可复制“运行手册→AGENTS.md/SKILL.md、Issue 作为工作单元、标签作为触发器、DRY_RUN 演练、所有变更走 PR 评审”的模式；必须给定时自动化加失败告警。前提：所用工具有 API 或 CLI。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>GitHub 日韩市场负责人把活动运营流程“代码化”：团队运行手册写成 AGENTS.md，Copilot 按手册对话式起草活动信息、命名、邀请邮件并开 Issue；Issue 表单 + 标签触发 Actions 自动建落地页、生成 UTM 链接、开跨团队请求；每天定时筛选报名者；活动后用 SKILL.md 形式的技能完成 CRM 上传和报告。护栏：全局 DRY_RUN 开关、PR 测试与代码评审、CODEOWNERS 审核新 skill、平台的密钥扫描、组织批准的模型清单。坦承一次失败：早间筛选工作流静默失败五天才被发现。</p>
 <div class="nums"><ul><li><q>And one honest failure, so you don’t repeat it: the morning screening workflow once failed silently for five days before anyone noticed the lists had gone stale.</q></li></ul><span class="note">口径：“几天的工作缩到几分钟”为定性描述，无测量。</span></div>
-<div class="so"><b>能借鉴的：</b>非工程团队可复制“运行手册→AGENTS.md/SKILL.md、Issue 作为工作单元、标签作为触发器、DRY_RUN 演练、所有变更走 PR 评审”的模式；必须给定时自动化加失败告警。前提：所用工具有 API 或 CLI。</div>
-<div class="cold"><b>冷水：</b>作者曾是工程师，门槛低于一般市场人员；个人叙述，推广 Copilot。</div>
+<div class="cold"><b>冷水：</b>作者曾是工程师，门槛低于一般市场人员；个人叙述，推广 Copilot。</div></details>
 </article>
 <article class="entry-item" id="e-meta-organizational-second-brain-building-ai">
-<h3 data-tts="f5c29144c64d46dc">Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</h3>
+<h3>Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</h3>
 <div class="meta"><span class="org">Meta</span>2026-09-02 · <a class="src" href="https://engineering.fb.com/2026/09/02/ml-applications/organizational-second-brain-ai-learns-from-experts/" target="_blank">An Organizational Second Brain: Building an AI That Learns From Experts</a></div>
+<div class="so"><b>能借鉴的：</b>法务/合规/安全评审等专家知识密集的非工程职能可照搬：把专家判断沉淀成可 diff、可评审的文本文件，用 eval + 回归集守住每次修改，让专家修正“永久生效”。前提：领域知识以文本为主、专家愿意在检查点参与。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Meta 为某个合规领域做了“组织第二大脑”agent：离线把文档提炼成 200+ 个结构化知识文件（组织立场、术语表、路由索引、门槛文件，YAML 声明依赖关系），推理方法写成可组合的“recipe”（知识与方法分离），稀疏资料走 RAG；分析过程中设检查点和歧义升级让专家把关。核心是自我改进循环：专家修正→判定是知识缺失还是方法缺陷→多 agent 生成最小编辑→独立对抗式评审 agent + 确定性 linter→盲测回放与回归测试→以 PR 形式交专家审核→把该案例加入回归集。</p>
 <div class="nums"><ul><li><q>After restructuring into recipe-driven stages, each query touches only a small, targeted subset, cutting tokens consumed per turn by around 80%.</q></li><li><q>After three development sprints spanning six weeks, the system achieved:</q></li></ul><span class="note">口径：结果多为定性（专家评价“几乎总是有用”、评估时间“从几天到几分钟”、“零回归”），无样本量；80% 是每轮 token 消耗的下降。</span></div>
-<div class="so"><b>能借鉴的：</b>法务/合规/安全评审等专家知识密集的非工程职能可照搬：把专家判断沉淀成可 diff、可评审的文本文件，用 eval + 回归集守住每次修改，让专家修正“永久生效”。前提：领域知识以文本为主、专家愿意在检查点参与。</div>
-<div class="cold"><b>冷水：</b>单一领域、六周的结果，缺乏量化细节；未说明具体合规领域。</div>
+<div class="cold"><b>冷水：</b>单一领域、六周的结果，缺乏量化细节；未说明具体合规领域。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-meta-organizational-second-brain-building-ai">Agent 运维与编排</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-employees-use-claude-tag">
-<h3 data-tts="e4aad06d55daeec9">Anthropic 法务让 Claude 初审营销物料，律师只复核标记项并审批指令更新</h3>
+<h3>Anthropic 法务让 Claude 初审营销物料，律师只复核标记项并审批指令更新</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-28 · <a class="src" href="https://claude.com/resources/articles/how-anthropic-employees-use-claude-tag" target="_blank">How Anthropic employees use Claude Tag</a></div>
+<div class="so"><b>能借鉴的：</b>可借鉴：法务/合规设「AI 初审 + 律师复核标记项」的双层流程，并用周期性回顾把律师反馈固化为 agent 指令（需人工批准更新）；让 agent 显式区分「已核实」与「自己推断」的内容；对检索汇总类任务默认加一轮「让 Claude 检查自己的工作」。前提：Slack/知识库权限按频道授权、敏感渠道可被拒绝访问。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 员工在 Slack 中 @Claude 完成跨职能工作：产品营销把 15+ 条消息的 Slack 讨论转成一页纸，并让 Claude 把论断分为「已对照公开文档核实」与「自己的表述、需产品负责人签字」；产品运营让 Claude 搜遍 Slack 汇总某功能的客户诉求、以及上周所有企业客户问题（约 120 条原始发现压缩为 23 个未解决 + 14 个已解决，再自查又补出 15 个）。法务：所有营销物料先进一个专用 Slack 频道由 Claude 初审（无依据的营销声明、事实核对），剩余问题再 @ 对应产品律师；律师让 Claude 每周五回顾律师反馈并提议更新共享指令，经她批准后生效。</p>
 <div class="nums"><ul><li><q>During a recent feature launch, a sales rep asked for non-technical collateral that explains how the feature works to customers and prospects; Hema Thanki, on the product marketing team, turned the Slack thread that followed into a review-ready document in 45 minutes.</q></li><li><q>The consolidated list came back in about 26 minutes and included roughly 24 accounts, with one line per requester containing their Slack handle, team, account, and a link to the original ask.</q></li><li><q>She told Claude to read all Slack channels covering incident, escalation, support, and product-feedback, and roughly 50 minutes later Claude posted a write-up, organized by product area, that included 23 issues that were still open and 14 resolved ones, condensed from about 120 raw findings.</q></li><li><q>Steph then asked Claude to check its work, and it surfaced 15 more issues.</q></li><li><q>Molly Villagra, a product counsel on the legal team, created a dedicated Slack channel where Claude Tag examines every marketing asset first, compressing marketing legal review turnaround time from a day (or longer) to 30 minutes per asset.</q></li></ul><span class="note">口径：全部是单任务个人经历（文末明确声明 turnaround times 为个体经验、结果因任务而异）。「自查又找出 15 个问题」反过来说明首轮漏检率不低（首轮 37 个 vs 补充 15 个）。法务 1 天 → 30 分钟是每件物料的周转时间，未说明律师最终改动率或漏审。</span></div>
-<div class="so"><b>能借鉴的：</b>可借鉴：法务/合规设「AI 初审 + 律师复核标记项」的双层流程，并用周期性回顾把律师反馈固化为 agent 指令（需人工批准更新）；让 agent 显式区分「已核实」与「自己推断」的内容；对检索汇总类任务默认加一轮「让 Claude 检查自己的工作」。前提：Slack/知识库权限按频道授权、敏感渠道可被拒绝访问。</div>
-<div class="cold"><b>冷水：</b>产品推广文（Claude Tag 公测期），示意图为生成内容；个案挑选；未给错误/漏审数据。</div>
+<div class="cold"><b>冷水：</b>产品推广文（Claude Tag 公测期），示意图为生成内容；个案挑选；未给错误/漏审数据。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-anthropic-employees-use-claude-tag">质量与安全</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-field-marketer-uses-claude">
-<h3 data-tts="03b22536459dc36d">Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</h3>
+<h3>Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-24 · <a class="src" href="https://claude.com/resources/articles/how-an-anthropic-field-marketer-uses-claude-code-to-send-weekly-personalized-updates-to-every-sales-rep" target="_blank">How an Anthropic field marketer uses Claude Code to send weekly personalized updates to every sales rep</a></div>
+<div class="so"><b>能借鉴的：</b>可直接借鉴的推广方法：用内部 hackathon 给非工程团队留出改造时间；小规模承诺型试点；把每条用户反馈固化为显式规则（尤其是防编造的硬约束）；prompt 版本化并在多人维护时迁入 Git。注意作者后来取消了发送前审批，非 lab 组织应先评估错误外发的代价。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 市场团队在一次内部「营销 hackathon」中，用 Claude Code + BigQuery MCP 把每周一的销售站会 PPT 改成每个 AE 定制的 Slack 周报（按其 CRM 辖区匹配活动/内容/已报名联系人）。先在 10 人销售小组试点，每条反馈都写成 prompt 中的显式规则（如 Claude 曾为缺失链接的活动编造 URL → 硬规则「绝不编造 URL」，链接必须逐字来自源表），第一周结束时已有 9 条规则；每次运行先读表头校验列映射以应对源表结构变动。之后推广到全部销售、BDR（两天上线）、客户成功与联盟团队，prompt 版本化后迁到 GitHub。</p>
 <div class="nums"><ul><li><q>Sending to a group of 10 people felt less daunting in case errors came up, and the group was committed to providing feedback.</q></li><li><q>By the end of the first week, the prompt held nine content rules, each traced to a piece of feedback from a seller or a manager.</q></li><li><q>The field events sheet, for example, has had its columns rearranged three times in six weeks.</q></li><li><q>The digest is working; we recently doubled registrations for an executive dinner in a week, purely because the right reps had the right event in front of them on Monday morning.</q></li><li><q>The prompt structure and content rules carried over unchanged, and the BDRs were live within two days.</q></li></ul><span class="note">口径：「晚宴报名翻倍」是单次活动的前后对比，无对照、归因为作者推断；其余为过程性计数。</span></div>
-<div class="so"><b>能借鉴的：</b>可直接借鉴的推广方法：用内部 hackathon 给非工程团队留出改造时间；小规模承诺型试点；把每条用户反馈固化为显式规则（尤其是防编造的硬约束）；prompt 版本化并在多人维护时迁入 Git。注意作者后来取消了发送前审批，非 lab 组织应先评估错误外发的代价。</div>
-<div class="cold"><b>冷水：</b>员工自述+产品推广；截图为合成数据；效果指标为单次轶事。</div>
+<div class="cold"><b>冷水：</b>员工自述+产品推广；截图为合成数据；效果指标为单次轶事。</div></details>
 <p class="also">也见 <a href="adoption-playbook-topic4.html#e-anthropic-anthropic-field-marketer-uses-claude">推广打法</a></p></article>
 <article class="entry-item" id="e-anthropic-self-service-data-analytics-slack">
-<h3 data-tts="2e6496d5b8099c7c">Anthropic 把数据 agent 放进 Slack 前，先定好只读治理层、PII 列级屏蔽和「进哪个频道即授权」</h3>
+<h3>Anthropic 把数据 agent 放进 Slack 前，先定好只读治理层、PII 列级屏蔽和「进哪个频道即授权」</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-13 · <a class="src" href="https://claude.com/resources/articles/self-service-data-analytics-in-slack-how-anthropic-deploys-claude-tag-for-ad-hoc-questions" target="_blank">Self-service data analytics in Slack: how Anthropic deploys Claude Tag for ad-hoc questions</a></div>
+<div class="so"><b>能借鉴的：</b>在 Slack/IM 中部署数据 agent 的顺序可直接照搬：先定服务账号权限（只读治理层、PII 列级屏蔽、频道成员资格即授权），再保证 skill 分发的新鲜度，第一天就记录结构化遥测，再接知识索引，最后按真实问题补分析类 skill。前提是已有语义层/数据目录与列级权限控制。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 数据团队把分析 agent 通过 Claude Tag 部署到 Slack，全公司都可提问。要点：运行时挂载数据仓库的 skills/ 目录、每次对话重读，保证 skill 与数据模型同步；除「查哪张表」的知识 skill 外，还挂预测、留存、漏斗、作图、分析写作等 runbook skill，并接入公司内部知识索引来解释指标波动。权限：服务账号只能读治理层数据、PII 列级分类后对服务账号不可见、Claude 加入哪个频道由数据团队掌握（视同授权）、每条查询打上请求人/会话标签用于审计。每个回答记录结构化事件（skill 版本、👍/👎、纠正、数据质量告警），追踪「走治理层的查询占比」与纠错率；还用定时 loop 做站会前读数、实验监控、管道故障排查与提问分诊。</p>
 <div class="nums"><ul><li><q>In one of our data channels over the last month, Claude Tag answered more than 75% of questions people posted, typically within a minute or two, even without being called.</q></li></ul><span class="note">口径：75% 的分母是某一个数据频道一个月内发布的问题数，未说明回答的正确率；文中准确率（~95%）引用自前一篇的离线 eval。</span></div>
-<div class="so"><b>能借鉴的：</b>在 Slack/IM 中部署数据 agent 的顺序可直接照搬：先定服务账号权限（只读治理层、PII 列级屏蔽、频道成员资格即授权），再保证 skill 分发的新鲜度，第一天就记录结构化遥测，再接知识索引，最后按真实问题补分析类 skill。前提是已有语义层/数据目录与列级权限控制。</div>
-<div class="cold"><b>冷水：</b>自家产品推广（Claude Tag 公测）；示意对话为虚构重现；仅一个频道的覆盖率数据，无线上准确率。</div>
+<div class="cold"><b>冷水：</b>自家产品推广（Claude Tag 公测）；示意对话为虚构重现；仅一个频道的覆盖率数据，无线上准确率。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-self-service-data-analytics-slack">质量与安全</a></p></article>
 <article class="entry-item" id="e-openai-building-ai-native-finance-function">
-<h3 data-tts="6641525bc72eb9bf">OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</h3>
+<h3>OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-08-10 · <a class="src" href="https://openai.com/index/building-an-ai-native-finance-function/" target="_blank">What building an AI-native finance function taught me</a></div>
+<div class="so"><b>能借鉴的：</b>可迁移：黑客松让一线带问题来、技术人员陪跑；从一个高价值决策倒推流程；评估 AI 价值时把审核与返工成本计入；“tokenmaxxing 已过时”，用预算/路由/审批阈值像管理可变费用一样管 AI 支出。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>OpenAI CFO 讲财务部门的 AI 化：目标是“零日关账”和自动化持续预测。做法包括：全员开放访问 + 拉销售工程师办财务黑客松（产出投资者关系用的 IR-GPT、采购和税务 GPT）；从关键决策倒推重构流程；财务人员用 ChatGPT Work 和 Codex 自建看板和工具（一位从未写过代码的同事做了广告预测拆解工具）；AI 出初稿、人负责签字，配合用量上限/预算/权限等控制；按“每单位智能的价值”衡量（是否完成重要工作、含审核返工的成本、结果是否可用、是否更快更好决策）。</p>
 <div class="nums"><ul><li><q>Recent [OpenAI research] shows that 40% of finance professionals’ specialized AI use involves work outside traditional finance, and 22% involves engineering-related tasks.</q></li></ul><span class="note">口径：40%/22% 引自 OpenAI 的用户研究，分母是财务从业者的“专业化 AI 使用”，不是 OpenAI 内部财务团队；文中没有内部财务团队的量化结果（关账天数、预测准确率等）。</span></div>
-<div class="so"><b>能借鉴的：</b>可迁移：黑客松让一线带问题来、技术人员陪跑；从一个高价值决策倒推流程；评估 AI 价值时把审核与返工成本计入；“tokenmaxxing 已过时”，用预算/路由/审批阈值像管理可变费用一样管 AI 支出。</div>
-<div class="cold"><b>冷水：</b>CFO 署名的观点文，偏方法论，缺乏内部效果数据；“仍在建设中”的目标多于已实现结果。</div>
+<div class="cold"><b>冷水：</b>CFO 署名的观点文，偏方法论，缺乏内部效果数据；“仍在建设中”的目标多于已实现结果。</div></details>
 <p class="also">也见 <a href="adoption-playbook-topic4.html#e-openai-building-ai-native-finance-function">推广打法</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-s-business-development-team">
-<h3 data-tts="a9ef7db80c5415eb">Anthropic BDR 团队先建问答知识库再上 agent，对 CRM 的改动一律走「提议+证据+人工批准」</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-08-07 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-business-development-team-uses-claude-to-run-inbound-and-outbound-at-scale" target="_blank">How Anthropic's business development team uses Claude to run inbound and outbound at scale</a></div>
+<h3>Anthropic BDR 团队先建问答知识库再上 agent，对 CRM 的改动一律走「提议+证据+人工批准」</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-08-07 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-business-development-team-uses-claude-to-run-inbound-and-outbound-at-scale" target="_blank">How Anthropic&#x27;s business development team uses Claude to run inbound and outbound at scale</a></div>
+<div class="so"><b>能借鉴的：</b>可借鉴：先建知识库再建工作流；所有对外发送保留人工；agent 对系统记录（CRM）的修改走「提议+证据+人工批准」且记录驳回原因；skill 先个人验证再进入团队共享库。前提是 CRM、邮件、通话记录的连接器与审批机制。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic BDR 团队把入站/出站流程放进 Claude Cowork：维护一份常见问答知识库（Claude 起草并持续标记可能过期的信息），每小时运行的 inbox skill 按知识库和个人文风画像起草回信，人审改后发送；pipeline 扫描 skill 对照 Gmail/Gong 提议 Salesforce 阶段更新、等人批准，被驳回时记录原因；夜间 skill 研究整本账户并给出简报/评分/外呼打法；用 Gong 转写按 discovery playbook 打分做通话辅导。常用 skill 经验证后才提升进团队共享 plugin。</p>
 <div class="nums"><ul><li><q>I would spend around 5 hours per day manually responding to inbound interest from prospects, often answering the same or similar questions about our products, on top of managing my own book of business.</q></li><li><q>On average, I work upwards of a hundred accounts at any given time.</q></li></ul><span class="note">口径：5 小时/天是使用前的个人估计，文中没有给出使用后的对比数字；无团队级指标。</span></div>
-<div class="so"><b>能借鉴的：</b>可借鉴：先建知识库再建工作流；所有对外发送保留人工；agent 对系统记录（CRM）的修改走「提议+证据+人工批准」且记录驳回原因；skill 先个人验证再进入团队共享库。前提是 CRM、邮件、通话记录的连接器与审批机制。</div>
-<div class="cold"><b>冷水：</b>员工自述+产品推广（导流 webinar）；截图为合成数据；无效果量化，属于流程描述。</div>
+<div class="cold"><b>冷水：</b>员工自述+产品推广（导流 webinar）；截图为合成数据；无效果量化，属于流程描述。</div></details>
 </article>
 <article class="entry-item" id="e-github-github-legal-team-used-copilot">
-<h3 data-tts="093eb969fbce36d2">GitHub 法务团队的非工程师把方法论和写作规范写成仓库里的纯文本指令，自建了合同起草工具</h3>
+<h3>GitHub 法务团队的非工程师把方法论和写作规范写成仓库里的纯文本指令，自建了合同起草工具</h3>
 <div class="meta"><span class="org">GitHub</span>2026-08-04 · <a class="src" href="https://github.blog/ai-and-ml/github-copilot/how-the-github-legal-team-used-copilot-cli-to-streamline-their-workflows/" target="_blank">How the GitHub legal team used Copilot CLI to streamline their workflows</a></div>
+<div class="so"><b>能借鉴的：</b>非工程部门的落地路径：把方法论、标准、输出格式写成仓库里的纯文本 skill/指令，用版本控制管理，敏感资料放在访问受控环境；从一个窄问题（如某类通知分诊）起步再扩展。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>GitHub 法务团队（律师、项目经理、业务人员，非工程师）用 Copilot CLI 自建工具：一位产品法律顾问把指令、平实语言写作风格指南、既往协议库放进仓库，做成合同起草工具 terms-ai；另一位把 DMCA 通知的代码比对、许可证检查等流程写成纯文本指令集和模板，后来发展成桌面应用，覆盖合同审查、NDA 分诊、风险评估等，行为仍由可读的 Markdown 控制，强调人工审阅为中心。</p>
 <div class="nums"><ul><li><q>Since I began using terms-ai, I’ve cut my review and drafting time roughly in half.</q></li></ul><span class="note">口径：“时间约减半”是单人自述，无测量。</span></div>
-<div class="so"><b>能借鉴的：</b>非工程部门的落地路径：把方法论、标准、输出格式写成仓库里的纯文本 skill/指令，用版本控制管理，敏感资料放在访问受控环境；从一个窄问题（如某类通知分诊）起步再扩展。</div>
-<div class="cold"><b>冷水：</b>产品推广文，个人叙述；GitHub 员工对工具熟悉度高于一般法务团队。</div>
+<div class="cold"><b>冷水：</b>产品推广文，个人叙述；GitHub 员工对工具熟悉度高于一般法务团队。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-product-designer-who-built-claude">
-<h3 data-tts="5e7ba9c89b7db4ae">Anthropic 工程被 agent 提速后设计成了瓶颈，设计师改用 HTML 原型把工作重心前移到构思与对齐</h3>
+<h3>Anthropic 工程被 agent 提速后设计成了瓶颈，设计师改用 HTML 原型把工作重心前移到构思与对齐</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-07-24 · <a class="src" href="https://claude.com/resources/articles/how-the-product-designer-who-built-claude-design-uses-it-to-explore-ideas-before-building-them" target="_blank">How the product designer who built Claude Design uses it to explore ideas before building them</a></div>
-<p>Anthropic 产品设计师描述角色转变：2025 年秋他是 Claude Code for VS Code 唯一的设计师，配合两名工程师；工程师因 agent 编码交付速度大增，设计成为瓶颈。他让 Claude 以 HTML 输出设计并把 Anthropic 品牌规范（字体、颜色、素材、原则）写进 prompt，做成内部原型后被其他设计师用于交互原型，团队 offsite 上人人用它当场做 slides，进而被立项为 Claude Design。日常用法：生成 15 个版本的流程收集反馈、为自己做定制的视频编辑器再做动画；建议先想清楚再提示、要 10 个方案再混合、最后一公里手动改，并认为模型写生产代码越强，工作重心越前移到想法、对齐和早期反馈。</p>
 <div class="so"><b>能借鉴的：</b>对 TLM 的启示：工程提速后设计/产品会成为新瓶颈，需要给设计师可直接产出可交互 HTML 原型的工具，并把品牌/设计系统编码为 AI 可用的上下文；评审重心转向早期构思与对齐。前提是有可被 AI 使用的设计系统资产。</div>
-<div class="cold"><b>冷水：</b>产品创造者自述并推广自家产品（Claude Design beta）；个人经验，无对比数据。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
+<p>Anthropic 产品设计师描述角色转变：2025 年秋他是 Claude Code for VS Code 唯一的设计师，配合两名工程师；工程师因 agent 编码交付速度大增，设计成为瓶颈。他让 Claude 以 HTML 输出设计并把 Anthropic 品牌规范（字体、颜色、素材、原则）写进 prompt，做成内部原型后被其他设计师用于交互原型，团队 offsite 上人人用它当场做 slides，进而被立项为 Claude Design。日常用法：生成 15 个版本的流程收集反馈、为自己做定制的视频编辑器再做动画；建议先想清楚再提示、要 10 个方案再混合、最后一公里手动改，并认为模型写生产代码越强，工作重心越前移到想法、对齐和早期反馈。</p>
+
+<div class="cold"><b>冷水：</b>产品创造者自述并推广自家产品（Claude Design beta）；个人经验，无对比数据。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-anthropic-product-designer-who-built-claude">组织与角色</a></p></article>
 <article class="entry-item" id="e-openai-codex-became-collaborator-openai-s">
-<h3 data-tts="535aaab9b9ef6838">OpenAI 创意团队用 Codex 一天生成 50 个广告方向，再由人筛选收敛到最强的 10 个</h3>
+<h3>OpenAI 创意团队用 Codex 一天生成 50 个广告方向，再由人筛选收敛到最强的 10 个</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-07-16 · <a class="src" href="https://openai.com/index/codex-collaborator-creative-team/" target="_blank">How Codex became a collaborator for OpenAI’s creative team</a></div>
+<div class="so"><b>能借鉴的：</b>非工程岗位可以把“给 agent 完整项目上下文 + 让它造小工具/原型”作为切入点；用 agent 扩大方案发散面，人负责收敛判断。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>“OpenAI on OpenAI”系列：创意专员用 Codex 读入草图、分镜、品牌手册等项目上下文，自建带滑块/灯光控制的定制创意工具和原型界面；一天内生成 50 个广告方向，再人工筛到 10 个最强的去提案。</p>
 <div class="nums"><ul><li><q>In just one day, Chad and Codex generated 50 campaign directions, which he then reviewed and distilled into the 10 strongest ideas.</q></li></ul><span class="note">口径：单人单次案例，对比基线是本人自述“通常 5 个、有时间可到 10 个”，无质量评估。</span></div>
-<div class="so"><b>能借鉴的：</b>非工程岗位可以把“给 agent 完整项目上下文 + 让它造小工具/原型”作为切入点；用 agent 扩大方案发散面，人负责收敛判断。</div>
-<div class="cold"><b>冷水：</b>单个员工故事，营销性质；创意岗位在实验室内部也属早期采用者。</div>
+<div class="cold"><b>冷水：</b>单个员工故事，营销性质；创意岗位在实验室内部也属早期采用者。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-anthropic-s-marketing-operations-team">
-<h3 data-tts="a6753a9cb7a8a359">Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-07-08 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-marketing-operations-team-uses-claude-cowork-to-automate-reporting-and-campaign-builds" target="_blank">How Anthropic's marketing operations team uses Claude Cowork to automate reporting and campaign builds</a></div>
+<h3>Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-07-08 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-marketing-operations-team-uses-claude-cowork-to-automate-reporting-and-campaign-builds" target="_blank">How Anthropic&#x27;s marketing operations team uses Claude Cowork to automate reporting and campaign builds</a></div>
+<div class="so"><b>能借鉴的：</b>可直接复制的 agent 编排模式：dispatcher 只路由不干活、专职 skill 可独立迭代、由无上下文的独立 agent 做端到端验收、每次会话结束把纠正写回 skill、先建「数字溯源校对」skill。前提是营销/CRM 各系统有可写连接器，并保留人工最终审核。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 市场运营团队：每周日晚定时任务让 Claude 读上周复盘、会议纪要、Slack 和数仓，周一产出指标表与建议重点，人决定叙事后再扩写；配「校对 skill」逐个数字核对可信来源，数字对不上时 Claude 报告而不猜。活动搭建改为 intake 表单 + 每小时运行的 dispatcher skill 分派给 5 个专职 skill，完成后由一个无上下文的新 agent 做审计（真实提交测试报名、查确认邮件），人最后审核；另开一个「manager」agent 复盘失败运行并把改进写回 skill。</p>
 <div class="nums"><ul><li><q>Ian Chan, on the marketing operations team at Anthropic, used to spend one to two days a week pulling together the weekly marketing metrics review.</q></li><li><q>In Ian’s case, the entire process, which used to take up to two days of work, takes up to two hours.</q></li></ul><span class="note">口径：时间节省为单人自述（2 天 → 2 小时），无测量方法；活动搭建的效果只有定性描述（质量一致性），未给错误率。</span></div>
-<div class="so"><b>能借鉴的：</b>可直接复制的 agent 编排模式：dispatcher 只路由不干活、专职 skill 可独立迭代、由无上下文的独立 agent 做端到端验收、每次会话结束把纠正写回 skill、先建「数字溯源校对」skill。前提是营销/CRM 各系统有可写连接器，并保留人工最终审核。</div>
-<div class="cold"><b>冷水：</b>员工自述+产品推广；截图为演示数据；未披露失败率或返工量；Anthropic 内部连接器与权限配置可能比一般企业更宽松。</div>
+<div class="cold"><b>冷水：</b>员工自述+产品推广；截图为演示数据；未披露失败率或返工量；Anthropic 内部连接器与权限配置可能比一般企业更宽松。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-anthropic-anthropic-s-marketing-operations-team">Agent 运维与编排</a></p></article>
 <article class="entry-item" id="e-openai-agents-are-transforming-work">
-<h3 data-tts="d08e14600423f754">OpenAI 用各部门 token 从 ChatGPT 迁到 Codex 的比例，看组织是否从问答转向委派</h3>
+<h3>OpenAI 用各部门 token 从 ChatGPT 迁到 Codex 的比例，看组织是否从问答转向委派</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-06-25 · <a class="src" href="https://openai.com/index/how-agents-are-transforming-work/" target="_blank">How agents are transforming work</a></div>
+<div class="so"><b>能借鉴的：</b>可借鉴的度量：按部门追踪“chat 工具 vs agent 工具”的用量迁移、重度用户的并行 agent 时长、非技术岗位做技术类工作的比例，用来判断组织是否从“问答”转向“委派”。前提：有统一的 AI 工具网关/日志。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>OpenAI 用内部与外部用量数据描述 agent 采纳：到 2025 年 8 月内部员工在 Codex 上的 token 不到 10%，现在各部门（包括法务、财务、招聘）都把 Codex 当主力 AI 工具；工程先迁移、非技术部门 2026 年 4 月左右迁移但速度更快；重度用户一天跑数十小时并行 agent；非技术员工用 Codex 做自动化、数据处理、工具搭建等“职责外”的技术工作，业务职能里超过四分之一的 Codex 工作属于工程/编码。</p>
 <div class="nums"><ul><li><q>Through August 2025, the average OpenAI worker spent less than 10% of their tokens on Codex.</q></li><li><q>For the average OpenAI worker, Codex usage now accounts for more than 85% of output tokens.</q></li><li><q>Since Codex users tend to use more tokens than non-users, its share of overall tokens is even higher: Codex accounts for 99.8% of weekly output tokens generated within OpenAI.</q></li><li><q>By June 2026, users at the 99th percentile regularly generated more than 60 hours of Codex agent turns per day, distributed across multiple, parallel agents.</q></li><li><q>Today, the average engineer generates 99% of their output tokens with Codex rather than ChatGPT.</q></li><li><q>The average lawyer or recruiter at OpenAI now generates more than 85% of their output tokens on Codex.</q></li><li><q>Research saw the biggest jump: by June 2026, median use was 56 times higher than in November 2025.</q></li><li><q>Customer Support rose 32 times and Engineering rose 27 times, while Legal grew more gradually but still reached 13 times its November level.</q></li><li><q>For instance, over one-fourth of work done with Codex by workers in business functions was engineering or coding.</q></li></ul><span class="note">口径：所有份额都是“输出 token 占比”，衡量的是工具选择和用量，不是产出或效率；部门倍数是“活跃内部用户合计输出 token 的中位数变化”。部门由推断得到（inferred occupations）。外部用户的数据（长任务占比等）不属于内部数据，未列入。</span></div>
-<div class="so"><b>能借鉴的：</b>可借鉴的度量：按部门追踪“chat 工具 vs agent 工具”的用量迁移、重度用户的并行 agent 时长、非技术岗位做技术类工作的比例，用来判断组织是否从“问答”转向“委派”。前提：有统一的 AI 工具网关/日志。</div>
-<div class="cold"><b>冷水：</b>OpenAI 员工可无限制使用自家最新产品，成本几乎不是约束；token 份额容易被少数重度用户和长任务放大；带产品宣传目的。</div>
+<div class="cold"><b>冷水：</b>OpenAI 员工可无限制使用自家最新产品，成本几乎不是约束；token 份额容易被少数重度用户和长任务放大；带产品宣传目的。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-openai-agents-are-transforming-work">度量与证据</a></p></article>
 <article class="entry-item" id="e-meta-privacy-aware-infrastructure-ai-native">
-<h3 data-tts="8a8ea02ae361082f">Meta 隐私分类确定性优先：LLM 只处理新颖资产，稳定模式蒸馏成人审规则，评估集独立于被优化系统</h3>
+<h3>Meta 隐私分类确定性优先：LLM 只处理新颖资产，稳定模式蒸馏成人审规则，评估集独立于被优化系统</h3>
 <div class="meta"><span class="org">Meta</span>2026-06-25 · <a class="src" href="https://engineering.fb.com/2026/06/25/security/privacy-aware-infrastructure-in-the-ai-native-era-an-asset-classification-case-study/" target="_blank">Privacy-Aware Infrastructure in the AI-Native Era: An Asset Classification Case Study</a></div>
+<div class="so"><b>能借鉴的：</b>把 AI 用于合规/治理类判断时的稳健模式：LLM 负责探索与冷启动，稳定结论蒸馏成可审计的确定性规则；评估集必须独立于被优化的系统。前提：有人工审核的标签集和规则发布流程。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Meta 隐私基础设施用 LLM 做数据资产分类（判断字段是否个人数据等），但采取“确定性优先”：生产中大部分请求由规则处理，LLM 只处理新颖/模糊资产，再把稳定模式蒸馏成经人审批的版本化规则，逐步缩小 LLM 在生产中的作用。关键原则：上下文胜过 prompt（把代码、血缘、归属等整理成证据摘要，屏蔽会造成循环推理的字段）；评估与优化解耦（独立模型、冻结参考集、人工审核标签、回归门禁），避免“测量漂移而非进步”；每个决策带版本化 trace 可回放审计。</p>
 <div class="nums"><ul><li><q>In our production deployment, Figure 7 shows how cheap deterministic rules resolve the large majority of traffic, roughly 85%, in single-digit milliseconds.</q></li><li><q>That path is slower — on the order of seconds — and roughly 400 times the compute cost, so it is budgeted separately.</q></li></ul><span class="note">口径：85%/15% 是生产请求在规则路径与 LLM 兜底路径之间的分流比例；400 倍是两条路径的算力成本比。未给出分类准确率。</span></div>
-<div class="so"><b>能借鉴的：</b>把 AI 用于合规/治理类判断时的稳健模式：LLM 负责探索与冷启动，稳定结论蒸馏成可审计的确定性规则；评估集必须独立于被优化的系统。前提：有人工审核的标签集和规则发布流程。</div>
-<div class="cold"><b>冷水：</b>这是生产系统中的 AI 应用，而非员工工作方式；属于 Meta 的隐私合规场景。</div>
+<div class="cold"><b>冷水：</b>这是生产系统中的 AI 应用，而非员工工作方式；属于 Meta 的隐私合规场景。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-meta-privacy-aware-infrastructure-ai-native">质量与安全</a></p></article>
 <article class="entry-item" id="e-github-built-internal-data-analytics-agent">
-<h3 data-tts="a1999e6ed05eb5b8">GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</h3>
+<h3>GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</h3>
 <div class="meta"><span class="org">GitHub</span>2026-06-19 · <a class="src" href="https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/" target="_blank">How we built an internal data analytics agent</a></div>
+<div class="so"><b>能借鉴的：</b>自助数据分析 agent 的关键不是模型而是上下文层：让各数据 owner 以文档形式贡献语义和规则，并用 eval 门禁守住每次上下文变更。可显著减轻数据团队答疑负担。前提：数据仓库分层清晰、指标定义有 owner。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>GitHub 数据团队做了内部分析 agent Qubot：任何员工在 Slack、VS Code 或 Copilot CLI 用自然语言问数据仓库问题，Slack 里每个问题拉起一个云端 Copilot agent 回答，结果同时以 Markdown 报告存进 PR 便于复用。关键是联邦式“上下文层”：原始事件的 schema 由产品团队贡献、中间层的示例查询和必需过滤条件由数据团队维护、业务指标定义由数据集 owner 维护，并有一个“上下文 agent”规范化接收贡献；任何上下文或配置变更都要走离线 eval（准确率、延迟、回归）才能合并。</p>
 <div class="nums"><ul><li><q>In our experiments we found that structured and well curated context not only makes Qubot more accurate, but also three times faster at returning the right answer.</q></li><li><q>Qubot has been widely adopted at GitHub, with hundreds of enthusiastic users running thousands of queries.</q></li></ul><span class="note">口径：“快三倍”来自内部实验，未给准确率数值；“数百用户、数千查询”无时间范围；数据分析 Slack 频道提问“大幅减少”无数值。</span></div>
-<div class="so"><b>能借鉴的：</b>自助数据分析 agent 的关键不是模型而是上下文层：让各数据 owner 以文档形式贡献语义和规则，并用 eval 门禁守住每次上下文变更。可显著减轻数据团队答疑负担。前提：数据仓库分层清晰、指标定义有 owner。</div>
-<div class="cold"><b>冷水：</b>GitHub 是微软子公司，产品推广成分（Copilot 云 agent、MCP）；效果数据有限。</div>
+<div class="cold"><b>冷水：</b>GitHub 是微软子公司，产品推广成分（Copilot 云 agent、MCP）；效果数据有限。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-github-built-internal-data-analytics-agent">Agent 运维与编排</a></p></article>
 <article class="entry-item" id="e-anthropic-one-anthropic-seller-rebuilt-his">
-<h3 data-tts="11ac899ade72b19c">Anthropic 一名零代码销售自建工具被全组采用，他的岗位随之变成业务内嵌的 GTM 架构师</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-06-05 · <a class="src" href="https://claude.com/resources/articles/how-anthropic-uses-claude-gtm-engineering" target="_blank">How one Anthropic seller rebuilt his team's workflows with Claude Code</a></div>
+<h3>Anthropic 一名零代码销售自建工具被全组采用，他的岗位随之变成业务内嵌的 GTM 架构师</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-06-05 · <a class="src" href="https://claude.com/resources/articles/how-anthropic-uses-claude-gtm-engineering" target="_blank">How one Anthropic seller rebuilt his team&#x27;s workflows with Claude Code</a></div>
+<div class="so"><b>能借鉴的：</b>可借鉴的组织模式：在业务团队里设「业务内嵌的 AI 工具 PM/架构师」角色，让一线痛点直接变成 Claude 构建的工具，并以 plugin 统一分发、作为新人 onboarding 默认配置。前提是有对 CRM/邮件等系统的受控连接器，以及工程团队对「业务人员写的工具」做安全与维护兜底。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>一名零编程背景的 Anthropic 销售用 Claude Code 写出 Gmail 内的自动回信草稿工具 CLAFTS（约 4,300 行代码几乎全由 Claude 写），在 Slack 分享后 24 小时内被销售组织其他人采用；他的角色随之转为 GTM 产品经理/GTM Architect，专门发现销售流程问题并用 Claude 构建方案。工具以 skills + MCP 连接器打包为 Cowork 的 Sales plugin，新人入职第一天即可装上 20 多个连到 Salesforce、Gong、BigQuery 等的 skill。</p>
 <div class="nums"><ul><li><q>It took multiple iterations, but eventually Jared estimates CLAFTS was saving him two to three hours a day.</q></li><li><q>CLAFTS is built on roughly 4,300 lines of code, almost all of it written by Claude Code.</q></li><li><q>While CLAFTS saves Jared 10-15 hours per week, the shift he cares about most is the accuracy of the work.</q></li><li><q>Within months of launching the Sales plugin, roughly 80 percent of Anthropic’s sales org was using it.</q></li><li><q>Now a new hire can install it on day one and have 20-plus skills already wired into the tools they use: Salesforce, Intercom, Gong, Google Calendar, Gmail, Google Drive, and BigQuery.</q></li><li><q>/customer-context pulls a 360-degree account view across all those sources in about 90 seconds.</q></li></ul><span class="note">口径：节省时间为个人估计（文中前后为「每天 2–3 小时」与「每周 10–15 小时」两种口径）；80% 采用率的分母是 Anthropic 销售组织人数，但「using」的定义（装了还是活跃使用）和时间点未说明。</span></div>
-<div class="so"><b>能借鉴的：</b>可借鉴的组织模式：在业务团队里设「业务内嵌的 AI 工具 PM/架构师」角色，让一线痛点直接变成 Claude 构建的工具，并以 plugin 统一分发、作为新人 onboarding 默认配置。前提是有对 CRM/邮件等系统的受控连接器，以及工程团队对「业务人员写的工具」做安全与维护兜底。</div>
-<div class="cold"><b>冷水：</b>员工故事+产品营销（属于 "How Anthropic uses Claude" 系列）；成功个案存在幸存者偏差；Anthropic 产品文档每 1–2 天更新、员工天然熟悉 Claude，场景比一般企业更有利。</div>
+<div class="cold"><b>冷水：</b>员工故事+产品营销（属于 "How Anthropic uses Claude" 系列）；成功个案存在幸存者偏差；Anthropic 产品文档每 1–2 天更新、员工天然熟悉 Claude，场景比一般企业更有利。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-anthropic-one-anthropic-seller-rebuilt-his">组织与角色</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-enables-self-service-data">
-<h3 data-tts="b725b0861c0dc8c5">Anthropic 数据团队把准确率当上下文问题：没有 skill 时 eval 准确率不超过 21%，加上后超 95%</h3>
+<h3>Anthropic 数据团队把准确率当上下文问题：没有 skill 时 eval 准确率不超过 21%，加上后超 95%</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-06-03 · <a class="src" href="https://claude.com/resources/articles/how-anthropic-enables-self-service-data-analytics-with-claude" target="_blank">How Anthropic enables self-service data analytics with Claude</a></div>
-<p>Anthropic 数据科学/数据工程团队把业务分析查询大部分交给 Claude，并把准确率当作「上下文与验证」问题而非写 SQL 问题：收敛为少量强治理的 canonical 数据集并用工具/CI/行政要求强制使用；skill 强制先走语义层，再走按域整理的参考文档；skill 文档与数据模型同仓，评审 hook 拦截未同步 skill 的报表模型改动。验证体系：离线 eval（看板问题自动生成+人工确认、长尾问题、用户纠正自动收集为候选 eval），结果按 skill 版本/git SHA/模型 ID 入仓当遥测；按业务域设上线门槛（初始约 90%）；每次 skill 改动做单变量消融；线上用对抗式复核 sub-agent、溯源脚注（来源层级/新鲜度/owner）、定时 agent 扫描频道中的纠正语言并自动开 PR 给域 owner；面向管理层的结论必须人工签字。</p>
-<div class="nums"><ul><li><q>At Anthropic, 95% of business analytics queries are automated via Claude, with ~95% accuracy in aggregate.</q></li><li><q>Without skills, Claude’s ability to answer analytics questions accurately didn’t exceed 21% on our evals.</q></li><li><q>Adding skills gets these numbers consistently above 95% in aggregate and regularly around 99% in certain domains.</q></li><li><q>We watched our offline accuracy drift from ~95% at launch to ~65% over a month before we treated this as an engineering problem.</q></li><li><q>Roughly 90% of our data-model PRs now include a skill change in the same diff.</q></li><li><q>Gate launches per domain: A domain owner can't announce the agent to their stakeholders until their slice of the eval set clears some threshold (we initially used ~90%).</q></li><li><q>Accuracy moved by less than a point in either direction.</q></li><li><q>About 80% of the time, yes.</q></li><li><q>Adversarial review: we’ve found that employing a Claude skill to aggressively challenge all underlying assumptions on a potential final answer increased accuracy by 6% within our eval set, but at the cost of 32% more tokens and 72% higher latency.</q></li></ul><span class="note">口径：「95% 查询自动化」的分母是业务分析查询（未定义统计口径与时间窗）；「~95% 准确率」是离线 eval 的汇总准确率，作者自己强调离线 eval 不代表线上表现、且静默错误仍无可靠解法。21%→95% 是有无 skill 在同一 eval 集上的对比。95%→65% 是上线后一个月未维护文档时的离线漂移。90% 是数据模型 PR 中同时改 skill 的比例。6%/32%/72% 是对抗复核的准确率/token/延迟增量。</span></div>
 <div class="so"><b>能借鉴的：</b>非常可迁移：先做少量 canonical 数据集 + 几十条离线 eval + 一个薄的路由 skill；skill/文档与数据模型同仓同 PR，CI/评审 hook 强制同步；eval 结果按版本入仓当遥测；按域设准确率门槛再开放；用户纠正自动转 PR 和 eval；回答附溯源脚注。前提是已有数据治理基础（语义层、元数据、owner），人工维护定义而非让 LLM 自动生成指标定义（文中说那样在 eval 上是净负）。</div>
-<div class="cold"><b>冷水：</b>自述的准确率基于自建 eval，覆盖度未知；Anthropic 内部数据规模与业务复杂度和一般企业不同；文章同时推广 Claude Code/skills。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
+<p>Anthropic 数据科学/数据工程团队把业务分析查询大部分交给 Claude，并把准确率当作「上下文与验证」问题而非写 SQL 问题：收敛为少量强治理的 canonical 数据集并用工具/CI/行政要求强制使用；skill 强制先走语义层，再走按域整理的参考文档；skill 文档与数据模型同仓，评审 hook 拦截未同步 skill 的报表模型改动。验证体系：离线 eval（看板问题自动生成+人工确认、长尾问题、用户纠正自动收集为候选 eval），结果按 skill 版本/git SHA/模型 ID 入仓当遥测；按业务域设上线门槛（初始约 90%）；每次 skill 改动做单变量消融；线上用对抗式复核 sub-agent、溯源脚注（来源层级/新鲜度/owner）、定时 agent 扫描频道中的纠正语言并自动开 PR 给域 owner；面向管理层的结论必须人工签字。</p>
+<div class="nums"><ul><li><q>At Anthropic, 95% of business analytics queries are automated via Claude, with ~95% accuracy in aggregate.</q></li><li><q>Without skills, Claude’s ability to answer analytics questions accurately didn’t exceed 21% on our evals.</q></li><li><q>Adding skills gets these numbers consistently above 95% in aggregate and regularly around 99% in certain domains.</q></li><li><q>We watched our offline accuracy drift from ~95% at launch to ~65% over a month before we treated this as an engineering problem.</q></li><li><q>Roughly 90% of our data-model PRs now include a skill change in the same diff.</q></li><li><q>Gate launches per domain: A domain owner can&#x27;t announce the agent to their stakeholders until their slice of the eval set clears some threshold (we initially used ~90%).</q></li><li><q>Accuracy moved by less than a point in either direction.</q></li><li><q>About 80% of the time, yes.</q></li><li><q>Adversarial review: we’ve found that employing a Claude skill to aggressively challenge all underlying assumptions on a potential final answer increased accuracy by 6% within our eval set, but at the cost of 32% more tokens and 72% higher latency.</q></li></ul><span class="note">口径：「95% 查询自动化」的分母是业务分析查询（未定义统计口径与时间窗）；「~95% 准确率」是离线 eval 的汇总准确率，作者自己强调离线 eval 不代表线上表现、且静默错误仍无可靠解法。21%→95% 是有无 skill 在同一 eval 集上的对比。95%→65% 是上线后一个月未维护文档时的离线漂移。90% 是数据模型 PR 中同时改 skill 的比例。6%/32%/72% 是对抗复核的准确率/token/延迟增量。</span></div>
+<div class="cold"><b>冷水：</b>自述的准确率基于自建 eval，覆盖度未知；Anthropic 内部数据规模与业务复杂度和一般企业不同；文章同时推广 Claude Code/skills。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-anthropic-enables-self-service-data">质量与安全</a></p></article>
 <article class="entry-item" id="e-anthropic-best-practices-getting-started-claude">
-<h3 data-tts="78f314252a931a7d">Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</h3>
+<h3>Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-06-03 · <a class="src" href="https://claude.com/resources/articles/best-practices-for-getting-started-with-claude-cowork" target="_blank">Best practices for getting started with Claude Cowork</a></div>
+<div class="so"><b>能借鉴的：</b>「五要素」清单可直接用于在非工程团队中挑选首批 agent 化的任务；定时任务+连接器替代手工导出/粘贴是低风险起点。前提是广告/分析平台有可用连接器，且审核要求允许 agent 读取邮件与 Slack。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 增长营销负责人分享非技术岗如何使用 agent：每天早上 6 点的定时任务汇总未读邮件和关注的 Slack 频道，并标出可能影响营销的夜间产品事故；通过 Google Ads/Meta Ads 连接器做自动更新的预算消耗与进度 dashboard；每周自动从 Search Console 拉数据、按模板生成对比报告，他只补充上下文和要点。给出判断任务是否适合委托给 agent 的「五要素」清单：多个输入、产出一个文件、会重复做、你知道好结果长什么样、中间是枯燥的提取/汇编/对账/格式化环节。</p>
 <div class="nums"><ul><li><q>Within a week, I went from not knowing what a terminal was to building out Claude Code workflows that completed 30-minute tasks in 30 seconds.</q></li><li><q>Now, 90% of my work happens in Claude Cowork.</q></li><li><q>Reporting used to take me ~30 minutes a week; now it takes five and I spend them on the part that needs my judgement: filling in missing context and workshopping the callouts.</q></li></ul><span class="note">口径：均为个人自述；「90% 的工作」未定义按时间还是任务数。</span></div>
-<div class="so"><b>能借鉴的：</b>「五要素」清单可直接用于在非工程团队中挑选首批 agent 化的任务；定时任务+连接器替代手工导出/粘贴是低风险起点。前提是广告/分析平台有可用连接器，且审核要求允许 agent 读取邮件与 Slack。</div>
-<div class="cold"><b>冷水：</b>员工自述+产品与 webinar 推广；个人效率故事，不代表团队层面。</div>
+<div class="cold"><b>冷水：</b>员工自述+产品与 webinar 推广；个人效率故事，不代表团队层面。</div></details>
 <p class="also">也见 <a href="adoption-playbook-topic4.html#e-anthropic-best-practices-getting-started-claude">推广打法</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-s-finance-team-uses">
-<h3 data-tts="55057ff4d3034666">Anthropic 财务团队让 Claude 校验董事会材料里数字与叙述是否一致，叙事判断和签字仍由人负责</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-05-22 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-finance-team-uses-claude-to-shape-the-narrative-behind-the-numbers" target="_blank">How Anthropic's finance team uses Claude to shape the narrative behind the numbers</a></div>
+<h3>Anthropic 财务团队让 Claude 校验董事会材料里数字与叙述是否一致，叙事判断和签字仍由人负责</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-05-22 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-finance-team-uses-claude-to-shape-the-narrative-behind-the-numbers" target="_blank">How Anthropic&#x27;s finance team uses Claude to shape the narrative behind the numbers</a></div>
+<div class="so"><b>能借鉴的：</b>财务团队可直接借鉴「让 AI 做一致性/对账校验层、人做叙事判断」的分工：把高频复核（数字与叙述对齐、月度差异初稿）交给 agent，并为不同受众维护独立的项目上下文。前提是有可信的单一数据源，且输出仍需人工签字。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 公司财务与战略团队成员用 Claude Cowork 校验季度董事会 deck 中每个数字与叙述是否对齐单一数据源、并以董事视角挑矛盾；用 Cowork 按上月口吻起草月度差异分析初稿，用 Claude for Excel 跨 tab 追查模型问题；不同受众用不同 project 与 memory。CFO 组织其他团队：分析师自建预测 dashboard、每天 7 点自动推送营收摘要到 Slack；会计做 GL/子账与银行对账初稿；企业发展每天筛 3–4 个并购标的；税务/资金问题带原始出处回答。</p>
 <div class="nums"><ul><li><q>Alice Fong, on the corporate finance and strategy team at Anthropic, shares how she uses Claude to maintain a single coherent financial narrative for the CFO and board, and free up 10 to 20 hours a week for higher-impact work.</q></li><li><q>Corporate development and IR: Screening reports for three to four acquisition targets a day, built from notes and public data, then rolled up into memos in minutes.</q></li></ul><span class="note">口径：10–20 小时/周为单人自估，无基线测量；「每天 3–4 个标的」是产出频率，未给此前对比和质量评估。</span></div>
-<div class="so"><b>能借鉴的：</b>财务团队可直接借鉴「让 AI 做一致性/对账校验层、人做叙事判断」的分工：把高频复核（数字与叙述对齐、月度差异初稿）交给 agent，并为不同受众维护独立的项目上下文。前提是有可信的单一数据源，且输出仍需人工签字。</div>
-<div class="cold"><b>冷水：</b>员工自述+产品推广（Cowork、Claude for Excel、金融 plugins）；未披露错误率或审计结论；对外披露的财务流程细节有限。</div>
+<div class="cold"><b>冷水：</b>员工自述+产品推广（Cowork、Claude for Excel、金融 plugins）；未披露错误率或审计结论；对外披露的财务流程细节有限。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-anthropic-sales-leader-uses-claude">
-<h3 data-tts="48a55ad3627e1181">Anthropic 销售负责人先小样本校准 rubric，再让 Claude 一夜给 4,000 个账户打分</h3>
+<h3>Anthropic 销售负责人先小样本校准 rubric，再让 Claude 一夜给 4,000 个账户打分</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-05-20 · <a class="src" href="https://claude.com/resources/articles/how-an-anthropic-sales-leader-uses-claude-cowork-to-run-a-4-000-account-book" target="_blank">How an Anthropic sales leader uses Claude Cowork to run a 4,000-account book</a></div>
+<div class="so"><b>能借鉴的：</b>可复用的模式：把重复的会前准备/周报变成定时运行的 skill，并把管理层要求的格式写进 skill；把「一直没人有时间做」的大型分析（账户打分、TAM）做成夜间批处理，先小样本校准 rubric 再全量跑。前提是 CRM/数仓有可被 agent 访问的连接器与权限治理。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 美国中端市场 GTM 负责人用 Claude Cowork 的定时任务 + skill 自动做每日会议室预订和客户会前简报（拉 BigQuery 消耗、Salesforce pipeline），每周五自动汇总预测报告成网页供周一预测会使用，他只补充解读。年度 4,000 个账户的倾向性打分：先和 Claude 定两套五维评分 rubric，在一个测试 territory 上调权重，再整夜批量跑出分数和理由，并生成给每个 AE 的交互式 dashboard。</p>
 <div class="nums"><ul><li><q>Most of the time I save with Claude Cowork falls into about 90 minutes of small daily wins, or micro-optimizations, that it runs for me.</q></li><li><q>The Friday forecast is the next tier up and it saves me about three hours per week.</q></li><li><q>In previous companies and roles, work like this ran for hundreds of hours across RevOps, FP&amp;A, and marketing. I did it in one night.</q></li></ul><span class="note">口径：均为单人自述的节省时间估计，无测量方法；「数百小时」是与其过往公司经验对比而非同一任务的对照；未说明评分结果准确度或对销售结果的影响。</span></div>
-<div class="so"><b>能借鉴的：</b>可复用的模式：把重复的会前准备/周报变成定时运行的 skill，并把管理层要求的格式写进 skill；把「一直没人有时间做」的大型分析（账户打分、TAM）做成夜间批处理，先小样本校准 rubric 再全量跑。前提是 CRM/数仓有可被 agent 访问的连接器与权限治理。</div>
-<div class="cold"><b>冷水：</b>员工个人自述、带产品推广目的（文末导流到 webinar 和 Sales plugin）；单一角色个案，无质量评估；Anthropic 员工对自家工具熟练度和数据接入远高于一般企业。</div>
+<div class="cold"><b>冷水：</b>员工个人自述、带产品推广目的（文末导流到 webinar 和 Sales plugin）；单一角色个案，无质量评估；Anthropic 员工对自家工具熟练度和数据接入远高于一般企业。</div></details>
 </article>
 <article class="entry-item" id="e-microsoft-copilots-coworkers-ai-agents-are">
-<h3 data-tts="6fe3095e60fc29ca">Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</h3>
+<h3>Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-05-15 · <a class="src" href="https://techcommunity.microsoft.com/blog/appsonazureblog/from-copilots-to-coworkers-how-ai-agents-are-transforming-azure-networking-opera/4519850" target="_blank">From Copilots to Coworkers: How AI Agents Are Transforming Azure Networking Operations</a></div>
+<div class="so"><b>能借鉴的：</b>对运维/SRE：先做对话式助手积累信任，再让 agent 承担跨团队、跨厂商的“协调中段”（跟进、验证、重试）；agent 必须在人已在用的渠道里工作；按风险分级的权限与人工审批点要尽早定义；用“agent 自主完成的流程比例”衡量。</div>
+<details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Azure Networking 运维从对话式 copilot 演进到自主工作流 agent：agent 被分配目标、跨数小时到数天携带上下文，在工单、遥测、Teams、邮件等员工同一渠道里协调光纤供应商和现场技术员、对照实时遥测验证修复、失败时反馈重试，只在高风险/不可逆操作和歧义时升级给人。agent 以“agent 组织”管理：内部控制平面定义身份、角色、技能、策略与审计，权限按 agent 类别和风险分级。</p>
 <div class="nums"><ul><li><q>This workflow involved roughly 14 interactions over about 9.5 hours, without a human engineer needing to actively manage each step.</q></li><li><q>**2x faster time to mitigate** on issues like fiber-repair workflows.</q></li><li><q>**Up to a 78% reduction in manual effort** by offloading operational toil to agents.</q></li><li><q>Autonomous workflow agents act similar to digital coworkers, integrating their work alongside 10,000+ employees like data center technicians, network engineers, hardware engineers, etc.</q></li></ul><span class="note">口径：“2x 更快缓解”“最多减少 78% 人工”未给基线、统计期和覆盖的事件类型（“up to”是最好情况）；14 次交互/9.5 小时是单个光纤中断案例。页面显示 May 15, 2026（另见 “Updated May 14” 字样）。</span></div>
-<div class="so"><b>能借鉴的：</b>对运维/SRE：先做对话式助手积累信任，再让 agent 承担跨团队、跨厂商的“协调中段”（跟进、验证、重试）；agent 必须在人已在用的渠道里工作；按风险分级的权限与人工审批点要尽早定义；用“agent 自主完成的流程比例”衡量。</div>
-<div class="cold"><b>冷水：</b>Customer Zero 营销系列；数据为最好情况；是运维而非软件开发场景。</div>
+<div class="cold"><b>冷水：</b>Customer Zero 营销系列；数据为最好情况；是运维而非软件开发场景。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-microsoft-copilots-coworkers-ai-agents-are">Agent 运维与编排</a></p></article>
-<section class="log"><h2 data-tts="c6372a16f4bd740e">// 本页变更</h2><ul><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-copilots-coworkers-ai-agents-are">Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-sales-leader-uses-claude">Anthropic 销售负责人先小样本校准 rubric，再让 Claude 一夜给 4,000 个账户打分</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-finance-team-uses">Anthropic 财务团队让 Claude 校验董事会材料里数字与叙述是否一致，叙事判断和签字仍由人负责</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-enables-self-service-data">Anthropic 数据团队把准确率当上下文问题：没有 skill 时 eval 准确率不超过 21%，加上后超 95%</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-best-practices-getting-started-claude">Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-one-anthropic-seller-rebuilt-his">Anthropic 一名零代码销售自建工具被全组采用，他的岗位随之变成业务内嵌的 GTM 架构师</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-built-internal-data-analytics-agent">GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-agents-are-transforming-work">OpenAI 用各部门 token 从 ChatGPT 迁到 Codex 的比例，看组织是否从问答转向委派</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-meta-privacy-aware-infrastructure-ai-native">Meta 隐私分类确定性优先：LLM 只处理新颖资产，稳定模式蒸馏成人审规则，评估集独立于被优化系统</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-codex-became-collaborator-openai-s">OpenAI 创意团队用 Codex 一天生成 50 个广告方向，再由人筛选收敛到最强的 10 个</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-product-designer-who-built-claude">Anthropic 工程被 agent 提速后设计成了瓶颈，设计师改用 HTML 原型把工作重心前移到构思与对齐</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-github-legal-team-used-copilot">GitHub 法务团队的非工程师把方法论和写作规范写成仓库里的纯文本指令，自建了合同起草工具</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-business-development-team">Anthropic BDR 团队先建问答知识库再上 agent，对 CRM 的改动一律走「提议+证据+人工批准」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-building-ai-native-finance-function">OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-self-service-data-analytics-slack">Anthropic 把数据 agent 放进 Slack 前，先定好只读治理层、PII 列级屏蔽和「进哪个频道即授权」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-employees-use-claude-tag">Anthropic 法务让 Claude 初审营销物料，律师只复核标记项并审批指令更新</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-meta-organizational-second-brain-building-ai">Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-marketing-ops-as-code-automating">GitHub 市场把活动运营写成 AGENTS.md 和 Issue 流程，但定时任务因无告警静默失败了五天</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-sales-team-rebuilt">Anthropic 的入站购买 agent 由工程管代码、销售直接改 prompt，每次改动可回滚</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-boosting-product-manager-productivity">微软 PM 团队遇到 AI 报告不准时先修源数据，发现大家重复造 agent 后转为推广可复用 skill</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-bdr-japan-runs-his">Anthropic 日本 BDR 把日常工作拆给 5 个单职责 agent，共享记忆、凭证最小授权、指令改动有版本</a>：回填：过去半年</li></ul></section>
+</div>
+<section class="log narrow"><h2>// 本页变更</h2><ul><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-copilots-coworkers-ai-agents-are">Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-sales-leader-uses-claude">Anthropic 销售负责人先小样本校准 rubric，再让 Claude 一夜给 4,000 个账户打分</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-finance-team-uses">Anthropic 财务团队让 Claude 校验董事会材料里数字与叙述是否一致，叙事判断和签字仍由人负责</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-enables-self-service-data">Anthropic 数据团队把准确率当上下文问题：没有 skill 时 eval 准确率不超过 21%，加上后超 95%</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-best-practices-getting-started-claude">Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-one-anthropic-seller-rebuilt-his">Anthropic 一名零代码销售自建工具被全组采用，他的岗位随之变成业务内嵌的 GTM 架构师</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-built-internal-data-analytics-agent">GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-agents-are-transforming-work">OpenAI 用各部门 token 从 ChatGPT 迁到 Codex 的比例，看组织是否从问答转向委派</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-meta-privacy-aware-infrastructure-ai-native">Meta 隐私分类确定性优先：LLM 只处理新颖资产，稳定模式蒸馏成人审规则，评估集独立于被优化系统</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-codex-became-collaborator-openai-s">OpenAI 创意团队用 Codex 一天生成 50 个广告方向，再由人筛选收敛到最强的 10 个</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-product-designer-who-built-claude">Anthropic 工程被 agent 提速后设计成了瓶颈，设计师改用 HTML 原型把工作重心前移到构思与对齐</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-github-legal-team-used-copilot">GitHub 法务团队的非工程师把方法论和写作规范写成仓库里的纯文本指令，自建了合同起草工具</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-business-development-team">Anthropic BDR 团队先建问答知识库再上 agent，对 CRM 的改动一律走「提议+证据+人工批准」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-building-ai-native-finance-function">OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-self-service-data-analytics-slack">Anthropic 把数据 agent 放进 Slack 前，先定好只读治理层、PII 列级屏蔽和「进哪个频道即授权」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-employees-use-claude-tag">Anthropic 法务让 Claude 初审营销物料，律师只复核标记项并审批指令更新</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-meta-organizational-second-brain-building-ai">Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-marketing-ops-as-code-automating">GitHub 市场把活动运营写成 AGENTS.md 和 Issue 流程，但定时任务因无告警静默失败了五天</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-sales-team-rebuilt">Anthropic 的入站购买 agent 由工程管代码、销售直接改 prompt，每次改动可回滚</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-boosting-product-manager-productivity">微软 PM 团队遇到 AI 报告不准时先修源数据，发现大家重复造 agent 后转为推广可复用 skill</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-bdr-japan-runs-his">Anthropic 日本 BDR 把日常工作拆给 5 个单职责 agent，共享记忆、凭证最小授权、指令改动有版本</a>：回填：过去半年</li></ul></section>
 <footer>BigCat · AI-native 转型笔记 · <a href="index.html">← 全部类别</a></footer>
 </div>
-<script src="https://hub.cissychen.com/comments.js" defer></script>
-<script src="https://hub.cissychen.com/search.js" defer></script>
-<script src="https://hub.cissychen.com/index-button.js" defer></script>
-<script src="https://hub.cissychen.com/i18n-tts.js" defer></script>
-<script src="https://hub.cissychen.com/lightbox.js" defer></script>
+<script>function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e){var d=e.querySelector("details");if(d)d.open=true}}addEventListener("hashchange",o);o()</script>
 </body></html>

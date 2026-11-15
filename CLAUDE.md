@@ -12,7 +12,7 @@
 
 ## 数据和页面
 
-- `data/categories.json`：类别清单（`slug`、`file`、`name`、`question`、`synthesis`、`updated`）。**类别的增删改名是 BigCat 的决定**，引擎只改 `synthesis` 和 `updated`。
+- `data/categories.json`：类别清单（`slug`、`file`、`name`/`name_en`、`question`/`question_en`、`synthesis`/`synthesis_en`、`updated`）。**类别的增删改名是 BigCat 的决定**，引擎只改 `synthesis`、`synthesis_en` 和 `updated`。
 - `data/entries.jsonl`：每行一篇来源。字段：
   - `id`（`[a-z0-9-]+`，短而可读，如 `anthropic-90pct-merged-changes`）、`url`、`date`（原帖日期）、`org`、`title`（原帖原标题）
   - `category`（必填）、`category2`（可选，确实同时属于两类才填）
@@ -24,10 +24,11 @@
   - `caveats`：厂商自报、单一团队、lab 特有条件等
   - `added`（加入本站的日期）；修改过的条目另加 `updated` 和 `update_note`
   - `commentary_url`（可选，Simon Willison 等的独立分析）
+  - **每个中文文本字段都要有对应的英文字段**：`headline_en`、`what_they_do_en`、`denominator_notes_en`（有中文版时）、`transferable_en`、`caveats_en`、`update_note_en`（有中文版时）。英文版不是逐句翻译，按英文工程备忘录的写法重写，但事实一条不增一条不减；**英文字段里不得出现任何汉字或中文标点**。
   - 文本字段里只允许 `<strong>` `<em>` `<b>` `<code>` 和站内锚点 `<a href="#e-ID">`，不写 Markdown。
 - `data/changelog.jsonl`：每次新增/修改一行 `{"date", "id", "action": "add"|"update", "note"}`，只追加。
 - `seen.tsv`：看过的 URL 账本，`date	status	url	title`，只追加。
-- **页面全部由 `python3 build.py` 从数据生成**，不要手改任何 `.html`（下次构建会覆盖）。
+- **页面全部由 `python3 build.py` 从数据生成**（中文 `{slug}-topicN.html` + 英文 `{slug}-topicN.en.html`，index 同理），不要手改任何 `.html`（下次构建会覆盖）。缺英文字段、英文页漏出汉字，`build.py` 都会直接报错。
 
 ## 0. 开工：自己跑 `bash setup.sh`
 
@@ -63,6 +64,7 @@
   - 新证据**支持**某条 → 把新条目加进引用，必要时升级证据强度。
   - 新证据**冲突** → 改写那条，写清分歧在哪，changelog 的 note 里说明。
   - 真正的新结论 → 加一条；超过 7 条就合并最相近的两条。
+  - 改 `synthesis` 的同时改 `synthesis_en`：条数、顺序、`#e-` 引用必须一一对应。证据标签英文写 `(multiple orgs)` / `(single org)` / `(vendor self-reported)`。
   - 改了 synthesis 就把该类别的 `updated` 设为今天。
 - 每个新增/修改的条目在 `changelog.jsonl` 追加一行。
 

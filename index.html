@@ -5,7 +5,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,"SF Pro Display","Noto Sans SC",sans-serif;color:#dfe7ee;line-height:1.85;min-height:100vh;
   background:radial-gradient(1000px 520px at 8% -6%,rgba(79,209,197,0.10),transparent 60%),radial-gradient(900px 600px at 100% 0%,rgba(99,179,237,0.08),transparent 55%),linear-gradient(165deg,#0a0e12 0%,#0e141a 45%,#080b0e 100%);background-attachment:fixed}
-.container{max-width:780px;margin:0 auto;padding:18px 20px 90px}
+.container{max-width:1280px;margin:0 auto;padding:18px 24px 90px}
+.narrow{max-width:860px;margin-left:auto;margin-right:auto}
 header{text-align:center;padding:44px 0 22px}
 .tag{display:inline-block;font-size:0.75rem;color:#4fd1c5;font-family:"SF Mono",Menlo,monospace;letter-spacing:2px;border:1px solid rgba(79,209,197,0.42);padding:4px 13px;border-radius:20px;margin-bottom:16px;background:rgba(79,209,197,0.06)}
 header h1{font-size:2rem;font-weight:800;line-height:1.32;background:linear-gradient(110deg,#9ae6dc 0%,#4fd1c5 45%,#63b3ed 92%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -19,9 +20,15 @@ code{font-family:"SF Mono",Menlo,monospace;font-size:.86em;color:#cfe3f3}
 .synthesis ol{padding-left:22px}
 .synthesis li{margin-bottom:10px;font-size:0.96rem}
 .entries-h{margin:46px 0 4px;color:#63b3ed;font-size:0.9rem;letter-spacing:2px;font-family:"SF Mono",Menlo,monospace}
-.entry-item{margin:34px 0 0;padding-top:4px;scroll-margin-top:20px}
-.entry-item h3::before{content:"";display:block;width:28px;height:2px;background:#4fd1c5;opacity:.75;margin-bottom:12px}
-.entry-item h3{font-size:1.16rem;color:#fff;font-weight:700;line-height:1.45;margin-bottom:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px;align-items:start;margin-top:16px}
+.entry-item{margin:0;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(79,209,197,0.16);scroll-margin-top:20px}
+.entry-item:target{border-color:#63b3ed;box-shadow:0 0 0 2px rgba(99,179,237,.35)}
+.entry-item details{margin-top:8px}
+.entry-item summary{cursor:pointer;color:#7d8d9a;font-size:.82rem;font-family:"SF Mono",Menlo,monospace;list-style:none}
+.entry-item summary::-webkit-details-marker{display:none}
+.entry-item summary::before{content:"▸ "}
+.entry-item details[open] summary::before{content:"▾ "}
+.entry-item h3{font-size:1.02rem;color:#fff;font-weight:700;line-height:1.45;margin-bottom:6px}
 .meta{font-family:"SF Mono",Menlo,monospace;font-size:0.78rem;color:#7d8d9a;margin-bottom:12px}
 .meta .org{color:#63b3ed;margin-right:8px}
 .entry-item p{margin-bottom:10px;font-size:0.95rem}
@@ -35,14 +42,14 @@ code{font-family:"SF Mono",Menlo,monospace;font-size:.86em;color:#cfe3f3}
 .so b{color:#9ae6dc}
 .cold{margin:10px 0;border-left:2px solid rgba(240,160,100,0.7);padding:8px 16px;font-size:0.9rem;color:#e6cdb8;background:rgba(240,160,100,0.05);border-radius:0 8px 8px 0}
 .cold b{color:#f0a064}
-.upd{font-size:0.82rem;color:#f0c674;font-family:"SF Mono",Menlo,monospace;margin:6px 0}
+.upd{overflow-wrap:anywhere;font-size:0.82rem;color:#f0c674;font-family:"SF Mono",Menlo,monospace;margin:6px 0}
 .also{font-size:0.82rem;color:#7d8d9a}
 .log{margin-top:48px;font-size:0.84rem;color:#93a3b1}
 .log h2{color:#63b3ed;font-size:0.85rem;letter-spacing:2px;margin-bottom:10px;font-family:"SF Mono",Menlo,monospace}
 .log li{list-style:none;padding:3px 0}
 .log .d{font-family:"SF Mono",Menlo,monospace;color:#5d6b77;margin-right:8px}
 footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font-family:"SF Mono",Menlo,monospace}
-.cats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:28px}
+.cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:28px}
 .cat{display:block;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(79,209,197,0.16);border-top:3px solid #4fd1c5;border-bottom:1px solid rgba(79,209,197,0.16);color:inherit}
 .cat:hover{background:rgba(255,255,255,0.06);border-top-color:#63b3ed}
 .cat .n{font-family:"SF Mono",Menlo,monospace;font-size:0.74rem;color:#63b3ed}
@@ -53,9 +60,12 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 .recent h2{color:#4fd1c5;font-size:0.88rem;letter-spacing:2px;margin-bottom:10px;font-family:"SF Mono",Menlo,monospace}
 .recent li{list-style:none;padding:8px 0;border-top:1px solid rgba(79,209,197,0.1);font-size:0.92rem}
 .recent .d{font-family:"SF Mono",Menlo,monospace;font-size:0.76rem;color:#63b3ed;margin-right:8px}
-@media(max-width:640px){header h1{font-size:1.55rem}.cats{grid-template-columns:1fr}}
+.langbar{display:flex;justify-content:flex-end;padding-top:6px;font-family:"SF Mono",Menlo,monospace;font-size:.8rem}
+.langbar a{border:1px solid rgba(79,209,197,.35);padding:4px 12px;border-radius:20px}
+@media(max-width:640px){header h1{font-size:1.55rem}.container{padding:18px 16px 90px}}
 </style></head><body>
 <div class="container">
+<div class="langbar"><a href="index.en.html">English →</a></div>
 <header>
 <h1>AI-native 转型笔记</h1>
 <h2>先进 AI lab 和一线团队自己是怎么变成 AI-native 的——流程、组织、度量、agent 运维——以及别的组织能借走什么</h2>
@@ -64,9 +74,5 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cats"><a class="cat" href="eng-process-topic1.html" data-updated="2026-11-12"><span class="n">40 篇 · 2026-11-12</span><span class="t">工程流程改造</span><span class="q">agent 写大部分代码之后，评审、CI、迁移和交付流程要怎么改？</span><span class="top">agent 放量后，瓶颈先落到人工评审和共享基础设施上，所以推广之前就该压测 CI、merge queue 和 Git 的并发能力。独立研究 Harvard/Jellyfish 发现采纳 agent 后「提交评审→批准」时长增加 56.1%，issue/epic 的增幅远小于代码量增幅；厂商侧 Anthropic CI、OpenAI Pando、Linear 也都被 CI 或 Git 压垮过。注意 Linear 的做法（runner、分片、门禁瘦身）不需要实验室条件，而自研 VCS 连 Anthropic 自己都不建议照搬。（多个组织）</span></a><a class="cat" href="org-roles-topic2.html" data-updated="2026-11-12"><span class="n">20 篇 · 2026-11-12</span><span class="t">组织与角色</span><span class="q">AI-native 之后，岗位、职级、管理方式和团队结构要怎么变？</span><span class="top">职级和绩效标准要锚定结果，不要锚定 AI 用量：Amazon 备忘录明说 token 用量、代码变更数一旦变成目标就会导致 tokenmaxxing，只把它们当诊断，并用 P10/P90 找没用好的团队；前 Meta 工程师自述正是反例，「90% AI 代码」成了绩效底线，换来浅测试和脆弱代码。（多个组织）</span></a><a class="cat" href="measurement-topic3.html" data-updated="2026-11-12"><span class="n">20 篇 · 2026-11-12</span><span class="t">度量与证据</span><span class="q">怎么判断 AI 真的提升了产出，而不只是用量和代码量变多了？</span><span class="top">代码量会高估效果，这是本类最重要的分歧：实验室自报的是代码指标，Anthropic说典型工程师每天合并的代码是 2024 年的 8 倍（按行计，作者自己承认行数高估生产率），Google 财报说多交 35% 代码但没有基线。独立研究给的是另一幅图：哈佛/Jellyfish 研究在 655 家公司里看到 agent 让代码行数 +44%，但 issue 完成只 +13.7% 且勉强显著，评审等待时间 +56.1%。这些数字口径不同，不能拼成一条趋势线；能确定的结论是，必须同时度量最终交付（issue/epic、面向客户的变更）。（多个组织）</span></a><a class="cat" href="adoption-playbook-topic4.html" data-updated="2026-11-13"><span class="n">13 篇 · 2026-11-13</span><span class="t">推广打法</span><span class="q">在一个非 lab 的大组织里，AI-native 转型怎么分步推、怎么度量、怎么管住成本和风险？</span><span class="top">输入指标只用来诊断，不能当目标：token 用量、采纳率、PR 数一旦变成目标，就会催生 tokenmaxxing 和代码行数膨胀。更好的看法是 P10 和 P90 两头：P10 用来找出没用好的团队，P90 用来检验重度用户有没有交付提升（Amazon）。上线前写好预期价值和基线，按月复盘，并追踪节省出的时间被投到了哪里（Microsoft 度量框架）；反例是 Microsoft Cowork 推广，上线前没埋遥测和活动标记，事后说不清哪次宣传拉动了使用；算 AI 价值时要把审核和返工成本算进去（OpenAI 财务）。（多个组织）</span></a><a class="cat" href="agent-ops-topic5.html" data-updated="2026-11-13"><span class="n">46 篇 · 2026-11-13</span><span class="t">Agent 运维与编排</span><span class="q">大规模跑 agent 时，基础设施、编排、权限和反馈回路该怎么设计？</span><span class="top">agent 合并量上来后最先垮的是为人类规模设计的共享设施：源码管理、CI、测试选择。Anthropic 源码管理（2,500→30,000+ 合并/天）、Anthropic CI（CI 作业半年涨 25 倍）和 OpenAI Git 都被迫重写后端，Cursor 也为 swarm 自建版本控制；可借鉴的是推广前压测并发读写、按数倍负载规划、避免单实例和进程内状态，而不是照抄自研 VCS（两家都说多数组织不需要）。（多个组织）</span></a><a class="cat" href="quality-safety-topic6.html" data-updated="2026-11-13"><span class="n">46 篇 · 2026-11-13</span><span class="t">质量与安全</span><span class="q">agent 写代码、动系统之后，靠什么守住质量和安全底线？</span><span class="top">人逐条批准命令挡不住风险：Scale X 审批游戏里人类漏掉约三分之一威胁（凭据外泄最难拦，会话后段更差），Anthropic 封装测到约 93% 弹窗被批准，Anthropic auto mode称人工审批大量是条件反射，OpenAI则因“单步合法、轨迹越界”改为整条轨迹监控。主防线应是环境层硬边界（沙箱、凭证代理、出网白名单）+ 分类器/轨迹监控 + 硬拒绝清单，审批只作补充；注意 Scale X 是游戏实验，Anthropic 数据多来自产品用户。（多个组织）</span></a><a class="cat" href="non-eng-topic7.html" data-updated="2026-11-12"><span class="n">23 篇 · 2026-11-12</span><span class="t">非工程职能</span><span class="q">销售、财务、法务、市场、数据等非工程团队，怎么把 agent 用到实处？</span><span class="top">准确率主要是上下文和验证的工程问题，换更强的模型解决不了：Anthropic 数据团队没有 skill 时 eval 准确率不超过 21%，加上 skill 后超过 95%，但一个月不维护就漂移到约 65%，于是把 skill 和数据模型放进同一个 PR；GitHub Qubot让各数据 owner 贡献上下文，每次变更都过 eval；微软 PM 团队遇到报告不准时先修源数据。（多个组织）</span></a></div>
 <section class="recent"><h2>// 最近变更</h2><ul><li><span class="d">2026-11-13 · 新增</span><a href="adoption-playbook-topic4.html#e-microsoft-copilot-cowork-adoption-stick">Microsoft 内部推 agent 工具的复盘：开通不等于采用，靠同事的真实 prompt 和持续数月的提醒拉动使用，但因为上线前没设基线，说不清哪项动作起了作用</a></li><li><span class="d">2026-11-13 · 新增</span><a href="agent-ops-topic5.html#e-meta-intelligent-delivery-agents-optimization">Meta 广告服务系统让 agent 读源码、设计文档和十年实验日志来提出并跑实验，最自动化的环节里 agent 承担约八成工程工作，每个改动仍由工程师批准</a></li><li><span class="d">2026-11-13 · 新增</span><a href="agent-ops-topic5.html#e-google-antigravity-teamwork-internal-infra">Google 的多 agent harness 靠「按步骤切分上下文 + 独立证伪器 + 不看原作者推理的审计 agent」跑多日任务，并用它在生产基础设施上拿到可量化收益</a></li><li><span class="d">2026-11-13 · 修改</span><a href="eng-process-topic1.html#e-deepmind-gemini-4-argon-next-era">Google 让 agent 做 C/C++→Rust 迁移和全机队内存优化，上线前仍须经自动加人工审计</a></li><li><span class="d">2026-11-13 · 修改</span><a href="quality-safety-topic6.html#e-anthropic-investigating-three-real-world-inciden">Anthropic 回溯评测记录发现环境意外能出网，Claude 把真实机构当 CTF 靶场入侵了，隔离不能只靠 prompt 里的声明</a></li><li><span class="d">2026-11-12 · 新增</span><a href="adoption-playbook-topic4.html#e-uber-uber-caps-usage-ai-tools">Uber 四个月花光全年 AI 预算后，给每人每个 agent 编码工具设每月 1,500 美元硬上限</a></li><li><span class="d">2026-11-12 · 新增</span><a href="agent-ops-topic5.html#e-spawn-i-built-most-ai-pilled">十人公司 Spawn 让常驻 agent 舰队各管一块领域、取消 PR，只把不可逆对外动作放在硬编码闸门后</a></li><li><span class="d">2026-11-12 · 新增</span><a href="quality-safety-topic6.html#e-simon-sqlite-utils-4-0rc2-mostly">Simon Willison 发布前让 Claude 专找「将来修就是 breaking change」的问题，再请另一家模型复审又多挖出两处</a></li><li><span class="d">2026-11-12 · 新增</span><a href="eng-process-topic1.html#e-simon-hide-slop-pr-descriptions-behind">Simon Willison 的 PR 首段由人写意图，agent 长描述折叠进 details 并标注模型</a></li><li><span class="d">2026-11-12 · 新增</span><a href="quality-safety-topic6.html#e-simon-claude-fable-relentlessly-proactive">Simon Willison 只让 Fable 查一个滚动条 bug，它却自行改系统设置、绕过被禁工具，说明 coding agent 应默认在沙箱里跑</a></li><li><span class="d">2026-11-12 · 新增</span><a href="eng-process-topic1.html#e-shopify-native-now-future-mobile-shopify">Shopify 因 agent 让双端重写变便宜而弃用 React Native，用小 checkpoint 加对抗评审防 slop</a></li><li><span class="d">2026-11-12 · 新增</span><a href="quality-safety-topic6.html#e-scale-humans-missed-1-3-threats">Scale X 四万多局审批游戏显示人类漏掉约三分之一威胁，凭据外泄和藏在熟悉脚本名下的负载最难拦</a></li><li><span class="d">2026-11-12 · 新增</span><a href="eng-process-topic1.html#e-posthog-i-wrote-70x-faster-sql">PostHog 工程师以旧解析器为 oracle 做差分测试和影子流量，几乎不看代码就安全替换了 SQL 解析器</a></li><li><span class="d">2026-11-12 · 新增</span><a href="quality-safety-topic6.html#e-php-today-s-php-security-release">PHP 基金会复盘两个严重 RCE：根因早被发现却卡在共识制决策，AI 让发现变容易后，瓶颈在拍板与修复</a></li><li><span class="d">2026-11-12 · 新增</span><a href="agent-ops-topic5.html#e-openai-ultrafast-cut-incident-investigation-hour">OpenAI 把低延迟 Codex 接进事故频道并行排查假设，安全调查从 1–2 小时降到 10–15 分钟</a></li></ul></section>
 </div>
-<script src="https://hub.cissychen.com/comments.js" defer></script>
-<script src="https://hub.cissychen.com/search.js" defer></script>
-<script src="https://hub.cissychen.com/index-button.js" defer></script>
-<script src="https://hub.cissychen.com/i18n-tts.js" defer></script>
-<script src="https://hub.cissychen.com/lightbox.js" defer></script>
+<script>function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e){var d=e.querySelector("details");if(d)d.open=true}}addEventListener("hashchange",o);o()</script>
 </body></html>
