@@ -117,3 +117,4 @@
 {"date": "2026-11-13", "id": "anthropic-investigating-three-real-world-inciden", "action": "update", "note": "补充事故后处置（暂停联网评测、实时监控）"}
 {"date": "2026-11-13", "id": "deepmind-gemini-4-argon-next-era", "action": "update", "note": "补充 Zircon 改写完成、内存优化超 1 PiB 估计的后续"}
 {"date": "2026-11-14", "id": "anthropic-claude-daily-maintenance-routines", "action": "add", "note": "Claude Code 团队每日维护 routine 的合并率（180/388）；工程流程 synthesis 第 3 条补上「维护 PR 约一半不合并」"}
+{"date": "2026-11-16", "id": "anthropic-claude-code-verification", "action": "add", "note": "Claude Code 团队验证流程（verify skill、规则不可被 PR 修改、闸门 observe→enforce、漏判转规则门槛）；工程流程 synthesis 第 3、5 条补引用"}
