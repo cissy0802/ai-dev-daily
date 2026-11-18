@@ -135,3 +135,31 @@ date	status	url	title
 2026-11-16	skip	https://openai.com/index/science-at-the-frontier	Science at the Frontier: How scientists use ChatGPT
 2026-11-16	skip	https://openai.com/business/customer-stories/holiday-extras-dots	At Holiday Extras, dots get to work before anyone asks
 2026-11-16	skip	https://openai.com/index/advancing-computer-use-for-healthcare-teams	Advancing computer-use agents for healthcare teams
+2026-11-17	pub	https://claude.dev/blog/chaos-loop-claude-docs-launch/	Using a "chaos loop" to harden the Claude Docs launch: 60 server errors across billions of requests
+2026-11-17	pub	https://github.blog/open-source/maintainers/maintainers-dont-need-more-ai-bug-reports-they-need-fixes/	Maintainers don’t need more AI bug reports. They need fixes.
+2026-11-17	pub	https://www.microsoft.com/insidetrack/blog/when-digital-workers-need-a-computer-how-were-using-windows-365-for-agents-at-microsoft/	When digital workers need a computer: How we’re using Windows 365 for Agents at Microsoft
+2026-11-17	skip	https://www.anthropic.com/research/coordinated-vulnerability-disclosure-timelines	Updating our coordinated vulnerability disclosure policy timelines
+2026-11-17	skip	https://www.anthropic.com/research/formal-verification	LLMs are making formal software verification feasible at a much larger scale
+2026-11-17	skip	https://www.anthropic.com/news/advancing-claude-for-financial-services	Advancing Claude for financial services
+2026-11-17	skip	https://github.blog/engineering/engineering-principles/building-the-agent-host-protocol-for-sessions-that-continue-across-devices/	Building the Agent Host Protocol for sessions that continue across devices
+2026-11-17	skip	https://www.microsoft.com/insidetrack/blog/keeping-corporate-it-software-current-how-were-modernizing-patch-management-in-microsoft-digital/	Keeping corporate IT software current: How we’re modernizing patch management in Microsoft Digital
+2026-11-17	skip	https://simonwillison.net/2026/Nov/17/external-sandboxes-for-coding-agents/	External sandboxes for coding agents
+2026-11-17	skip	https://simonwillison.net/2026/Nov/17/gpt62-astra-and-sol/	GPT‑6.2 Astra and GPT‑6.2 Sol
+2026-11-17	skip	https://complexdiscovery.com/harvard-researchers-find-ai-coding-agents-shifted-the-bottleneck-to-code-review/	Harvard researchers find AI coding agents shifted the bottleneck to code review
+2026-11-17	skip	https://newsletter.posthog.com/p/decision-models	Not Everything Needs an LLM
+2026-11-17	skip	https://runta.com/blog/introducing-frontierharness-eval-v1-1/	What is the best harness for each model?
+2026-11-17	skip	https://microsoft.ai/news/introducing-mai-code-2-and-mai-code-2-flash/	MAI Code 2 and Code 2 Flash
+2026-11-17	skip	https://starsling.dev	Launch HN: StarSling (YC P25) – Self-improving CI for agent-volume repos
+2026-11-17	skip	https://openai.com/index/introducing-gpt-6-2-astra-sol	待存档 Introducing GPT-6.2 Astra and Sol
+2026-11-17	skip	https://openai.com/index/strengthening-nato-allied-cyber-defences-ai	Strengthening NATO and allied cyber defenses with AI
+2026-11-17	skip	https://openai.com/index/introducing-chatgpt-for-sales	Introducing ChatGPT for Sales
+2026-11-17	skip	https://openai.com/index/astra-law-6-2	Astra for Law leads in legal intelligence
+2026-11-17	skip	https://openai.com/index/introducing-openai-for-chile	Introducing OpenAI for Chile
+2026-11-17	skip	https://openai.com/index/expanding-chatgpt-for-academic-researchers	Broadening access to AI for scientists
+2026-11-17	skip	https://openai.com/index/strengthening-online-child-safety	Strengthening the fight against online child sexual abuse with new tools and support
+2026-11-17	skip	https://openai.com/business/customer-stories/revolut	How Revolut raises ambition without lowering the bar
+2026-11-17	skip	https://openai.com/index/lvmh-media-division-partnership	LVMH’s Media Division announces strategic partnership with OpenAI
+2026-11-17	skip	https://openai.com/index/more-ways-to-move-care-forward-with-chatgpt-for-healthcare	More ways to move care forward with ChatGPT for Healthcare
+2026-11-17	skip	https://openai.com/index/the-kings-trust-and-openai	The King’s Trust and OpenAI launch £1m partnership
+2026-11-17	skip	https://openai.com/index/step-toward-defining-the-standard-model	A step toward defining the Standard Model on a lattice
+2026-11-17	skip	https://openai.com/index/our-new-blog-for-science	Our new blog for science
