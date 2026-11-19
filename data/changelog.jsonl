@@ -121,3 +121,4 @@
 {"date": "2026-11-17", "id": "anthropic-docs-chaos-loop-launch", "action": "add", "note": "Claude Docs 上线前两周的 chaos loop（coordinator + sub-agent 压测 staging、不变量、难撤回决策停下等人、为 agent 可读性选栈）；Agent 运维 synthesis 第 2 条补「按可撤回性划审批线」"}
 {"date": "2026-11-17", "id": "github-mdash-verified-security-reports", "action": "add", "note": "GitHub/微软 MDASH 开源安全试点：AI 分诊 + 人工逐条核验后 99 份带补丁报告、55 份已修；质量与安全 synthesis 第 6 条补「AI 发现交给人前先核验，人工核验尚难规模化」"}
 {"date": "2026-11-17", "id": "microsoft-bpo-digital-workers-cloud-pc", "action": "add", "note": "微软业务运营数字员工（先简化流程、agent 独立身份与按职能最小授权、生命周期与计费）；非工程职能 synthesis 第 6、7 条补引用"}
+{"date": "2026-11-18", "id": "meta-ads-technique-propagation-agents", "action": "add", "note": "Meta 广告技术移植 agent（先标准模板再交判断、按阶段度量召回/人工干预/自修复）；度量 synthesis 第 5 条、Agent 运维 synthesis 第 4 条补引用"}
