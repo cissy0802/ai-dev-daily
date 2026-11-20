@@ -153,8 +153,6 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 .recent h2{color:#4fd1c5;font-size:0.88rem;letter-spacing:2px;margin-bottom:10px;font-family:"SF Mono",Menlo,monospace}
 .recent li{list-style:none;padding:8px 0;border-top:1px solid rgba(79,209,197,0.1);font-size:0.92rem}
 .recent .d{font-family:"SF Mono",Menlo,monospace;font-size:0.76rem;color:#63b3ed;margin-right:8px}
-.langbar{display:flex;justify-content:flex-end;padding-top:6px;font-family:"SF Mono",Menlo,monospace;font-size:.8rem}
-.langbar a{border:1px solid rgba(79,209,197,.35);padding:4px 12px;border-radius:20px}
 @media(max-width:640px){header h1{font-size:1.55rem}.container{padding:18px 16px 90px}}
 """
 
@@ -222,7 +220,7 @@ def page(title: str, body: str, lang: str, other_href: str) -> str:
     return (f'<!DOCTYPE html>\n<html lang="{t["lang"]}"><head><meta charset="utf-8"/>'
             f'<meta content="width=device-width, initial-scale=1.0" name="viewport"/>\n'
             f"<title>{esc(title)}</title>\n<style>{CSS}</style></head><body>\n"
-            f'<div class="container">\n<div class="langbar"><a href="{other_href}">{t["other"]}</a></div>\n{body}\n</div>\n'
+            f'<div class="container">\n{body}\n</div>\n'
             '<script>function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e){var d=e.querySelector("details");if(d)d.open=true}}addEventListener("hashchange",o);o()</script>\n'
             f'</body></html>\n')
 
