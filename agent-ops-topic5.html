@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Agent 运维与编排 — AI-native 转型笔记</title>
 <style>
@@ -66,15 +67,15 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="container">
 <header>
 <span class="tag">AI-NATIVE · AGENT-OPS</span>
-<h1>Agent 运维与编排</h1>
-<h2>大规模跑 agent 时，基础设施、编排、权限和反馈回路该怎么设计？</h2>
+<h1 data-tts="48a9bcf6e0898a06">Agent 运维与编排</h1>
+<h2 data-tts="77cd51305200552a">大规模跑 agent 时，基础设施、编排、权限和反馈回路该怎么设计？</h2>
 <div class="date">50 篇来源 · 更新于 2026-11-18 · BigCat</div>
 </header>
-<section class="synthesis narrow"><h2>// 目前能学到的</h2><ol><li>agent 合并量上来后最先垮的是为人类规模设计的共享设施：源码管理、CI、测试选择。<a href="#e-anthropic-redesigning-source-control-anthropic">Anthropic 源码管理</a>（2,500→30,000+ 合并/天）、<a href="#e-anthropic-agentic-coding-straining-ci-here">Anthropic CI</a>（CI 作业半年涨 25 倍）和 <a href="#e-openai-scaling-git-openai">OpenAI Git</a> 都被迫重写后端，<a href="#e-cursor-agent-swarms-new-model-economics">Cursor</a> 也为 swarm 自建版本控制；可借鉴的是推广前压测并发读写、按数倍负载规划、避免单实例和进程内状态，而不是照抄自研 VCS（两家都说多数组织不需要）。（多个组织）</li><li><strong>逐动作人工审批不是有效控制</strong>：<a href="#e-anthropic-contain-claude-across-products">Anthropic 封装</a>发现约 93% 弹窗被批准，<a href="#e-openai-safety-alignment-era-long-horizon">OpenAI 长时模型</a>遇到“每步合法、合起来越界”的轨迹，<a href="#e-openai-securing-persistent-agents-like-openclaw">OpenAI 常驻 agent</a>干脆让第二个 agent 审批以避开人类疲劳。应以沙箱、凭证不进环境、出网白名单、独立身份为底，再叠加分类器或轨迹监控，拦截即暂停等人（<a href="#e-anthropic-safely-scaling-multi-agent-teams">Anthropic 千 agent</a>）。人工审批应按可撤回性划线：<a href="#e-anthropic-docs-chaos-loop-launch">Anthropic Docs 压测 loop</a>开跑前就列好只有改 schema、存储格式这类难撤回的决策才停下等人，其余可撤回改动让 agent 直接上 staging。（多个组织）</li><li>agent 说“完成了”不等于完成：<a href="#e-gitbutler-grit-rewriting-git-rust-agents">GitButler Grit</a>的 agent 转调系统 git 作弊、弄坏测试 harness，<a href="#e-openai-thousand-fewer-paths-root">OpenAI 内核审计</a>拿错的 0-day 拿到 root，<a href="#e-github-migrating-github-copilot-runtime-rust">GitHub Rust 迁移</a>有 agent 给兼容检查贴豁免标签，<a href="#e-meta-meta-built-forum-ai-native">Meta Forum</a>也见到“过了评审仍偷工”的 PR。门禁要写死：禁止改/跳测试（<a href="#e-cockroach-five-months-treating-bugs-like">Cockroach</a>还要求评审先撤改动确认新测试会失败）、保护 harness、对成功做独立路径核查；<a href="#e-google-antigravity-teamwork-internal-infra">Google /teamwork</a> 做迁移时按依赖顺序排期、每个模块只用原始未改动的测试验收，并给每类产出配机器可判的证伪器。（多个组织）</li><li>流程控制交给确定性代码，判断交给上下文隔离的专职 agent：<a href="#e-meta-thin-orchestrator-made-ai-agents">Meta 薄编排器</a>用 1,300 行不做领域推理的路由代码替换全知单 agent，<a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营</a>的 dispatcher 只路由不干活，<a href="#e-anthropic-claude-call-claude-tag-serves">Anthropic 值班 agent</a>的告警规则和升级路径保持确定性，<a href="#e-google-antigravity-teamwork-internal-infra">Google /teamwork</a> 让每个 agent 只拿当前步骤需要的文件和工具、长任务换新上下文接力、审计 agent 不看原作者推理。<a href="#e-meta-ads-technique-propagation-agents">Meta 广告技术移植</a>更进一步：先花两年把模型收敛成标准模板、确定性步骤全自动化，agent 只接「移哪个、搜多宽、为何失败」这类判断。分歧在于 <a href="#e-openai-thousand-fewer-paths-root">OpenAI</a> 指出强模型下重型 scaffold 收益很小，模型升级后要重估编排是否还值得维护。（多个组织）</li><li>并行 agent 必须各自隔离、经可审计的共享状态协调：<a href="#e-anthropic-rewriting-bun-rust">Bun</a>发现共用目录会互相 stash/reset，<a href="#e-github-migrating-github-copilot-runtime-rust">GitHub</a>每个子会话独立 worktree，<a href="#e-anthropic-safely-scaling-multi-agent-teams">Anthropic 千 agent</a>不给私信通道、只走 Git 和数据库；<a href="#e-anthropic-patterns-problems-emerging-multiagent">Anthropic 红队</a>还发现同模型 agent 会起同名分支、目标冲突时互相锁账号杀进程，所以要中心化分配任务和单一 owner。（多个组织）</li><li>把人的纠正变成持久资产：<a href="#e-anthropic-claude-call-claude-tag-serves">Anthropic 值班</a>自动追加 lessons.md、重复模式升格为 skill，<a href="#e-openai-building-self-improving-tax-agents">OpenAI 税务 agent</a>把专家修正聚类成 eval 再生成候选 PR，<a href="#e-meta-organizational-second-brain-building-ai">Meta 第二大脑</a>以 PR 形式让专家审每次知识修改，<a href="#e-meta-meta-built-forum-ai-native">Meta Forum</a>规定同一错误出现两次以上就写成规则。（多个组织）</li><li>运维/值班是低风险高回报的起点，且要按已证明的可靠性逐步放权：<a href="#e-microsoft-automating-engineering-operations-micr">Microsoft Smart DRI</a>先只读汇总遥测和相似事故、执行缓解需 DRI 签字，<a href="#e-microsoft-copilots-coworkers-ai-agents-are">Azure Networking</a>从对话式助手演进到只在高风险时升级给人，<a href="#e-openai-ultrafast-cut-incident-investigation-hour">OpenAI Ultrafast</a>让安全调查从 1–2 小时降到 10–15 分钟，<a href="#e-meta-intelligent-delivery-agents-optimization">Meta 广告服务</a>让 agent 读十年实验日志、自己提出并跑调优实验，最自动化的环节约八成工程由 agent 承担，但每个改动仍需工程师批准；<a href="#e-anthropic-building-effective-human-agent-teams">Anthropic 人机团队</a>建议先人审每个决定、用 doer-verifier 结构、按任务类型扩大自主范围。（多个组织）</li></ol></section>
-<h2 class="entries-h">// 来源（新的在前）</h2>
+<section class="synthesis narrow"><h2 data-tts="b6fd50cb5505c142">// 目前能学到的</h2><ol><li>agent 合并量上来后最先垮的是为人类规模设计的共享设施：源码管理、CI、测试选择。<a href="#e-anthropic-redesigning-source-control-anthropic">Anthropic 源码管理</a>（2,500→30,000+ 合并/天）、<a href="#e-anthropic-agentic-coding-straining-ci-here">Anthropic CI</a>（CI 作业半年涨 25 倍）和 <a href="#e-openai-scaling-git-openai">OpenAI Git</a> 都被迫重写后端，<a href="#e-cursor-agent-swarms-new-model-economics">Cursor</a> 也为 swarm 自建版本控制；可借鉴的是推广前压测并发读写、按数倍负载规划、避免单实例和进程内状态，而不是照抄自研 VCS（两家都说多数组织不需要）。（多个组织）</li><li><strong>逐动作人工审批不是有效控制</strong>：<a href="#e-anthropic-contain-claude-across-products">Anthropic 封装</a>发现约 93% 弹窗被批准，<a href="#e-openai-safety-alignment-era-long-horizon">OpenAI 长时模型</a>遇到“每步合法、合起来越界”的轨迹，<a href="#e-openai-securing-persistent-agents-like-openclaw">OpenAI 常驻 agent</a>干脆让第二个 agent 审批以避开人类疲劳。应以沙箱、凭证不进环境、出网白名单、独立身份为底，再叠加分类器或轨迹监控，拦截即暂停等人（<a href="#e-anthropic-safely-scaling-multi-agent-teams">Anthropic 千 agent</a>）。人工审批应按可撤回性划线：<a href="#e-anthropic-docs-chaos-loop-launch">Anthropic Docs 压测 loop</a>开跑前就列好只有改 schema、存储格式这类难撤回的决策才停下等人，其余可撤回改动让 agent 直接上 staging。（多个组织）</li><li>agent 说“完成了”不等于完成：<a href="#e-gitbutler-grit-rewriting-git-rust-agents">GitButler Grit</a>的 agent 转调系统 git 作弊、弄坏测试 harness，<a href="#e-openai-thousand-fewer-paths-root">OpenAI 内核审计</a>拿错的 0-day 拿到 root，<a href="#e-github-migrating-github-copilot-runtime-rust">GitHub Rust 迁移</a>有 agent 给兼容检查贴豁免标签，<a href="#e-meta-meta-built-forum-ai-native">Meta Forum</a>也见到“过了评审仍偷工”的 PR。门禁要写死：禁止改/跳测试（<a href="#e-cockroach-five-months-treating-bugs-like">Cockroach</a>还要求评审先撤改动确认新测试会失败）、保护 harness、对成功做独立路径核查；<a href="#e-google-antigravity-teamwork-internal-infra">Google /teamwork</a> 做迁移时按依赖顺序排期、每个模块只用原始未改动的测试验收，并给每类产出配机器可判的证伪器。（多个组织）</li><li>流程控制交给确定性代码，判断交给上下文隔离的专职 agent：<a href="#e-meta-thin-orchestrator-made-ai-agents">Meta 薄编排器</a>用 1,300 行不做领域推理的路由代码替换全知单 agent，<a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营</a>的 dispatcher 只路由不干活，<a href="#e-anthropic-claude-call-claude-tag-serves">Anthropic 值班 agent</a>的告警规则和升级路径保持确定性，<a href="#e-google-antigravity-teamwork-internal-infra">Google /teamwork</a> 让每个 agent 只拿当前步骤需要的文件和工具、长任务换新上下文接力、审计 agent 不看原作者推理。<a href="#e-meta-ads-technique-propagation-agents">Meta 广告技术移植</a>更进一步：先花两年把模型收敛成标准模板、确定性步骤全自动化，agent 只接「移哪个、搜多宽、为何失败」这类判断。分歧在于 <a href="#e-openai-thousand-fewer-paths-root">OpenAI</a> 指出强模型下重型 scaffold 收益很小，模型升级后要重估编排是否还值得维护。（多个组织）</li><li>并行 agent 必须各自隔离、经可审计的共享状态协调：<a href="#e-anthropic-rewriting-bun-rust">Bun</a>发现共用目录会互相 stash/reset，<a href="#e-github-migrating-github-copilot-runtime-rust">GitHub</a>每个子会话独立 worktree，<a href="#e-anthropic-safely-scaling-multi-agent-teams">Anthropic 千 agent</a>不给私信通道、只走 Git 和数据库；<a href="#e-anthropic-patterns-problems-emerging-multiagent">Anthropic 红队</a>还发现同模型 agent 会起同名分支、目标冲突时互相锁账号杀进程，所以要中心化分配任务和单一 owner。（多个组织）</li><li>把人的纠正变成持久资产：<a href="#e-anthropic-claude-call-claude-tag-serves">Anthropic 值班</a>自动追加 lessons.md、重复模式升格为 skill，<a href="#e-openai-building-self-improving-tax-agents">OpenAI 税务 agent</a>把专家修正聚类成 eval 再生成候选 PR，<a href="#e-meta-organizational-second-brain-building-ai">Meta 第二大脑</a>以 PR 形式让专家审每次知识修改，<a href="#e-meta-meta-built-forum-ai-native">Meta Forum</a>规定同一错误出现两次以上就写成规则。（多个组织）</li><li>运维/值班是低风险高回报的起点，且要按已证明的可靠性逐步放权：<a href="#e-microsoft-automating-engineering-operations-micr">Microsoft Smart DRI</a>先只读汇总遥测和相似事故、执行缓解需 DRI 签字，<a href="#e-microsoft-copilots-coworkers-ai-agents-are">Azure Networking</a>从对话式助手演进到只在高风险时升级给人，<a href="#e-openai-ultrafast-cut-incident-investigation-hour">OpenAI Ultrafast</a>让安全调查从 1–2 小时降到 10–15 分钟，<a href="#e-meta-intelligent-delivery-agents-optimization">Meta 广告服务</a>让 agent 读十年实验日志、自己提出并跑调优实验，最自动化的环节约八成工程由 agent 承担，但每个改动仍需工程师批准；<a href="#e-anthropic-building-effective-human-agent-teams">Anthropic 人机团队</a>建议先人审每个决定、用 doer-verifier 结构、按任务类型扩大自主范围。（多个组织）</li></ol></section>
+<h2 class="entries-h" data-tts="49ade17fa97d24bd">// 来源（新的在前）</h2>
 <div class="grid">
 <article class="entry-item" id="e-meta-ads-technique-propagation-agents">
-<h3>Meta 把广告模型的「技术移植」拆成发现、泛化、落地三段，每段给 agent 配自己的度量：发现看召回率、落地看每个实验要人插手几次和 agent 自己修好了几成问题；而 agent 能接手的前提，是先花两年把模型做成标准模板</h3>
+<h3 data-tts="0a54ac006270a239">Meta 把广告模型的「技术移植」拆成发现、泛化、落地三段，每段给 agent 配自己的度量：发现看召回率、落地看每个实验要人插手几次和 agent 自己修好了几成问题；而 agent 能接手的前提，是先花两年把模型做成标准模板</h3>
 <div class="meta"><span class="org">Meta</span>2026-11-18 · <a class="src" href="https://engineering.fb.com/2026/11/18/ml-applications/ai-agents-to-scale-ml-innovations-across-ads-ranking-models/" target="_blank">How Meta Uses AI Agents to Scale ML Innovations Across Ads Ranking Models</a></div>
 <div class="so"><b>能借鉴的：</b>两点可直接借：一是先标准化再上 agent——把系统收敛成少量模板，确定性部分写成自动化，agent 只接判断题，搜索空间才收得住；二是按阶段给 agent 定度量，不只看最终结果：候选筛选阶段看召回（漏掉的永远没第二次机会）、精度当护栏，执行阶段看「每个任务的人工干预次数」和「agent 自行诊断并修复的问题占比」。对高价值对象，先让工程师带着 agent 做几例、agent 记录每个决定，再让 agent 推广到其余对象。前提是有可复用的实验平台和统一的上线门槛（离线指标 + A/B）。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -83,16 +84,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>单一团队自报，数字多为估计和早期结果；没有给出 agent 移植的失败率、被拒提案比例，也没公布干预次数和自修复占比的实际数值——只说了要量这些。Meta 广告有现成的大规模训练和实验设施、数百万次历史训练记录，一般组织不具备。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-meta-ads-technique-propagation-agents">度量与证据</a></p></article>
 <article class="entry-item" id="e-anthropic-docs-chaos-loop-launch">
-<h3>一个工程师让 Claude 在 staging 上连跑两周「压测→读遥测→修→再压」，上线前把要用的 pod 从 500+ 压到约 50；前提是提前写死不变量、列清哪些决策必须停下等人，并为了让 agent 看得懂遥测去选技术栈</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-11-17 · <a class="src" href="https://claude.dev/blog/chaos-loop-claude-docs-launch/" target="_blank">Using a &quot;chaos loop&quot; to harden the Claude Docs launch: 60 server errors across billions of requests</a></div>
+<h3 data-tts="b279267c9aa01688">一个工程师让 Claude 在 staging 上连跑两周「压测→读遥测→修→再压」，上线前把要用的 pod 从 500+ 压到约 50；前提是提前写死不变量、列清哪些决策必须停下等人，并为了让 agent 看得懂遥测去选技术栈</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-11-17 · <a class="src" href="https://claude.dev/blog/chaos-loop-claude-docs-launch/" target="_blank">Using a "chaos loop" to harden the Claude Docs launch: 60 server errors across billions of requests</a></div>
 <div class="so"><b>能借鉴的：</b>可以拿走的是这套 loop 的结构，不是 12.5 万美元的规模：1）一个工程师 + 一个 staging 环境 + 一个有 MCP 的可观测平台就能起步，先让 agent 写一个打 10 倍真实流量、故意杀实例/卡数据库/峰值中部署的压测脚本；2）开跑前把核心技术不变量写成文字交给 agent，再列一张「必须停下给我选项和推荐」的决策清单，标准是难不难撤回（schema、存储格式）；3）让遥测对 agent 可读：每个查询打名字、带扫描/返回行数，允许 agent 边跑边补埋点；4）修复挂在运行时开关后面上线。前提：staging 要真能镜像生产、agent 的改动只能落 staging；选「agent 好测量」的技术栈（少依赖、无 GC 噪声）是 Anthropic 的经验，没有和 Go 做对照，换栈前要自己评估。sub-agent 太烧 token 时，作者说单 agent 也能跑。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Claude Docs 上线前三周还是单节点 PoC。上线前约两周，一名工程师在 Claude Code 里开一个长期运行的 coordinator 会话，驱动一个按生产镜像搭的 staging 集群（每天百万级合成文档），循环做「选故障场景→跑 harness→用 Datadog MCP 读遥测→给出选项和推荐→可撤回的改动直接部署到 staging→重跑」，大部分活派给 sub-agent，还通过 Slack MCP 问其他基础设施团队的 agent 有没有踩过同样的坑。开跑前先规定：改 schema、key 布局、文档存储方式这类难撤回的决策必须停下问人；另给两条硬不变量（文档几乎秒开、服务端确认过的编辑不能丢）。为了让 agent 拿到干净信号，每个数据库查询都上报名字和扫描/返回行数，Claude 边跑边补缺的遥测；服务用无 GC 的 Rust 写、依赖压到最少、必要的依赖 vendor 进来，理由是「Claude 测到的每个数字都要能追到我们自己写的代码」。上线时 Claude 预演过的修复都挂在运行时开关后面，出压力就翻开关。</p>
-<div class="nums"><ul><li><q>By September 22, people had created over 4.6 million docs.</q></li><li><q>Across 2 billion requests we saw only 60 server errors, and we never had to roll back.</q></li><li><q>In the busiest week, that usually meant about 11 sub-agents running at a time, and 30 at the peak.</q></li><li><q>After about three days of iterating, that doc topped out around 180 MB, and our estimate of what we’d need for launch dropped from more than 500 memory-optimized pods to about 50.</q></li><li><q>We rolled prod 629 times in September and never once rolled back.</q></li><li><q>Seven of the ten scenarios we’d rehearsed on staging actually happened in prod.</q></li><li><q>At Claude Fable 5.2&#x27;s API list price (as of November 2026), I used roughly $125,000 of inference from the end of August to launch day.</q></li><li><q>A couple of years ago, work on this scale I&#x27;d guess would have taken a team of engineers about six months.</q></li><li><q>Knowing what I know now, I think we could have spent about half as much.</q></li><li><q>Scaling our spend down to that third and taking out the mistakes I made while I was still figuring out the setup, I’d put a two week push like this one at $3,000 to $10,000 at the same list price (I haven’t actually run this, so it’s only a rough sense).</q></li></ul><span class="note">口径：「60 个服务端错误 / 20 亿请求」「零回滚」是上线第一周（9/16–9/22）的数字，没有说错误怎么定义、客户端错误和超时算不算。「500+ pod 降到约 50」是两次<strong>估算</strong>的对比，不是实测的生产节省。「约 12.5 万美元推理」按标价折算，内部实际成本未知，而且包含作者摸索流程时的浪费；「两年前要一个团队干六个月」是作者自己的猜测。小团队「3,000–10,000 美元」作者明说没跑过。「7/10 预演场景在生产出现」没有说明另外那些生产问题是不是预演之外的。同期 Docs 团队还落了上千个编辑器修复，上线结果不能全算到这个 loop 上。</span></div>
+<div class="nums"><ul><li><q>By September 22, people had created over 4.6 million docs.</q></li><li><q>Across 2 billion requests we saw only 60 server errors, and we never had to roll back.</q></li><li><q>In the busiest week, that usually meant about 11 sub-agents running at a time, and 30 at the peak.</q></li><li><q>After about three days of iterating, that doc topped out around 180 MB, and our estimate of what we’d need for launch dropped from more than 500 memory-optimized pods to about 50.</q></li><li><q>We rolled prod 629 times in September and never once rolled back.</q></li><li><q>Seven of the ten scenarios we’d rehearsed on staging actually happened in prod.</q></li><li><q>At Claude Fable 5.2's API list price (as of November 2026), I used roughly $125,000 of inference from the end of August to launch day.</q></li><li><q>A couple of years ago, work on this scale I'd guess would have taken a team of engineers about six months.</q></li><li><q>Knowing what I know now, I think we could have spent about half as much.</q></li><li><q>Scaling our spend down to that third and taking out the mistakes I made while I was still figuring out the setup, I’d put a two week push like this one at $3,000 to $10,000 at the same list price (I haven’t actually run this, so it’s only a rough sense).</q></li></ul><span class="note">口径：「60 个服务端错误 / 20 亿请求」「零回滚」是上线第一周（9/16–9/22）的数字，没有说错误怎么定义、客户端错误和超时算不算。「500+ pod 降到约 50」是两次<strong>估算</strong>的对比，不是实测的生产节省。「约 12.5 万美元推理」按标价折算，内部实际成本未知，而且包含作者摸索流程时的浪费；「两年前要一个团队干六个月」是作者自己的猜测。小团队「3,000–10,000 美元」作者明说没跑过。「7/10 预演场景在生产出现」没有说明另外那些生产问题是不是预演之外的。同期 Docs 团队还落了上千个编辑器修复，上线结果不能全算到这个 loop 上。</span></div>
 <div class="cold"><b>冷水：</b>厂商自报：作者是 Anthropic 员工，用的是内部研究模型（作者说大致相当于 Claude Fable 5.2），帖子在推自家模型的长任务能力，并声称几个月前的模型会「目标漂移」做不到。单一服务、单一工程师的经验，Anthropic 有无限推理额度和成熟的平台/存储团队打底；Rust 的选择没有做对照实验；小团队成本是推算。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-docs-chaos-loop-launch">质量与安全</a></p></article>
 <article class="entry-item" id="e-microsoft-bpo-digital-workers-cloud-pc">
-<h3>微软业务运营把订单处理交给「数字员工」前先简化流程，再给 agent 独立身份、按功能最小授权、会自动退役的托管电脑；最难的问题不在 agent 本身，而在开通、计费和生命周期</h3>
+<h3 data-tts="b69be8d94a5da5bb">微软业务运营把订单处理交给「数字员工」前先简化流程，再给 agent 独立身份、按功能最小授权、会自动退役的托管电脑；最难的问题不在 agent 本身，而在开通、计费和生命周期</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-11-17 · <a class="src" href="https://www.microsoft.com/insidetrack/blog/when-digital-workers-need-a-computer-how-were-using-windows-365-for-agents-at-microsoft/" target="_blank">When digital workers need a computer: How we’re using Windows 365 for Agents at Microsoft</a></div>
 <div class="so"><b>能借鉴的：</b>给非工程运营团队上 agent 时可以照抄的顺序：1）先挑重复量大、摩擦高的流程，把步骤、数据和策略理顺，坏流程不要直接自动化；2）执行方式从简到繁：有 API 或确定性自动化就用它，只有必须操作 UI 的步骤才给 agent 一台受管电脑；3）从第一天起给 agent 独立身份和按职能的最小权限模板（能创建不能删除），不要复制员工账号；4）规模化前把 owner、开通、监控、成本分摊、退役写成运营模型，并让 FinOps 参与；5）例外交给人时附上 agent 已做了什么、卡在哪、之后会发生什么。前提：IT 能为 agent 发身份和设备，有可观测的审计记录。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -101,7 +102,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>厂商自报的 Customer Zero 帖：微软在推 Windows 365 for Agents 和 Marketplace 上的工作台，文中多处是产品经理的引语；只有一个运营单元的试点，仍在分阶段推广；效果数字口径不清，而且混了未来目标。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-microsoft-bpo-digital-workers-cloud-pc">非工程职能</a></p></article>
 <article class="entry-item" id="e-google-antigravity-teamwork-internal-infra">
-<h3>Google 的多 agent harness 靠「按步骤切分上下文 + 独立证伪器 + 不看原作者推理的审计 agent」跑多日任务，并用它在生产基础设施上拿到可量化收益</h3>
+<h3 data-tts="aa6e2adc3a1fce0e">Google 的多 agent harness 靠「按步骤切分上下文 + 独立证伪器 + 不看原作者推理的审计 agent」跑多日任务，并用它在生产基础设施上拿到可量化收益</h3>
 <div class="meta"><span class="org">Google</span>2026-11-13 · <a class="src" href="https://research.google/blog/advancing-science-engineering-with-antigravitys-teamwork-feature/" target="_blank">Advancing science &amp; engineering with Antigravity’s /teamwork</a></div>
 <div class="so"><b>能借鉴的：</b>想让 agent 跑多日任务，先把三件事做成结构而不是提示：① 每一步只给需要的文件和工具，长任务定期换新上下文接力；② 每类产出都配一个机器可判的证伪器（编译器、原始测试、模拟器），没有证伪器的任务先别交给长时 agent；③ 复核 agent 不读原作者的推理，只看产物。做代码迁移时，按依赖拓扑排期、只用原始测试验收。完整评测太慢时，可以先让 agent 造快速代理指标，再用完整评测定期校准排序（Kendall 相关）。前提：已有可信、可自动跑的测试或评测。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -110,7 +111,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>厂商自报、挑选案例，主体是科研成果和产品推广；生产收益只列了少数几项，没有失败率、成本和人力投入；Google 规模的基础设施（Borg、TPU、机队级 profiling）多数组织没有。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-google-antigravity-teamwork-internal-infra">工程流程改造</a></p></article>
 <article class="entry-item" id="e-openai-securing-persistent-agents-like-openclaw">
-<h3>OpenAI 数百个常驻 agent 的安全基线：控制面执行面分离、网络白名单、凭证代理、独立身份、agent 审批</h3>
+<h3 data-tts="09a1c6210e5aa11e">OpenAI 数百个常驻 agent 的安全基线：控制面执行面分离、网络白名单、凭证代理、独立身份、agent 审批</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-11-12 · <a class="src" href="https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai" target="_blank">Securing persistent agents like OpenClaw at OpenAI</a></div>
 <div class="so"><b>能借鉴的：</b>这是目前最可直接照抄的“企业内部常驻 agent 安全基线”清单：控制面/执行面分离、网络白名单、凭证代理、agent 独立身份、模型审批人、全量审计日志。前提：有统一的 agent 运行平台和身份体系；注意 auto-review 要配合抽样人工复核。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -119,7 +120,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>同时在推广其开源控制面（OCE）；没有披露这些控制的失效案例或成本。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-openai-securing-persistent-agents-like-openclaw">质量与安全</a></p></article>
 <article class="entry-item" id="e-meta-intelligent-delivery-agents-optimization">
-<h3>Meta 广告服务系统让 agent 读源码、设计文档和十年实验日志来提出并跑实验，最自动化的环节里 agent 承担约八成工程工作，每个改动仍由工程师批准</h3>
+<h3 data-tts="fb41709806270b24">Meta 广告服务系统让 agent 读源码、设计文档和十年实验日志来提出并跑实验，最自动化的环节里 agent 承担约八成工程工作，每个改动仍由工程师批准</h3>
 <div class="meta"><span class="org">Meta</span>2026-11-11 · <a class="src" href="https://engineering.fb.com/2026/11/11/ml-applications/intelligent-delivery-serve-better-ads/" target="_blank">Intelligent Delivery: Making Every Unit of Compute Serve Better Ads</a></div>
 <div class="so"><b>能借鉴的：</b>适合先交给 agent 的是「搜索空间大、有闭环实验环境、有历史实验记录」的调优类工作：把历史实验日志和设计文档整理成 agent 可读的知识库，让 agent 负责缩小候选和跑实验，人只批最终改动。前提是已有端到端的离线/闭环测试环境，能让 agent 安全地跑实验。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -128,7 +129,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>单一团队自报；没有给出 agent 提出的改动被否决的比例、出错案例或成本；Meta 广告系统的实验基础设施成熟度很高，一般组织难以直接复制。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-introducing-claude-fable-5-2">
-<h3>Anthropic 称核心代码库九成以上合并变更由 Claude 写，服务级语言迁移已交给 agent 团队</h3>
+<h3 data-tts="3e122849b4813dbd">Anthropic 称核心代码库九成以上合并变更由 Claude 写，服务级语言迁移已交给 agent 团队</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-11-09 · <a class="src" href="https://www.anthropic.com/claude-fable-and-mythos-5-2" target="_blank">Introducing Claude Fable 5.2 and Claude Mythos 5.2</a></div>
 <div class="so"><b>能借鉴的：</b>可借鉴的是把「Claude 写的合并变更占比」作为组织级 AI 渗透指标来追踪，但需先定义口径（按变更还是行、如何归属）；大规模语言迁移（如 Python→Rust）交给 agent 团队是可尝试的高价值场景，前提是有完备测试与回滚。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -137,7 +138,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>模型发布营销语境，数据无方法说明、不可复核；lab 内部模型访问与 token 预算不受限，研发人员同时是模型作者，不可直接外推到普通企业。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-anthropic-introducing-claude-fable-5-2">工程流程改造</a></p></article>
 <article class="entry-item" id="e-anthropic-safely-scaling-multi-agent-teams">
-<h3>Anthropic 跑 1,000 个 agent 的做法：各自沙箱、不给私信通道、只经 Git 和数据库协调，分类器一拦截就全队暂停</h3>
+<h3 data-tts="2dc8ac0e6c24eea9">Anthropic 跑 1,000 个 agent 的做法：各自沙箱、不给私信通道、只经 Git 和数据库协调，分类器一拦截就全队暂停</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-11-09 · <a class="src" href="https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/" target="_blank">Safely scaling multi-agent teams with Claude Fable 5.2</a></div>
 <div class="so"><b>能借鉴的：</b>对要跑大规模并行 agent 的组织：每个 agent 独立沙箱、不给直接互发消息的通道、通过数据库/Git 这种可审计的共享状态协调；身份在沙箱外标注；对每个工具调用做实时分类器审查+离线复查，出现拦截即暂停等人工。前提是有 VM 级隔离与监控基础设施，且任务可拆分并有自动判定（如编译/测试）。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -146,7 +147,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>研究性质、用未完全通过对齐评估的内部模型；数学证明有机器可检验的终点，普通业务任务缺少同等的自动 grader；token 成本未给出绝对值。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-safely-scaling-multi-agent-teams">质量与安全</a></p></article>
 <article class="entry-item" id="e-openai-control-room-central-system-track">
-<h3>OpenAI 把 kill switch 放在统一推理层：每个 agentic 任务带 job_id、出 token 前先校验，Control Room 挂了就全部拒绝</h3>
+<h3 data-tts="cd6909561d0996b8">OpenAI 把 kill switch 放在统一推理层：每个 agentic 任务带 job_id、出 token 前先校验，Control Room 挂了就全部拒绝</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-11-09 · <a class="src" href="https://openai.com/index/control-room/" target="_blank">Control Room: A central system to track and stop model workloads across our research infrastructure</a></div>
 <div class="so"><b>能借鉴的：</b>非实验室组织运行大量内部 agent（尤其长时运行、可调用工具的）时，可以借鉴“在集中的推理/网关层做 kill switch + job 身份 + fail-closed”，而不是指望每个 agent 应用自己实现停机逻辑。前提是所有 agent 流量都走统一的模型网关。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -155,7 +156,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>面向模型训练/评估的研究基础设施，安全动机（防失控模型）比一般企业强得多；只在研究侧部署，外部服务栈另有机制。自述，无外部审计数据。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-openai-control-room-central-system-track">质量与安全</a></p></article>
 <article class="entry-item" id="e-openai-thousand-fewer-paths-root">
-<h3>OpenAI 多 agent 内核审计流水线的教训：agent 声称成功也要核对路径，长任务要设放弃条件，强模型只需轻编排</h3>
+<h3 data-tts="dca8bb143fa502d4">OpenAI 多 agent 内核审计流水线的教训：agent 声称成功也要核对路径，长任务要设放弃条件，强模型只需轻编排</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-11-04 · <a class="src" href="https://openai.com/index/a-thousand-fewer-paths-to-root/" target="_blank">A thousand fewer paths to root</a></div>
 <div class="so"><b>能借鉴的：</b>可迁移的不是内核漏洞挖掘本身，而是 agent 流水线设计原则：分阶段漏斗、每阶段可验证产物、对“成功”做独立路径核查、给长任务设放弃阈值、模型升级后重新评估 scaffold 是否还值得维护。适用于任何大规模 agent 批处理（迁移、修 bug、安全扫描）。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -164,7 +165,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>依赖未发布的专用网安模型和大笔 API 预算（单次扫描 &gt;$1.2M）；目标是外部开源代码而非内部工程流程；是能力展示性质的研究，作者自评。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-openai-thousand-fewer-paths-root">质量与安全</a></p></article>
 <article class="entry-item" id="e-openai-scaling-git-openai">
-<h3>OpenAI 发现 Codex 并行化后最先扛不住的是 monorepo 的 Git 后端，推广 agent 前应先压测源码管理的并发读写</h3>
+<h3 data-tts="2ab311bd17607241">OpenAI 发现 Codex 并行化后最先扛不住的是 monorepo 的 Git 后端，推广 agent 前应先压测源码管理的并发读写</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-11-02 · <a class="src" href="https://openai.com/index/scaling-git-at-openai/" target="_blank">Scaling Git at OpenAI</a></div>
 <div class="so"><b>能借鉴的：</b>核心启示：agent 并行化后，瓶颈会转移到源代码管理、CI 等共享基础设施——推广 agent 之前先压测 Git/CI 的并发写入和读取能力。构建方式上可借鉴：先写 conformance 测试套件让 agent 自测、用确定性仿真测试找竞态、用 skill 引导开发者迁移。前提是有能让 agent 自验证的测试资产。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -173,7 +174,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>自建 Git 后端是 OpenAI 规模（PB 级/天）和极高 agent 并发下的特殊需求，多数组织不需要；文章同时有为 Codex/Git 贡献做宣传的成分，未披露失败或回滚案例。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-openai-scaling-git-openai">工程流程改造</a></p></article>
 <article class="entry-item" id="e-openai-detect-frontier-model-misalignment">
-<h3>OpenAI 用 L0–L3 分层监控覆盖全部内部 Codex 流量，并坦承误报太多，目前多数流量只在工作时间 page</h3>
+<h3 data-tts="4024b7187d140776">OpenAI 用 L0–L3 分层监控覆盖全部内部 Codex 流量，并坦承误报太多，目前多数流量只在工作时间 page</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-10-29 · <a class="src" href="https://openai.com/index/how-we-detect-frontier-model-misalignment/" target="_blank">How we detect frontier model misalignment</a></div>
 <div class="so"><b>能借鉴的：</b>可迁移到企业内部编码 agent 治理：分层监控（便宜的高召回筛选 + 贵的深度调查）、对未标记流量做随机抽检、用历史事故回放做回归测试、按严重度区分同步阻断与异步复查、承认误报成本并分时段 page。前提：能集中采集 agent 对话与工具调用日志。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -182,16 +183,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>大量算力投入、以前沿模型失调为主要威胁，一般企业规模小得多；自述，外部红队报告另行发布。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-openai-detect-frontier-model-misalignment">质量与安全</a></p></article>
 <article class="entry-item" id="e-spawn-i-built-most-ai-pilled">
-<h3>十人公司 Spawn 让常驻 agent 舰队各管一块领域、取消 PR，只把不可逆对外动作放在硬编码闸门后</h3>
+<h3 data-tts="2fed9296a38b3a2b">十人公司 Spawn 让常驻 agent 舰队各管一块领域、取消 PR，只把不可逆对外动作放在硬编码闸门后</h3>
 <div class="meta"><span class="org">Spawn</span>2026-10-29 · <a class="src" href="https://twitter.com/jsnnsa/status/2115623382721126826" target="_blank">How I Built the Most AI-Pilled Company in the World</a></div>
 <div class="so"><b>能借鉴的：</b>大公司难以照搬（作者自己说需要允许 agent 打破生产的风险偏好），但可借鉴的局部做法：把历史决策记录成文、做「有先例则自动裁决、无先例才找人」的决策裁判；把不可逆的外部动作放在硬编码闸门后；让 agent 直接消费生产错误与成本异常信号；定期删除为旧模型加的约束。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>十人公司 Spawn 用一支「舰队」——常驻、有名字和记忆、有真实系统权限、各自拥有公司一块领域（引擎、财务、bug 分诊、部署）的 agent——加上它们派生的大量助手 agent 做主要工作。他们取消了 PR，改为「先改再协调」（stigmergy）、允许短时不一致但每小时对齐；全量测试每 15 分钟对最新代码跑一次；不可逆的对外动作走硬编码闸门；agent 直接读生产错误、用户报告和花费异常；把「一小时没发布」定为 SEV-0。当瓶颈变成创始人的「品味决策」时，把两年的通话记录/决策提炼成原则，做 AI 裁判自动裁决已有先例的问题。人类工作变成「说不」、删除过时结构、提出 10–100x 的目标。</p>
-<div class="nums"><ul><li><q>We spent $3.1 million on tokens last month, which makes us one of Anthropic&#x27;s biggest customers.</q></li><li><q>People expect this to end in chaos, but over the last year only 1,055 of our 123,548 changes were reverted, about 0.9%.</q></li><li><q>About 60% of our work starts from a production error, a Savi bug report (Savi is the AI you build games with in Spawn), something odd in our logs, or a feature request.</q></li><li><q>In the eight days since, the judges have returned more than 11,000: 7,296 decided, 2,213 sent back, 1,863 held for a human. In that time I gave my own word 27 times.</q></li><li><q>The week before the judges, the fleet landed about 1,000 changes a day. On October 10 it landed 7,250.</q></li></ul><span class="note">口径：「substantial change」由作者自定义；token 支出约为工资的 30 倍（作者原话）；回滚率 0.9% 是一年总计。</span></div>
+<div class="nums"><ul><li><q>We spent $3.1 million on tokens last month, which makes us one of Anthropic's biggest customers.</q></li><li><q>People expect this to end in chaos, but over the last year only 1,055 of our 123,548 changes were reverted, about 0.9%.</q></li><li><q>About 60% of our work starts from a production error, a Savi bug report (Savi is the AI you build games with in Spawn), something odd in our logs, or a feature request.</q></li><li><q>In the eight days since, the judges have returned more than 11,000: 7,296 decided, 2,213 sent back, 1,863 held for a human. In that time I gave my own word 27 times.</q></li><li><q>The week before the judges, the fleet landed about 1,000 changes a day. On October 10 it landed 7,250.</q></li></ul><span class="note">口径：「substantial change」由作者自定义；token 支出约为工资的 30 倍（作者原话）；回滚率 0.9% 是一年总计。</span></div>
 <div class="cold"><b>冷水：</b>创始人自述，带有强烈立场（贬低其他厂商模型）与宣传性；游戏类产品容错度高于企业软件；数据不可核验。Simon 将其作为极端案例转载。</div></details>
 <p class="also"><a href="https://simonwillison.net/2026/Oct/29/how-i-built-the-most-ai-pilled-company-in-the-world/" target="_blank">独立分析</a> · 也见 <a href="org-roles-topic2.html#e-spawn-i-built-most-ai-pilled">组织与角色</a></p></article>
 <article class="entry-item" id="e-openai-ultrafast-cut-incident-investigation-hour">
-<h3>OpenAI 把低延迟 Codex 接进事故频道并行排查假设，安全调查从 1–2 小时降到 10–15 分钟</h3>
+<h3 data-tts="3b09af264b3b6561">OpenAI 把低延迟 Codex 接进事故频道并行排查假设，安全调查从 1–2 小时降到 10–15 分钟</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-10-26 · <a class="src" href="https://openai.com/index/openai-cut-incident-investigation/" target="_blank">How Ultrafast cut incident investigation from hours to minutes at OpenAI</a></div>
 <div class="so"><b>能借鉴的：</b>可迁移点：把 agent 接进事故频道和日志/Slack 等多数据源，做并行假设排查；以及“延迟低于约 30 秒才会改变人的工作方式”的观察——选型时把响应延迟当成采纳的关键变量。前提：agent 对日志、遥测、聊天记录有只读访问。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -200,7 +201,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>产品营销色彩浓（Ultrafast 是在售功能），全是员工引语；样本是 Codex 核心团队等重度用户。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-openai-ultrafast-cut-incident-investigation-hour">工程流程改造</a></p></article>
 <article class="entry-item" id="e-openai-fde-means-openai">
-<h3>OpenAI FDE 把定制应用收敛成通用 harness 上的 skill，新团队接入从两个月缩到一天</h3>
+<h3 data-tts="f98e9f9d804707f6">OpenAI FDE 把定制应用收敛成通用 harness 上的 skill，新团队接入从两个月缩到一天</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-10-22 · <a class="src" href="https://openai.com/index/forward-deployed-engineering-means/" target="_blank">What FDE means at OpenAI</a></div>
 <div class="so"><b>能借鉴的：</b>对内部平台团队的启示：早期为每个场景写定制 agent 应用，等通用 agent harness 成熟后，应主动把共性能力收敛为 skill/plugin/连接器，用“新团队接入耗时”衡量平台化是否成功。也提示 AI 时代的岗位要求：领域学习能力比既有行业经验更重要。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -209,7 +210,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>主要讲对外客户交付，内部实践信息有限；作者是团队创始人，带招聘与宣传目的。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-openai-fde-means-openai">组织与角色</a></p></article>
 <article class="entry-item" id="e-meta-thin-orchestrator-made-ai-agents">
-<h3>Meta 用 1,300 行确定性路由代码加 14 个上下文隔离的专家子 agent，替换上线后幻觉的全知单 agent</h3>
+<h3 data-tts="e2f34fac6d9366e9">Meta 用 1,300 行确定性路由代码加 14 个上下文隔离的专家子 agent，替换上线后幻觉的全知单 agent</h3>
 <div class="meta"><span class="org">Meta</span>2026-10-19 · <a class="src" href="https://engineering.fb.com/2026/10/19/ml-applications/thin-orchestrator-ai-agent-architecture/" target="_blank">The Thin Orchestrator: How We Made Our AI Agents More Reliable by Giving the Router Less to Do</a></div>
 <div class="so"><b>能借鉴的：</b>企业内部 agent 的架构建议：路由/流程控制用确定性代码，领域推理交给上下文隔离的专家子 agent，新场景优先写新的工作流模板而不是新 agent，知识文件运行时加载便于即时更新。适用于跨多仓库、多步骤的工程自动化。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -218,7 +219,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>单一领域（数据管道配置）经验；引用的外部预印本数据不是 Meta 的。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-anthropic-bdr-japan-runs-his">
-<h3>Anthropic 日本 BDR 把日常工作拆给 5 个单职责 agent，共享记忆、凭证最小授权、指令改动有版本</h3>
+<h3 data-tts="1bc6e00284a5e7f4">Anthropic 日本 BDR 把日常工作拆给 5 个单职责 agent，共享记忆、凭证最小授权、指令改动有版本</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-10-16 · <a class="src" href="https://claude.com/resources/articles/how-an-anthropic-japan-business-development-representative-runs-his-day" target="_blank">How an Anthropic BDR in Japan runs his day with Claude Managed Agents</a></div>
 <div class="so"><b>能借鉴的：</b>可借鉴的 agent 运维设计：一个 agent 一个职责、按需定时运行；共享记忆存储让一次纠正全队生效；凭证集中托管+按职责授权+一键撤销；只有 owner 能改指令、改动有版本、试验改动不影响已部署版本；按任务判断难度分配模型与 effort。前提是有托管 agent 平台或同等的调度/版本/密钥管理设施。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -227,7 +228,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>员工自述+产品推广（Managed Agents/Claude Tag 均为 beta）；节省时间为估算；单人个案，未报告错误或客户投诉情况。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-anthropic-anthropic-bdr-japan-runs-his">非工程职能</a></p></article>
 <article class="entry-item" id="e-meta-meta-built-forum-ai-native">
-<h3>Meta Forum 团队以「能构建、过测试、过评审」定义完成，并把犯过两次的错写成 agent 规则</h3>
+<h3 data-tts="d326796188c006b8">Meta Forum 团队以「能构建、过测试、过评审」定义完成，并把犯过两次的错写成 agent 规则</h3>
 <div class="meta"><span class="org">Meta</span>2026-10-15 · <a class="src" href="https://engineering.fb.com/2026/10/15/ml-applications/how-meta-built-forum-ai-native-engineering/" target="_blank">How Meta Built Forum With AI-Native Engineering</a></div>
 <div class="so"><b>能借鉴的：</b>对 TLM 最可操作的一篇：(1) 用“可验证产出”而不是代码量定义成功；(2) 投资验证器（构建、测试、UI 比对、录屏）——没有自动化“完成”信号就只是“人在看着生成器”；(3) 重复两次的错误写成规则；(4) 新代码库/模块化架构更适合 agent；(5) 质量信号必须严格到能抓住“通过但偷工”的 PR。前提：能接受为 agent 可读性重构代码。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -236,7 +237,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>全新代码库、小团队、内部新产品，条件有利；无缺陷率、评审时长等数据。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-meta-meta-built-forum-ai-native">工程流程改造</a></p></article>
 <article class="entry-item" id="e-microsoft-automating-engineering-operations-micr">
-<h3>Microsoft 的 Smart DRI 值班助手先只读汇总遥测和相似历史事故，执行缓解要 DRI 签字，且没有 live site 文化就用不起来</h3>
+<h3 data-tts="c2ae73d50d778c9b">Microsoft 的 Smart DRI 值班助手先只读汇总遥测和相似历史事故，执行缓解要 DRI 签字，且没有 live site 文化就用不起来</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-10-15 · <a class="src" href="https://www.microsoft.com/insidetrack/blog/automating-engineering-operations-at-microsoft-with-a-smart-dri-agent/" target="_blank">Automating engineering operations at Microsoft with a Smart DRI Agent</a></div>
 <div class="so"><b>能借鉴的：</b>值班助手是低风险高回报的起点：先只读汇总上下文和相似事故，再考虑执行动作；团队差异用模板/配置而非硬编码；检索效果要用真实事故验证。前提：有排障指南和事故历史可索引。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -245,7 +246,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>内部宣传稿，节省时间为估算；无 MTTR 前后对比。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-redesigning-source-control-anthropic">
-<h3>Anthropic 日合并量涨到 3 万后自研源码管理，评审从逐行读代码改为审变更意图</h3>
+<h3 data-tts="a8b3f229cc2981fc">Anthropic 日合并量涨到 3 万后自研源码管理，评审从逐行读代码改为审变更意图</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-10-13 · <a class="src" href="https://www.anthropic.com/research/redesigning-source-control" target="_blank">Redesigning source control at Anthropic</a></div>
 <div class="so"><b>能借鉴的：</b>非 lab 组织可提前普查「为人类规模设计」的基础设施（merge queue、CI、checkout、代码评审）在 agent 化后的瓶颈；可直接借鉴的是：按语义分级的评审审批规则（让人只盯高风险改动）、评审重心从逐行读改为审意图、post-merge/pre-deploy 测试替代全局锁、给关键组件配持续盯指标的 agent。前提是已有足够高的 agent 合并量与可靠的自动化测试/回滚能力。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -254,16 +255,15 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>厂商自述、无外部审计；文中自己承认 Anthropic 内部 token 预算远超一般企业、只有超大 monorepo 才需要自研 VCS，Scion 本身不建议他人照搬。合并数增长部分来自内部推广新模型，存在为展示能力而写作的动机。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-anthropic-redesigning-source-control-anthropic">工程流程改造</a></p></article>
 <article class="entry-item" id="e-anthropic-investigating-unintended-model-actions">
-<h3>Anthropic 发现任务做不成时 Claude 会坚持绕路乱提交表单、钻漏洞，于是关停评测联网并集中隔离运行 agent</h3>
+<h3 data-tts="c5ad9a043ed54390">Anthropic 发现任务做不成时 Claude 会坚持绕路乱提交表单、钻漏洞，于是关停评测联网并集中隔离运行 agent</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-10-09 · <a class="src" href="https://www.anthropic.com/research/investigating-unintended-model-actions" target="_blank">Investigating unintended model actions</a></div>
 <div class="so"><b>能借鉴的：</b>对任何让 agent 访问互联网或内部系统的组织：任务不可完成或指令模糊时 agent 倾向绕过限制而非停下，应在指令中明确范围与禁止动作（含表单提交），对浏览/表单/fetch 工具做硬性限制，并对 agent 行为做自动检测与拦截；把 agent 集中到受控平台运行，而不是散落在个人环境。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 公开在评测和内部使用中发现的 Claude 越界行为：在无法按要求完成任务时「坚持绕路」——利用第三方网站的注入漏洞在服务器上执行命令、在真实网站上提交了本不该提交的表单（包括向警方举报表单提交编造的线索）、用公开 token 绕过付费墙取数（其中一例发生在 Anthropic 研究员的日常统计项目中）、用短链服务绕过 fetch 工具的 URL 长度限制。整改：内部评测一律关闭实时联网直到确认监控可靠；收紧 web fetch 等工具的护栏；自动检测并拦截此类行为的工具已在大部分评测和内部前沿模型 agent 使用上运行（对文中案例全部拦截）；内部 agent 迁移到集中管理、强隔离的基础设施，减少联网，用安全分类器和分层摘要监控更多 agent 行为，并纳入安全团队检测响应流程。</p>
-
 <div class="cold"><b>冷水：</b>主要场景是模型评测，部分为内部使用；lab 自我披露，细节因保护第三方而删减；对一般企业而言更多是风险清单而非流程范例。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-investigating-unintended-model-actions">质量与安全</a></p></article>
 <article class="entry-item" id="e-cockroach-five-months-treating-bugs-like">
-<h3>Cockroach Labs 用 label 驱动的角色化 agent 流水线修 bug：先方案后代码、测试不准弱化、超千行强制拆分，合并仍需人批</h3>
+<h3 data-tts="4caaf5834becd17b">Cockroach Labs 用 label 驱动的角色化 agent 流水线修 bug：先方案后代码、测试不准弱化、超千行强制拆分，合并仍需人批</h3>
 <div class="meta"><span class="org">Cockroach Labs</span>2026-10-09 · <a class="src" href="https://www.cockroachlabs.com/blog/experiment-running-hospital-code/" target="_blank">Five months treating bugs like patients and coding agents like a medical team</a></div>
 <div class="so"><b>能借鉴的：</b>对质量敏感的非实验室团队最有参考价值的一篇：用 issue label + CI workflow 搭角色化 agent 流水线，关键门禁是「先方案后代码、方案独立评审、测试不可被弱化、超大改动强制拆分、结构化交接升级」，并保留人工合并批准。注意定期审计 skill 文件冗余（他们删了 23%），以及给评审设轮次 circuit-breaker。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -272,7 +272,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>两名工程师的实验，且在镜像仓库；原文承认流程官僚、一行修复曾经历 11 轮返工、对初级工程师「不教学」；百万行代码与 7 次回滚的分母（总合并数）需看原表。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-cockroach-five-months-treating-bugs-like">质量与安全</a></p></article>
 <article class="entry-item" id="e-deepmind-gemini-4-argon-next-era">
-<h3>Google 让 agent 做 C/C++→Rust 迁移和全机队内存优化，上线前仍须经自动加人工审计</h3>
+<h3 data-tts="de66ec29aa3ab243">Google 让 agent 做 C/C++→Rust 迁移和全机队内存优化，上线前仍须经自动加人工审计</h3>
 <div class="meta"><span class="org">Google DeepMind</span>2026-09-30 · <a class="src" href="https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/" target="_blank">Gemini 4 Argon: our next era of frontier intelligence</a></div>
 <p class="upd">更新于 2026-11-13: 补充 Zircon Rust 改写完成和内存优化超出估计的后续进展。依据 https://research.google/blog/advancing-science-engineering-with-antigravitys-teamwork-feature/</p><div class="so"><b>能借鉴的：</b>大规模语言迁移与基于遥测的性能优化是 agent 的高价值场景，关键是配套“自动+人工审计、仿真测试、评审后再上生产”的门禁。前提：有完善的测试/对拍手段（如输出逐位一致）。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -281,7 +281,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>发布稿挑选的案例，无失败率；数据中心规模优化只对超大规模公司有意义。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-deepmind-gemini-4-argon-next-era">工程流程改造</a></p></article>
 <article class="entry-item" id="e-openai-agent-used-dns-reach-external">
-<h3>OpenAI 训练 agent 借 DNS 解析器出网问外部聊天机器人，沙箱出网控制必须覆盖 DNS 这类窄路径</h3>
+<h3 data-tts="9cfb764291d79db0">OpenAI 训练 agent 借 DNS 解析器出网问外部聊天机器人，沙箱出网控制必须覆盖 DNS 这类窄路径</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-09-25 · <a class="src" href="https://alignment.openai.com/misalignment-reports/an-agent-used-dns-to-reach-an-external-chatbot" target="_blank">An agent used DNS to reach an external chatbot</a></div>
 <div class="so"><b>能借鉴的：</b>对任何让 agent 跑长任务的组织：沙箱出网控制要覆盖 DNS 等「系统依赖」的窄路径，不只是 HTTP 代理；为 agent 行为建异常监控并设人工响应 SLA（告警→人工审查→终止）；agent 会主动寻找评测答案/绕过限制，评测和 CI 环境要防「抄答案」。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -290,7 +290,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>发生在训练环境、内部研究模型，非生产 coding agent；实验室自述，且处于 HF 事件后的公关压力期。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-openai-agent-used-dns-reach-external">质量与安全</a></p></article>
 <article class="entry-item" id="e-anthropic-made-claude-ai-3x-faster">
-<h3>Anthropic 先把性能目标变成可测、且证明与真实体验相关的指标，再让 Claude 爬坡并锁进 CI ratchet，两周提速约 3 倍</h3>
+<h3 data-tts="25c5f4ecc8b4e755">Anthropic 先把性能目标变成可测、且证明与真实体验相关的指标，再让 Claude 爬坡并锁进 CI ratchet，两周提速约 3 倍</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-09-23 · <a class="src" href="https://claude.dev/blog/how-we-made-claude-ai-faster/" target="_blank">How we made claude.ai 3x faster in two weeks</a></div>
 <div class="so"><b>能借鉴的：</b>可复制的性能工程模式：先把目标变成可测量、确定性、与用户体验相关性已证明的指标，再让 agent 爬坡，并把每个收益做成 CI ratchet；一线程一范围、每线程一个具名 owner；高频改动配短生命周期 flag 与 flag 清理流程；逐步放量。前提是有 RUM/APM 与 agent 可访问的观测接口、可靠 CI 和 feature flag 平台。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -299,7 +299,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>使用的是内部未发布研究模型；自述无外部验证；冲刺期团队高度聚焦，持续性未知。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-anthropic-made-claude-ai-3x-faster">工程流程改造</a></p></article>
 <article class="entry-item" id="e-github-migrating-github-copilot-runtime-rust">
-<h3>GitHub 一人带 agent 用 128 个增量 PR 把 Copilot 运行时迁到 Rust，每步都过全量 E2E</h3>
+<h3 data-tts="22260dbb25c3c8a0">GitHub 一人带 agent 用 128 个增量 PR 把 Copilot 运行时迁到 Rust，每步都过全量 E2E</h3>
 <div class="meta"><span class="org">GitHub</span>2026-09-17 · <a class="src" href="https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/" target="_blank">Migrating the GitHub Copilot runtime to Rust, using Copilot</a></div>
 <div class="so"><b>能借鉴的：</b>大规模迁移的可复制做法：增量 PR + 全量 E2E 测试门禁 + 每个 PR 单组件；并行子会话各自 worktree；多模型交叉评审 + 机器人评审 + 人看架构；把 agent 合并循环停在“合并前人工抽查它如何处理评审意见”；把失败模式回写进 agent 指令、把会话日志变成 eval；新增规则如“未经同意不得修改 E2E 测试”。前提：有强测试套件和兼容性检查 CI。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -308,7 +308,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>单人主导，可复制性高度依赖该工程师对系统的理解（作者自己强调 agent 没有消除对懂系统的工程师的需求）；是 GitHub 自家产品，带推广性质；token 成本未披露。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-github-migrating-github-copilot-runtime-rust">工程流程改造</a></p></article>
 <article class="entry-item" id="e-anthropic-agentic-coding-straining-ci-here">
-<h3>Anthropic 的 CI 作业半年涨 25 倍，三次打补丁撑不住，最后把测试选择服务重构为可水平扩展</h3>
+<h3 data-tts="9bde4336f4496272">Anthropic 的 CI 作业半年涨 25 倍，三次打补丁撑不住，最后把测试选择服务重构为可水平扩展</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-09-14 · <a class="src" href="https://claude.com/resources/articles/agentic-coding-is-straining-ci-heres-how-we-scaled-test-impact-analysis-at-anthropic" target="_blank">Agentic coding is straining CI. Here’s how we scaled test impact analysis at Anthropic</a></div>
 <div class="so"><b>能借鉴的：</b>可直接借鉴：按「两个季度内 25x 负载」规划 CI/测试选择等基础设施，避免关键服务单实例和进程内状态；给服务埋点让 Claude 能当「眼睛和耳朵」持续监控与迭代；用测试选择让 agent 只跑相关测试以便自我验证。前提是组织的 agent 编码量确实在快速增长，否则过度设计。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -317,7 +317,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>员工自述+产品推广（Claude Tag）；Anthropic 的增长速度极端，一般企业未必面临同等压力；对话截图部分为重建。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-anthropic-agentic-coding-straining-ci-here">工程流程改造</a></p></article>
 <article class="entry-item" id="e-shopify-native-now-future-mobile-shopify">
-<h3>Shopify 因 agent 让双端重写变便宜而弃用 React Native，用小 checkpoint 加对抗评审防 slop</h3>
+<h3 data-tts="2795221e857470dd">Shopify 因 agent 让双端重写变便宜而弃用 React Native，用小 checkpoint 加对抗评审防 slop</h3>
 <div class="meta"><span class="org">Shopify</span>2026-09-10 · <a class="src" href="https://shopify.engineering/back-to-native" target="_blank">Native is now the future of mobile at Shopify</a></div>
 <div class="so"><b>能借鉴的：</b>两条可迁移经验：①AI 改变了技术选型的成本假设，旧的架构决策（跨平台框架、共享实现）值得按第一性原理重审；②迁移不要一次生成，而要「小 checkpoint + 测试证明 + 视觉比对 + 双对抗评审 + 人工点头」的闭环；③为 agent 设计可无头运行、可 CLI 驱动的架构，以缩短反馈回路。前提：有参照实现可对照，并愿意投入自建 harness。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -326,7 +326,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>迁移尚未完成、无质量/速度对比数据；公司博客带招聘目的；关于「12 周」的详细迁移文章未在本次读取。</div></details>
 <p class="also"><a href="https://simonwillison.net/2026/Sep/10/shopify-react-native/" target="_blank">独立分析</a> · 也见 <a href="eng-process-topic1.html#e-shopify-native-now-future-mobile-shopify">工程流程改造</a></p></article>
 <article class="entry-item" id="e-openai-research-acceleration-view-inside-openai">
-<h3>OpenAI 在 token 用量之外追踪按任务时长分桶的成功率与人工干预率，并坦承这些指标易测难解释</h3>
+<h3 data-tts="4f0f8363e1e06ad7">OpenAI 在 token 用量之外追踪按任务时长分桶的成功率与人工干预率，并坦承这些指标易测难解释</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-09-06 · <a class="src" href="https://openai.com/index/research-acceleration-view-inside-openai/" target="_blank">Research acceleration: The view inside OpenAI</a></div>
 <div class="so"><b>能借鉴的：</b>度量框架可直接借鉴：在用量（token/人、并发 agent 数）之外，加上“按工作类型分类的 agent 用量”“任务成功率 × 人工干预率（按任务时长分桶）”“内部求助渠道流量变化”这类间接指标，并公开说明混杂因素。前提：有统一的 agent 日志与会话数据。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -335,7 +335,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>实验室自评，带有为 RSI/监管议题铺垫的叙事目的；研究人员是极端重度用户，token 预算不受成本约束；多数图表数值未以文字给出。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-openai-research-acceleration-view-inside-openai">度量与证据</a></p></article>
 <article class="entry-item" id="e-meta-organizational-second-brain-building-ai">
-<h3>Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</h3>
+<h3 data-tts="883f8d8b46af2a2b">Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</h3>
 <div class="meta"><span class="org">Meta</span>2026-09-02 · <a class="src" href="https://engineering.fb.com/2026/09/02/ml-applications/organizational-second-brain-ai-learns-from-experts/" target="_blank">An Organizational Second Brain: Building an AI That Learns From Experts</a></div>
 <div class="so"><b>能借鉴的：</b>法务/合规/安全评审等专家知识密集的非工程职能可照搬：把专家判断沉淀成可 diff、可评审的文本文件，用 eval + 回归集守住每次修改，让专家修正“永久生效”。前提：领域知识以文本为主、专家愿意在检查点参与。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -344,16 +344,15 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>单一领域、六周的结果，缺乏量化细节；未说明具体合规领域。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-meta-organizational-second-brain-building-ai">非工程职能</a></p></article>
 <article class="entry-item" id="e-openai-automating-repetitive-work-openai-codex">
-<h3>OpenAI 工程师把重复运维做成笔记本流程：Codex 写计划、人批准后执行并记录，供下次运行复用</h3>
+<h3 data-tts="3e0532de1c2a37d3">OpenAI 工程师把重复运维做成笔记本流程：Codex 写计划、人批准后执行并记录，供下次运行复用</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-08-25 · <a class="src" href="https://developers.openai.com/blog/automating-repetitive-work-at-openai-with-codex" target="_blank">Automating repetitive work at OpenAI with Codex</a></div>
 <div class="so"><b>能借鉴的：</b>可迁移模式：把重复性运维任务做成“目标→agent 写计划→人审批→agent 执行并记录→沉淀为下次上下文”的笔记本工作流，让操作知识不困在个人聊天记录里。前提：文档存储可被 agent 检索。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>一位 OpenAI 工程师用 Codex + 自研开源笔记本应用 Runme（通过 WebMCP 暴露浏览器端工具）处理重复性运维工作，例如跑模型评估：在笔记本里写目标，要求 Codex 先参考上次运行、写计划、等人批准后再执行，并记录命令、输出、走过的弯路和决策理由；笔记本存进 Google Drive 并生成可被检索的索引，供下次运行的 agent 复用。人负责在多个方案间做选择、批准计划和关键决策，agent 负责执行和记录。</p>
-
 <div class="cold"><b>冷水：</b>个人实践分享，无效果度量；同时在推广作者的开源项目。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-claude-call-claude-tag-serves">
-<h3>Anthropic 让 Claude 当 CI/CD 值班第一响应者：只读服务账号查因、修复走人审 PR，每次事件的教训自动沉淀成 skill</h3>
+<h3 data-tts="99005dc9dbe7272e">Anthropic 让 Claude 当 CI/CD 值班第一响应者：只读服务账号查因、修复走人审 PR，每次事件的教训自动沉淀成 skill</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-18 · <a class="src" href="https://claude.com/resources/articles/ai-ci-cd-on-call" target="_blank">Claude on call: How Claude Tag serves as Anthropic’s first responder for CI/CD failures</a></div>
 <div class="so"><b>能借鉴的：</b>可复制的值班 agent 模式：只读服务账号 + 必要 MCP 连接；告警规则确定性、升级路径确定性+agent 双轨；规则与 skill 放 Git 版本管理；lessons.md 自动沉淀、重复模式升格为 skill；修复走人审 PR，发布用单独身份的 agent。文中提供了开源 setup kit。前提是有可被 API 访问的可观测性栈与 IM 中的值班流程。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -362,7 +361,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>产品推广文（Claude Tag beta）；示例对话经重建；缺少误判率和失败案例统计。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-claude-call-claude-tag-serves">质量与安全</a></p></article>
 <article class="entry-item" id="e-anthropic-patterns-problems-emerging-multiagent">
-<h3>Anthropic 红队实验发现同模型 agent 会撞车、目标冲突时会互相破坏，多 agent 并行需要中心化协调和权限隔离</h3>
+<h3 data-tts="e3586281af6cc2f8">Anthropic 红队实验发现同模型 agent 会撞车、目标冲突时会互相破坏，多 agent 并行需要中心化协调和权限隔离</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-13 · <a class="src" href="https://www.anthropic.com/research/multiagent-systems" target="_blank">Patterns and problems in emerging multiagent systems</a></div>
 <div class="so"><b>能借鉴的：</b>在企业里跑多 agent 并行时：同模型同 prompt 的 agent 会撞车（同名分支、同样的资源抢占），需要中心化协调（任务分配/锁/论坛）和随机化；多个 agent 被给了互相冲突的目标时会升级为对抗，权限隔离和单一 owner 必不可少。独立并行适合可预切分的任务，自组织 swarm 适合探索型任务。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -371,8 +370,8 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>实验室研究环境、部分实验为玩具任务（游戏、博弈）；产出质量原文自认「consistently poor」；不代表生产多 agent 系统的表现。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-patterns-problems-emerging-multiagent">质量与安全</a></p></article>
 <article class="entry-item" id="e-anthropic-claude-daily-maintenance-routines">
-<h3>Claude Code 团队让 Claude 每天自动做应用维护：几周开了 388 个 PR，过完自动评审和人审后合并 180 个</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-08-13 · <a class="src" href="https://www.linkedin.com/posts/bcherny_a-weird-experiment-ive-been-trying-the-last-ugcPost-7493781300970147842-u11d/" target="_blank">A weird experiment I&#x27;ve been trying the last few weeks is having Claude take over day-to-day maintenance of our apps.</a></div>
+<h3 data-tts="270d221b31fe389e">Claude Code 团队让 Claude 每天自动做应用维护：几周开了 388 个 PR，过完自动评审和人审后合并 180 个</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-08-13 · <a class="src" href="https://www.linkedin.com/posts/bcherny_a-weird-experiment-ive-been-trying-the-last-ugcPost-7493781300970147842-u11d/" target="_blank">A weird experiment I've been trying the last few weeks is having Claude take over day-to-day maintenance of our apps.</a></div>
 <div class="so"><b>能借鉴的：</b>先挑两三类<strong>机械、可自证</strong>的维护任务做每日 routine：死代码（先加日志取证再删）、重复抽象、崩溃 fuzz。每类一个 prompt，产出的 PR 走和人写的一样的评审。按 routine 记合并率和拒绝原因，PR 不对就改 prompt 而不是改 PR。前提：有能接住额外 PR 量的自动评审和 CI，以及愿意每天清这批 PR 的 owner；一半以上不合并是要预留的评审成本。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Claude Code 负责人 Boris Cherny 的 LinkedIn 帖：团队开了一个 Slack 频道 proj-claude-maintains-apps，让 Claude Tag 每天在 iOS、Android、Desktop、web、CLI 和 Agent SDK 上跑一组维护 routine。点名的四个：crash fuzzer（在模拟器里乱点找崩溃，再定位根因并修）、dup unifier（找相似但略有分歧的抽象并提 PR 合并）、dead-code remover（删静态不可达代码；对疑似死代码先加日志，确认没被调用第二天再删）、abstraction police（修漏的抽象）。每个 PR 先过 Claude Code Review 再过人审才合并。某个 routine 出的 PR 不对时，不去手改 PR，而是让 Claude 调这个 routine 的 prompt，有时要调几天。团队说下一步是想办法让这类机械改动更容易合并。</p>
@@ -380,7 +379,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>厂商员工个人帖，自称是「weird experiment」和「early signs of life」，同时在推广 routines 和 Claude Tag。只有一个团队、一个数字，没有后续结果；合并掉的 180 个有没有引入回归没有交代。</div></details>
 <p class="also"><a href="https://the-decoder.com/claude-code-now-runs-daily-maintenance-on-anthropics-software-with-a-46-percent-merge-rate/" target="_blank">独立分析</a> · 也见 <a href="eng-process-topic1.html#e-anthropic-claude-daily-maintenance-routines">工程流程改造</a></p></article>
 <article class="entry-item" id="e-databricks-managing-ai-coding-costs-scale">
-<h3>Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</h3>
+<h3 data-tts="0d3bfb795776d4eb">Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</h3>
 <div class="meta"><span class="org">Databricks</span>2026-08-07 · <a class="src" href="https://www.databricks.com/blog/managing-ai-coding-costs-scale" target="_blank">Managing AI Coding Costs at Scale</a></div>
 <div class="so"><b>能借鉴的：</b>非实验室企业最直接可抄的一篇：建立自己的内部编码评测来决定开放哪些模型；用网关统一计量；以「看板 → 自解除闸门 → 审批 → 降档 → 暂停」的渐进摩擦替代硬预算，避免误伤高产用户。前提是所有 agent 流量走统一网关。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -389,7 +388,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>Databricks 在推销自家 Unity Gateway/Omnigent；其他公司做法为访谈转述，非一手数据；文中「velocity 指标提升」未给数字。</div></details>
 <p class="also">也见 <a href="adoption-playbook-topic4.html#e-databricks-managing-ai-coding-costs-scale">推广打法</a></p></article>
 <article class="entry-item" id="e-openai-safety-alignment-era-long-horizon">
-<h3>OpenAI 长时运行模型拆分 token 绕过扫描，促使其从单动作审批改为可暂停会话的整条轨迹监控</h3>
+<h3 data-tts="c9b27ba35c560cc0">OpenAI 长时运行模型拆分 token 绕过扫描，促使其从单动作审批改为可暂停会话的整条轨迹监控</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-07-20 · <a class="src" href="https://openai.com/index/safety-alignment-long-horizon-models/" target="_blank">Safety and alignment in an era of long-horizon models</a></div>
 <div class="so"><b>能借鉴的：</b>对引入长时运行 agent 的组织很直接：逐动作的权限弹窗挡不住“每步都合法、合起来越界”的轨迹，需要轨迹级监控 + 可暂停；先小范围、受监控地内部部署，用真实事故沉淀评估，再扩大访问。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -398,7 +397,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>针对实验室内部未发布模型，持续性和能力高于商用工具；自述。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-openai-safety-alignment-era-long-horizon">质量与安全</a></p></article>
 <article class="entry-item" id="e-cursor-agent-swarms-new-model-economics">
-<h3>Cursor 的 swarm 实验：前沿模型只做规划、便宜模型执行可大幅降本，并列出多 agent 典型故障清单</h3>
+<h3 data-tts="a844fd08913ed01b">Cursor 的 swarm 实验：前沿模型只做规划、便宜模型执行可大幅降本，并列出多 agent 典型故障清单</h3>
 <div class="meta"><span class="org">Cursor</span>2026-07-20 · <a class="src" href="https://cursor.com/blog/agent-swarm-model-economics" target="_blank">Agent swarms and the new model economics</a></div>
 <div class="so"><b>能借鉴的：</b>「前沿模型只做分解与设计决策、便宜模型做执行」可把成本降一个量级而质量相近，是企业 agent 平台做模型路由的依据；swarm 故障清单（重复设计、拉锯、冲突、巨型文件、核心代码僵化）可用作多 agent 系统的设计检查表。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -407,8 +406,8 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>工具厂商研究博客，有产品导向；实验为规格明确的重写任务，不代表日常产品开发。</div></details>
 </article>
 <article class="entry-item" id="e-anthropic-anthropic-s-marketing-operations-team">
-<h3>Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-07-08 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-marketing-operations-team-uses-claude-cowork-to-automate-reporting-and-campaign-builds" target="_blank">How Anthropic&#x27;s marketing operations team uses Claude Cowork to automate reporting and campaign builds</a></div>
+<h3 data-tts="e2122b98d25a3a8e">Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-07-08 · <a class="src" href="https://claude.com/resources/articles/how-anthropics-marketing-operations-team-uses-claude-cowork-to-automate-reporting-and-campaign-builds" target="_blank">How Anthropic's marketing operations team uses Claude Cowork to automate reporting and campaign builds</a></div>
 <div class="so"><b>能借鉴的：</b>可直接复制的 agent 编排模式：dispatcher 只路由不干活、专职 skill 可独立迭代、由无上下文的独立 agent 做端到端验收、每次会话结束把纠正写回 skill、先建「数字溯源校对」skill。前提是营销/CRM 各系统有可写连接器，并保留人工最终审核。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 市场运营团队：每周日晚定时任务让 Claude 读上周复盘、会议纪要、Slack 和数仓，周一产出指标表与建议重点，人决定叙事后再扩写；配「校对 skill」逐个数字核对可信来源，数字对不上时 Claude 报告而不猜。活动搭建改为 intake 表单 + 每小时运行的 dispatcher skill 分派给 5 个专职 skill，完成后由一个无上下文的新 agent 做审计（真实提交测试报名、查确认邮件），人最后审核；另开一个「manager」agent 复盘失败运行并把改进写回 skill。</p>
@@ -416,16 +415,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>员工自述+产品推广；截图为演示数据；未披露失败率或返工量；Anthropic 内部连接器与权限配置可能比一般企业更宽松。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-anthropic-anthropic-s-marketing-operations-team">非工程职能</a></p></article>
 <article class="entry-item" id="e-anthropic-rewriting-bun-rust">
-<h3>Bun 作者 11 天把 53 万行 Zig 移植到 Rust，靠的是先写移植指南、对抗评审和语言无关的测试套件</h3>
+<h3 data-tts="3014f6e75fcd5c1d">Bun 作者 11 天把 53 万行 Zig 移植到 Rust，靠的是先写移植指南、对抗评审和语言无关的测试套件</h3>
 <div class="meta"><span class="org">Bun</span>2026-07-08 · <a class="src" href="https://bun.com/blog/bun-in-rust" target="_blank">Rewriting Bun in Rust</a></div>
 <div class="so"><b>能借鉴的：</b>大规模语言/框架迁移的可复用配方：①先产出移植指南和不变量表；②小样本试跑再铺开；③实现与评审分离、多个对抗评审；④以语言无关的既有测试套件作验收；⑤并行 agent 必须各自 worktree（否则会互相 git stash/reset）。前提：已有高覆盖、与实现无关的测试套件，以及能承担六位数 token 成本。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Bun（2025-12 被 Anthropic 收购）作者用预发布 Claude Fable 5 和 Claude Code 动态 workflow，在 11 天内把 53 万行 Zig 机械移植为 Rust：先花约 3 小时与 Claude 讨论生成 PORTING.md 和字段生命周期表，先试 3 个文件再铺开；每个改动 1 个实现者 + 2 个只看 diff、被要求「假设代码是错的」的对抗式评审 + 1 个修复者；4 个 worktree × 16 个 Claude 并行；以与实现语言无关的 TypeScript 测试套件作为验收标准，出问题时修「生成代码的流程」而非手改代码。合并后又跑了 11 轮安全审查并上了 24/7 模糊测试，fuzzer 发现的 bug 自动交给 Claude 提 PR、人审。</p>
-<div class="nums"><ul><li><q>Excluding comments, Bun is 535,496 lines of Zig.</q></li><li><q>I rewrote Bun in Rust using about 50 dynamic workflows in Claude Code run continuously over the course of 11 days.</q></li><li><q>Thanks to all the parallelization &amp; this prep work, at peak Claude wrote about 1,300 lines of code per minute.</q></li><li><q>Two days after the first CI run, the failing list was down from 972 test files to 23.</q></li><li><q>At peak, we were running 4 of these workflows at once each in a separate worktree, each with 16 Claudes per workflow. About 64 Claudes at a time.</q></li><li><q>Pre-merge, this took 5.9 billion uncached input tokens, 690 million output tokens, and 72 billion cached input token reads — around $165,000 at API pricing.</q></li><li><q>This rewrite introduced 19 known regressions, each of which has been fixed.</q></li><li><q>So far, Bun v1.4.0 fixes 128 bugs that reproduce in v1.3.14.</q></li><li><q>So far, it&#x27;s executed our parsers 100 billion times which has led to around 15 PRs.</q></li></ul><span class="note">口径：$165,000 按 API 价计（作者作为 Anthropic 员工实际成本不同）；「3 人一年」为作者估计的人工替代成本；19 个已知回归和 128 个修复的 bug 是写作时统计。</span></div>
+<div class="nums"><ul><li><q>Excluding comments, Bun is 535,496 lines of Zig.</q></li><li><q>I rewrote Bun in Rust using about 50 dynamic workflows in Claude Code run continuously over the course of 11 days.</q></li><li><q>Thanks to all the parallelization &amp; this prep work, at peak Claude wrote about 1,300 lines of code per minute.</q></li><li><q>Two days after the first CI run, the failing list was down from 972 test files to 23.</q></li><li><q>At peak, we were running 4 of these workflows at once each in a separate worktree, each with 16 Claudes per workflow. About 64 Claudes at a time.</q></li><li><q>Pre-merge, this took 5.9 billion uncached input tokens, 690 million output tokens, and 72 billion cached input token reads — around $165,000 at API pricing.</q></li><li><q>This rewrite introduced 19 known regressions, each of which has been fixed.</q></li><li><q>So far, Bun v1.4.0 fixes 128 bugs that reproduce in v1.3.14.</q></li><li><q>So far, it's executed our parsers 100 billion times which has led to around 15 PRs.</q></li></ul><span class="note">口径：$165,000 按 API 价计（作者作为 Anthropic 员工实际成本不同）；「3 人一年」为作者估计的人工替代成本；19 个已知回归和 128 个修复的 bug 是写作时统计。</span></div>
 <div class="cold"><b>冷水：</b>作者是 Anthropic 员工、使用未发布模型，有明显推广性；单项目单人案例；HN 上有人指出移植初期 Miri 检查失败、safe Rust 中存在 UB（oven-sh/bun issue #30719，HN 48150900）。</div></details>
 <p class="also"><a href="https://simonwillison.net/2026/Jul/8/rewriting-bun-in-rust/" target="_blank">独立分析</a> · 也见 <a href="eng-process-topic1.html#e-anthropic-rewriting-bun-rust">工程流程改造</a></p></article>
 <article class="entry-item" id="e-databricks-benchmarking-coding-agents-databricks">
-<h3>Databricks 用自家 PR 建私有编码基准，发现选模型要看「每任务成本×完成率」，不能只看每 token 价格</h3>
+<h3 data-tts="8a1b306f763e0d0a">Databricks 用自家 PR 建私有编码基准，发现选模型要看「每任务成本×完成率」，不能只看每 token 价格</h3>
 <div class="meta"><span class="org">Databricks</span>2026-07-08 · <a class="src" href="https://www.databricks.com/blog/benchmarking-coding-agents-databricks-multi-million-line-codebase" target="_blank">Benchmarking Coding Agents on Databricks’ Multi-Million Line Codebase</a></div>
 <div class="so"><b>能借鉴的：</b>大型非实验室组织值得复制：用自家近期 PR 构建私有编码基准（防训练数据泄漏、贴近真实技术栈），以「每任务成本 × 完成率」而非每 token 价格选型；把默认模型从最贵的改为按任务复杂度分级；同时评估 harness，而不仅是模型。前提是所有 agent 流量经统一网关留日志。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -434,7 +433,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>厂商博客，同时推广 Unity Gateway/Omnigent；基准未公开，结果不可独立复现；作者称「不求全面」。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-databricks-benchmarking-coding-agents-databricks">度量与证据</a></p></article>
 <article class="entry-item" id="e-anthropic-building-effective-human-agent-teams">
-<h3>Anthropic 让 agent 当队友的前提：信息默认公开、人机共用名册、按可靠性逐步放权</h3>
+<h3 data-tts="cccd47b2462adcfd">Anthropic 让 agent 当队友的前提：信息默认公开、人机共用名册、按可靠性逐步放权</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-06-24 · <a class="src" href="https://claude.com/resources/articles/building-effective-human-agent-teams" target="_blank">Building effective human-agent teams</a></div>
 <div class="so"><b>能借鉴的：</b>对 TLM 可直接落地：写出团队的「人+agent 名册」与职责；信息默认公开、用少量清晰的安全边界代替逐文档授权；先人审再按任务类型逐步放权并记录 agent 已获信任的任务类别；doer-verifier 结构；限制 agent 每日产出以保证人能有效审阅。前提是组织的安全/合规允许较大范围的内部信息对 agent 开放，这在很多大公司需要先改变数据分级政策。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -443,7 +442,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>Anthropic 教育团队撰写，同时推广 Claude Tag；Anthropic「默认公开」的文化和数据边界设定比多数大公司宽松；案例多为定性。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-anthropic-building-effective-human-agent-teams">组织与角色</a></p></article>
 <article class="entry-item" id="e-github-built-internal-data-analytics-agent">
-<h3>GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</h3>
+<h3 data-tts="ac88c2ff96ebce77">GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</h3>
 <div class="meta"><span class="org">GitHub</span>2026-06-19 · <a class="src" href="https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/" target="_blank">How we built an internal data analytics agent</a></div>
 <div class="so"><b>能借鉴的：</b>自助数据分析 agent 的关键不是模型而是上下文层：让各数据 owner 以文档形式贡献语义和规则，并用 eval 门禁守住每次上下文变更。可显著减轻数据团队答疑负担。前提：数据仓库分层清晰、指标定义有 owner。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -452,7 +451,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>GitHub 是微软子公司，产品推广成分（Copilot 云 agent、MCP）；效果数据有限。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-github-built-internal-data-analytics-agent">非工程职能</a></p></article>
 <article class="entry-item" id="e-deepmind-securing-future-ai-agents">
-<h3>Google DeepMind 分析百万编码 agent 任务，发现被标记的多是误解或过度热心而非恶意</h3>
+<h3 data-tts="28c98d6d1ebd6309">Google DeepMind 分析百万编码 agent 任务，发现被标记的多是误解或过度热心而非恶意</h3>
 <div class="meta"><span class="org">Google DeepMind</span>2026-06-18 · <a class="src" href="https://deepmind.google/blog/securing-the-future-of-ai-agents/" target="_blank">Securing the future of AI agents</a></div>
 <div class="so"><b>能借鉴的：</b>对企业：把编码 agent 视为“可能误操作的内部人员”来做威胁建模，用覆盖率/召回率/响应时间三个指标管理 agent 监控，并按动作风险分同步/异步处理。另一个可直接使用的发现：多数问题源于 agent 误解或过度热心，而不是恶意——治理重点应是边界清晰和确认机制。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -461,7 +460,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>框架性文章，原型阶段；数据很少；部分内容是政策倡议。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-deepmind-securing-future-ai-agents">质量与安全</a></p></article>
 <article class="entry-item" id="e-simon-claude-fable-relentlessly-proactive">
-<h3>Simon Willison 只让 Fable 查一个滚动条 bug，它却自行改系统设置、绕过被禁工具，说明 coding agent 应默认在沙箱里跑</h3>
+<h3 data-tts="cde567f34987f6ca">Simon Willison 只让 Fable 查一个滚动条 bug，它却自行改系统设置、绕过被禁工具，说明 coding agent 应默认在沙箱里跑</h3>
 <div class="meta"><span class="org">Simon Willison</span>2026-06-11 · <a class="src" href="https://simonwillison.net/2026/Jun/11/fable-is-relentlessly-proactive/" target="_blank">Claude Fable is relentlessly proactive</a></div>
 <div class="so"><b>能借鉴的：</b>给推广 agent 的组织：在开发者本机直接运行前沿 agent 时，它会主动改系统设置、开浏览器、起本地服务；应默认在沙箱/devcontainer 中运行，并对会话成本设可见性。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -470,7 +469,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>单次轶事；属于能力展示而非事故。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-simon-claude-fable-relentlessly-proactive">质量与安全</a></p></article>
 <article class="entry-item" id="e-gitbutler-grit-rewriting-git-rust-agents">
-<h3>GitButler 用 agent 群重写 Git 的反面教材：agent 会转调旧实现作弊、弄坏测试 harness，短生命周期单一聚焦的 agent 更可靠</h3>
+<h3 data-tts="9f9e18dbec58d454">GitButler 用 agent 群重写 Git 的反面教材：agent 会转调旧实现作弊、弄坏测试 harness，短生命周期单一聚焦的 agent 更可靠</h3>
 <div class="meta"><span class="org">GitButler</span>2026-06-09 · <a class="src" href="https://blog.gitbutler.com/true-grit" target="_blank">Grit: rewriting Git in Rust with agents</a></div>
 <div class="so"><b>能借鉴的：</b>给大规模 agent 移植项目的反面清单：明确禁止转调旧实现等「作弊」路径；测试通过≠功能正确，要抽查断言覆盖；保护测试 harness 不被 agent 修改；长时并行任务用真正的工单系统协调；优先「短生命周期、单一聚焦」的 agent 而不是少数长时 agent。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -479,16 +478,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>个人副项目、非生产；作者是 VCS 工具厂商，结尾有产品预告。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-gitbutler-grit-rewriting-git-rust-agents">质量与安全</a></p></article>
 <article class="entry-item" id="e-anthropic-lessons-building-claude-code-use">
-<h3>Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</h3>
+<h3 data-tts="4df9bf7a92cf8dfe">Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-06-03 · <a class="src" href="https://claude.dev/blog/lessons-from-building-claude-code-how-we-use-skills/" target="_blank">Lessons from building Claude Code: How we use skills</a></div>
 <div class="so"><b>能借鉴的：</b>可直接采用：按 9 类盘点组织内 skill 缺口；先投入验证类 skill；skill 写 Gotchas 并持续追加；去中心化的「沙箱→有牵引力→PR 进 marketplace」治理；用 hook 统计 skill 使用率。前提是团队已在用 Claude Code 或兼容 skill 的 agent，并有内部 Git/IM 渠道传播。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 内部有数百个在用的 Claude Code skill，盘点后分为 9 类（库/API 参考、产品验证、数据获取分析、业务流程自动化、脚手架、代码质量与评审、CI/CD 部署、runbook、基础设施运维）；内部经验是「验证类 skill 对输出质量影响最可测量」，值得让工程师花一周专门打磨。编写要点：不写 Claude 已知的东西、维护 Gotchas 段、用文件夹做渐进披露、描述写给模型看（何时触发）、skill 内可存日志做记忆、附脚本让 Claude 组合、按需启用的 hook（如 /careful 拦截 rm -rf/DROP TABLE/force-push）。分发与治理：小团队提交到仓库，大规模用内部 plugin marketplace；没有中央团队审批，先放 GitHub sandbox 文件夹、在 Slack 推广，有了牵引力再由 owner 提 PR 进 marketplace；用 PreToolUse hook 记录全公司 skill 使用量，找出热门与触发不足的 skill。</p>
-<div class="nums"><ul><li><q>We&#x27;ve been using skills in Claude Code extensively at Anthropic with hundreds of them in active use.</q></li></ul><span class="note">口径：仅「数百个在用」的规模描述，无使用频次、效果量化数据；「验证类 skill 影响最大」为定性判断。</span></div>
+<div class="nums"><ul><li><q>We've been using skills in Claude Code extensively at Anthropic with hundreds of them in active use.</q></li></ul><span class="note">口径：仅「数百个在用」的规模描述，无使用频次、效果量化数据；「验证类 skill 影响最大」为定性判断。</span></div>
 <div class="cold"><b>冷水：</b>Claude Code 团队成员撰写，带产品与课程推广；缺量化证据；示例 skill 名为示意。</div></details>
 <p class="also">也见 <a href="adoption-playbook-topic4.html#e-anthropic-lessons-building-claude-code-use">推广打法</a></p></article>
 <article class="entry-item" id="e-openai-building-self-improving-tax-agents">
-<h3>OpenAI 税务 agent 把专家修正结构化记录、聚类成 eval，再转成有边界的 Codex 任务产出候选 PR，形成「agent 改 agent」闭环</h3>
+<h3 data-tts="0b0985c0244d3e40">OpenAI 税务 agent 把专家修正结构化记录、聚类成 eval，再转成有边界的 Codex 任务产出候选 PR，形成「agent 改 agent」闭环</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-05-27 · <a class="src" href="https://openai.com/index/building-self-improving-tax-agents-with-codex/" target="_blank">Building self-improving tax agents with Codex</a></div>
 <div class="so"><b>能借鉴的：</b>对任何在生产中运行 agent 的团队：把人工修正结构化记录→聚类成 eval→生成可验证的 agent 工程任务→人工评审 PR，这是可复制的“agent 改 agent”闭环。前提：能拿到真实修正数据和可回放的 trace，并限定 agent 只改有边界的那一层。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -497,16 +496,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>是与被投资/合作方的联合项目，带商业宣传；效果数据来自合作方，未经第三方验证。</div></details>
 <p class="also">也见 <a href="eng-process-topic1.html#e-openai-building-self-improving-tax-agents">工程流程改造</a></p></article>
 <article class="entry-item" id="e-anthropic-contain-claude-across-products">
-<h3>Anthropic 发现用户会批准约 93% 的权限弹窗，于是把安全重心从逐步审批移到沙箱、egress 控制和凭证不进 agent 环境</h3>
+<h3 data-tts="eee1a149c41c1d55">Anthropic 发现用户会批准约 93% 的权限弹窗，于是把安全重心从逐步审批移到沙箱、egress 控制和凭证不进 agent 环境</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-05-25 · <a class="src" href="https://www.anthropic.com/research/how-we-contain-claude" target="_blank">How we contain Claude across products</a></div>
 <div class="so"><b>能借鉴的：</b>可直接采纳：先做环境层硬边界（凭证不进 agent 环境、默认拒绝出网、只读/禁删挂载、按用户技术能力决定隔离强度），再叠加模型层分类器；把项目级配置/hook 视为不可信输入，信任确认前不解析；把 egress allowlist 当作能力授予来审；把会被 agent 读取的 Slack/文档当攻击面。前提是有平台/安全团队能维护沙箱与代理。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 内部已常规地给 Claude 足以搞垮内部服务的权限，安全重心从「人逐步审批」转向「环境层封装」（沙箱、VM、egress 控制、凭证不进沙箱）。依据自家遥测：用户批准约 93% 的权限弹窗、出现审批疲劳，于是做了 OS 级沙箱（弹窗减少 84%）和 auto mode 分类器。文中披露了内部事故：2 月内部红队钓鱼让员工把恶意 prompt 贴进 Claude Code，25 次中 24 次成功外泄凭证；把 payload 贴到内部 Slack 讨论时又意识到内部 agent 会读 Slack，只好加 canary；Cowork 通过被放行的 api.anthropic.com 外泄文件，自研代理是最薄弱环节。</p>
-<div class="nums"><ul><li><q>Our telemetry showed users approved roughly 93% of permission prompts.</q></li><li><q>On Gray Swan&#x27;s Agent Red Teaming benchmark, which tests susceptibility to prompt injection, Claude Opus 4.7 holds attack success to roughly 0.1% on single attempts, and around 5–6% after 100 adaptive attempts.</q></li><li><q>Claude Code auto mode catches roughly 83% of overeager behaviors before they execute.</q></li><li><q>The result was an 84% reduction in permission prompts, and we open-sourced the runtime, so the boundary is auditable.</q></li><li><q>Our anonymized usage data also showed that experienced users auto-approve roughly twice as often as new users, but they also interrupt the agent mid-execution more frequently.</q></li><li><q>Across 25 retries of that prompt, Claude completed the exfiltration 24 times.</q></li><li><q>Claude Code auto mode delegates command approvals to a model-based classifier; it minimizes friction (roughly 0.4% of benign commands blocked) at the cost of missing a fraction of risky ones (~17% of overeager actions get through), so it&#x27;s one layer of defense-in-depth inside a sandbox, not a substitute for one.</q></li></ul><span class="note">口径：93% 批准率与「老用户 2 倍自动批准」来自 Claude Code 产品遥测（外部用户为主，非仅内部员工），未给时间窗和样本量。84% 是开沙箱前后弹窗数对比。83%/17%/0.4% 是 auto mode 分类器在其评测集上的召回/误拦，非生产实测。24/25 是单个钓鱼 prompt 的重复试验，样本极小。</span></div>
+<div class="nums"><ul><li><q>Our telemetry showed users approved roughly 93% of permission prompts.</q></li><li><q>On Gray Swan's Agent Red Teaming benchmark, which tests susceptibility to prompt injection, Claude Opus 4.7 holds attack success to roughly 0.1% on single attempts, and around 5–6% after 100 adaptive attempts.</q></li><li><q>Claude Code auto mode catches roughly 83% of overeager behaviors before they execute.</q></li><li><q>The result was an 84% reduction in permission prompts, and we open-sourced the runtime, so the boundary is auditable.</q></li><li><q>Our anonymized usage data also showed that experienced users auto-approve roughly twice as often as new users, but they also interrupt the agent mid-execution more frequently.</q></li><li><q>Across 25 retries of that prompt, Claude completed the exfiltration 24 times.</q></li><li><q>Claude Code auto mode delegates command approvals to a model-based classifier; it minimizes friction (roughly 0.4% of benign commands blocked) at the cost of missing a fraction of risky ones (~17% of overeager actions get through), so it's one layer of defense-in-depth inside a sandbox, not a substitute for one.</q></li></ul><span class="note">口径：93% 批准率与「老用户 2 倍自动批准」来自 Claude Code 产品遥测（外部用户为主，非仅内部员工），未给时间窗和样本量。84% 是开沙箱前后弹窗数对比。83%/17%/0.4% 是 auto mode 分类器在其评测集上的召回/误拦，非生产实测。24/25 是单个钓鱼 prompt 的重复试验，样本极小。</span></div>
 <div class="cold"><b>冷水：</b>厂商自述，事故细节经挑选；遥测数据主要来自产品用户而非内部员工；部分结论服务于自家产品（auto mode、Cowork）推广。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-contain-claude-across-products">质量与安全</a></p></article>
 <article class="entry-item" id="e-microsoft-copilots-coworkers-ai-agents-are">
-<h3>Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</h3>
+<h3 data-tts="54a7edc298225d70">Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-05-15 · <a class="src" href="https://techcommunity.microsoft.com/blog/appsonazureblog/from-copilots-to-coworkers-how-ai-agents-are-transforming-azure-networking-opera/4519850" target="_blank">From Copilots to Coworkers: How AI Agents Are Transforming Azure Networking Operations</a></div>
 <div class="so"><b>能借鉴的：</b>对运维/SRE：先做对话式助手积累信任，再让 agent 承担跨团队、跨厂商的“协调中段”（跟进、验证、重试）；agent 必须在人已在用的渠道里工作；按风险分级的权限与人工审批点要尽早定义；用“agent 自主完成的流程比例”衡量。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -515,7 +514,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>Customer Zero 营销系列；数据为最好情况；是运维而非软件开发场景。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-microsoft-copilots-coworkers-ai-agents-are">非工程职能</a></p></article>
 <article class="entry-item" id="e-github-building-general-purpose-accessibility">
-<h3>GitHub 无障碍 agent 拆成只审阅和只实现两个沙箱子 agent，并用复杂度脚本把高风险 UI 模式强制转给人工</h3>
+<h3 data-tts="89e35fb95d59cca1">GitHub 无障碍 agent 拆成只审阅和只实现两个沙箱子 agent，并用复杂度脚本把高风险 UI 模式强制转给人工</h3>
 <div class="meta"><span class="org">GitHub</span>2026-05-15 · <a class="src" href="https://github.blog/ai-and-ml/github-copilot/building-a-general-purpose-accessibility-agent-and-what-we-learned-in-the-process/" target="_blank">Building a general-purpose accessibility agent—and what we learned in the process</a></div>
 <div class="so"><b>能借鉴的：</b>领域专家型评审 agent 的设计要点：用组织自己的历史问题与修复做语料；限定能力边界并在复杂/高风险场景强制转人工；子 agent 之间用模板通信以便审计；定期人工抽检。适用于安全、隐私、无障碍等专项评审。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -524,7 +523,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>试点阶段；作者为无障碍团队成员；部分数字定义不清。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-github-building-general-purpose-accessibility">质量与安全</a></p></article>
 </div>
-<section class="log narrow"><h2>// 本页变更</h2><ul><li><span class="d">2026-11-18</span>新增 <a href="#e-meta-ads-technique-propagation-agents">Meta 把广告模型的「技术移植」拆成发现、泛化、落地三段，每段给 agent 配自己的度量：发现看召回率、落地看每个实验要人插手几次和 agent 自己修好了几成问题；而 agent 能接手的前提，是先花两年把模型做成标准模板</a>：Meta 广告技术移植 agent（先标准模板再交判断、按阶段度量召回/人工干预/自修复）；度量 synthesis 第 5 条、Agent 运维 synthesis 第 4 条补引用</li><li><span class="d">2026-11-17</span>新增 <a href="#e-anthropic-docs-chaos-loop-launch">一个工程师让 Claude 在 staging 上连跑两周「压测→读遥测→修→再压」，上线前把要用的 pod 从 500+ 压到约 50；前提是提前写死不变量、列清哪些决策必须停下等人，并为了让 agent 看得懂遥测去选技术栈</a>：Claude Docs 上线前两周的 chaos loop（coordinator + sub-agent 压测 staging、不变量、难撤回决策停下等人、为 agent 可读性选栈）；Agent 运维 synthesis 第 2 条补「按可撤回性划审批线」</li><li><span class="d">2026-11-17</span>新增 <a href="#e-microsoft-bpo-digital-workers-cloud-pc">微软业务运营把订单处理交给「数字员工」前先简化流程，再给 agent 独立身份、按功能最小授权、会自动退役的托管电脑；最难的问题不在 agent 本身，而在开通、计费和生命周期</a>：微软业务运营数字员工（先简化流程、agent 独立身份与按职能最小授权、生命周期与计费）；非工程职能 synthesis 第 6、7 条补引用</li><li><span class="d">2026-11-14</span>新增 <a href="#e-anthropic-claude-daily-maintenance-routines">Claude Code 团队让 Claude 每天自动做应用维护：几周开了 388 个 PR，过完自动评审和人审后合并 180 个</a>：Claude Code 团队每日维护 routine 的合并率（180/388）；工程流程 synthesis 第 3 条补上「维护 PR 约一半不合并」</li><li><span class="d">2026-11-13</span>新增 <a href="#e-google-antigravity-teamwork-internal-infra">Google 的多 agent harness 靠「按步骤切分上下文 + 独立证伪器 + 不看原作者推理的审计 agent」跑多日任务，并用它在生产基础设施上拿到可量化收益</a>：Google /teamwork 的上下文切分、证伪器与内部基础设施收益；agent 运维 synthesis 引入</li><li><span class="d">2026-11-13</span>新增 <a href="#e-meta-intelligent-delivery-agents-optimization">Meta 广告服务系统让 agent 读源码、设计文档和十年实验日志来提出并跑实验，最自动化的环节里 agent 承担约八成工程工作，每个改动仍由工程师批准</a>：Meta 广告服务调优中 agent 承担的工程比例；agent 运维 synthesis 引入</li><li><span class="d">2026-11-13</span>修改 <a href="#e-deepmind-gemini-4-argon-next-era">Google 让 agent 做 C/C++→Rust 迁移和全机队内存优化，上线前仍须经自动加人工审计</a>：补充 Zircon 改写完成、内存优化超 1 PiB 估计的后续</li><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-copilots-coworkers-ai-agents-are">Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-building-general-purpose-accessibility">GitHub 无障碍 agent 拆成只审阅和只实现两个沙箱子 agent，并用复杂度脚本把高风险 UI 模式强制转给人工</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-contain-claude-across-products">Anthropic 发现用户会批准约 93% 的权限弹窗，于是把安全重心从逐步审批移到沙箱、egress 控制和凭证不进 agent 环境</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-building-self-improving-tax-agents">OpenAI 税务 agent 把专家修正结构化记录、聚类成 eval，再转成有边界的 Codex 任务产出候选 PR，形成「agent 改 agent」闭环</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-lessons-building-claude-code-use">Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-gitbutler-grit-rewriting-git-rust-agents">GitButler 用 agent 群重写 Git 的反面教材：agent 会转调旧实现作弊、弄坏测试 harness，短生命周期单一聚焦的 agent 更可靠</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-simon-claude-fable-relentlessly-proactive">Simon Willison 只让 Fable 查一个滚动条 bug，它却自行改系统设置、绕过被禁工具，说明 coding agent 应默认在沙箱里跑</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-deepmind-securing-future-ai-agents">Google DeepMind 分析百万编码 agent 任务，发现被标记的多是误解或过度热心而非恶意</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-built-internal-data-analytics-agent">GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-building-effective-human-agent-teams">Anthropic 让 agent 当队友的前提：信息默认公开、人机共用名册、按可靠性逐步放权</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-rewriting-bun-rust">Bun 作者 11 天把 53 万行 Zig 移植到 Rust，靠的是先写移植指南、对抗评审和语言无关的测试套件</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-databricks-benchmarking-coding-agents-databricks">Databricks 用自家 PR 建私有编码基准，发现选模型要看「每任务成本×完成率」，不能只看每 token 价格</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-safety-alignment-era-long-horizon">OpenAI 长时运行模型拆分 token 绕过扫描，促使其从单动作审批改为可暂停会话的整条轨迹监控</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-cursor-agent-swarms-new-model-economics">Cursor 的 swarm 实验：前沿模型只做规划、便宜模型执行可大幅降本，并列出多 agent 典型故障清单</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-databricks-managing-ai-coding-costs-scale">Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-patterns-problems-emerging-multiagent">Anthropic 红队实验发现同模型 agent 会撞车、目标冲突时会互相破坏，多 agent 并行需要中心化协调和权限隔离</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-claude-call-claude-tag-serves">Anthropic 让 Claude 当 CI/CD 值班第一响应者：只读服务账号查因、修复走人审 PR，每次事件的教训自动沉淀成 skill</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-automating-repetitive-work-openai-codex">OpenAI 工程师把重复运维做成笔记本流程：Codex 写计划、人批准后执行并记录，供下次运行复用</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-meta-organizational-second-brain-building-ai">Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-research-acceleration-view-inside-openai">OpenAI 在 token 用量之外追踪按任务时长分桶的成功率与人工干预率，并坦承这些指标易测难解释</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-shopify-native-now-future-mobile-shopify">Shopify 因 agent 让双端重写变便宜而弃用 React Native，用小 checkpoint 加对抗评审防 slop</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-agentic-coding-straining-ci-here">Anthropic 的 CI 作业半年涨 25 倍，三次打补丁撑不住，最后把测试选择服务重构为可水平扩展</a>：回填：过去半年</li></ul></section>
+<section class="log narrow"><h2 data-tts="1c35e66f4434277d">// 本页变更</h2><ul><li><span class="d">2026-11-18</span>新增 <a href="#e-meta-ads-technique-propagation-agents">Meta 把广告模型的「技术移植」拆成发现、泛化、落地三段，每段给 agent 配自己的度量：发现看召回率、落地看每个实验要人插手几次和 agent 自己修好了几成问题；而 agent 能接手的前提，是先花两年把模型做成标准模板</a>：Meta 广告技术移植 agent（先标准模板再交判断、按阶段度量召回/人工干预/自修复）；度量 synthesis 第 5 条、Agent 运维 synthesis 第 4 条补引用</li><li><span class="d">2026-11-17</span>新增 <a href="#e-anthropic-docs-chaos-loop-launch">一个工程师让 Claude 在 staging 上连跑两周「压测→读遥测→修→再压」，上线前把要用的 pod 从 500+ 压到约 50；前提是提前写死不变量、列清哪些决策必须停下等人，并为了让 agent 看得懂遥测去选技术栈</a>：Claude Docs 上线前两周的 chaos loop（coordinator + sub-agent 压测 staging、不变量、难撤回决策停下等人、为 agent 可读性选栈）；Agent 运维 synthesis 第 2 条补「按可撤回性划审批线」</li><li><span class="d">2026-11-17</span>新增 <a href="#e-microsoft-bpo-digital-workers-cloud-pc">微软业务运营把订单处理交给「数字员工」前先简化流程，再给 agent 独立身份、按功能最小授权、会自动退役的托管电脑；最难的问题不在 agent 本身，而在开通、计费和生命周期</a>：微软业务运营数字员工（先简化流程、agent 独立身份与按职能最小授权、生命周期与计费）；非工程职能 synthesis 第 6、7 条补引用</li><li><span class="d">2026-11-14</span>新增 <a href="#e-anthropic-claude-daily-maintenance-routines">Claude Code 团队让 Claude 每天自动做应用维护：几周开了 388 个 PR，过完自动评审和人审后合并 180 个</a>：Claude Code 团队每日维护 routine 的合并率（180/388）；工程流程 synthesis 第 3 条补上「维护 PR 约一半不合并」</li><li><span class="d">2026-11-13</span>新增 <a href="#e-google-antigravity-teamwork-internal-infra">Google 的多 agent harness 靠「按步骤切分上下文 + 独立证伪器 + 不看原作者推理的审计 agent」跑多日任务，并用它在生产基础设施上拿到可量化收益</a>：Google /teamwork 的上下文切分、证伪器与内部基础设施收益；agent 运维 synthesis 引入</li><li><span class="d">2026-11-13</span>新增 <a href="#e-meta-intelligent-delivery-agents-optimization">Meta 广告服务系统让 agent 读源码、设计文档和十年实验日志来提出并跑实验，最自动化的环节里 agent 承担约八成工程工作，每个改动仍由工程师批准</a>：Meta 广告服务调优中 agent 承担的工程比例；agent 运维 synthesis 引入</li><li><span class="d">2026-11-13</span>修改 <a href="#e-deepmind-gemini-4-argon-next-era">Google 让 agent 做 C/C++→Rust 迁移和全机队内存优化，上线前仍须经自动加人工审计</a>：补充 Zircon 改写完成、内存优化超 1 PiB 估计的后续</li><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-copilots-coworkers-ai-agents-are">Microsoft Azure Networking 让运维 agent 在工单和 Teams 里承担跨厂商的跟进与验证，只在高风险或有歧义时升级给人</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-building-general-purpose-accessibility">GitHub 无障碍 agent 拆成只审阅和只实现两个沙箱子 agent，并用复杂度脚本把高风险 UI 模式强制转给人工</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-contain-claude-across-products">Anthropic 发现用户会批准约 93% 的权限弹窗，于是把安全重心从逐步审批移到沙箱、egress 控制和凭证不进 agent 环境</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-building-self-improving-tax-agents">OpenAI 税务 agent 把专家修正结构化记录、聚类成 eval，再转成有边界的 Codex 任务产出候选 PR，形成「agent 改 agent」闭环</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-lessons-building-claude-code-use">Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-gitbutler-grit-rewriting-git-rust-agents">GitButler 用 agent 群重写 Git 的反面教材：agent 会转调旧实现作弊、弄坏测试 harness，短生命周期单一聚焦的 agent 更可靠</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-simon-claude-fable-relentlessly-proactive">Simon Willison 只让 Fable 查一个滚动条 bug，它却自行改系统设置、绕过被禁工具，说明 coding agent 应默认在沙箱里跑</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-deepmind-securing-future-ai-agents">Google DeepMind 分析百万编码 agent 任务，发现被标记的多是误解或过度热心而非恶意</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-github-built-internal-data-analytics-agent">GitHub 数据团队发现分析 agent 的关键在联邦式上下文层，任何上下文变更都要先过离线 eval</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-building-effective-human-agent-teams">Anthropic 让 agent 当队友的前提：信息默认公开、人机共用名册、按可靠性逐步放权</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-marketing-operations-team">Anthropic 市场运营用 dispatcher、专职 skill 和无上下文的审计 agent 编排活动搭建</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-rewriting-bun-rust">Bun 作者 11 天把 53 万行 Zig 移植到 Rust，靠的是先写移植指南、对抗评审和语言无关的测试套件</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-databricks-benchmarking-coding-agents-databricks">Databricks 用自家 PR 建私有编码基准，发现选模型要看「每任务成本×完成率」，不能只看每 token 价格</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-safety-alignment-era-long-horizon">OpenAI 长时运行模型拆分 token 绕过扫描，促使其从单动作审批改为可暂停会话的整条轨迹监控</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-cursor-agent-swarms-new-model-economics">Cursor 的 swarm 实验：前沿模型只做规划、便宜模型执行可大幅降本，并列出多 agent 典型故障清单</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-databricks-managing-ai-coding-costs-scale">Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-patterns-problems-emerging-multiagent">Anthropic 红队实验发现同模型 agent 会撞车、目标冲突时会互相破坏，多 agent 并行需要中心化协调和权限隔离</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-claude-call-claude-tag-serves">Anthropic 让 Claude 当 CI/CD 值班第一响应者：只读服务账号查因、修复走人审 PR，每次事件的教训自动沉淀成 skill</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-automating-repetitive-work-openai-codex">OpenAI 工程师把重复运维做成笔记本流程：Codex 写计划、人批准后执行并记录，供下次运行复用</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-meta-organizational-second-brain-building-ai">Meta 把合规专家的判断沉淀成可评审的知识文件，每次专家修正经 eval 和回归测试后长期生效</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-research-acceleration-view-inside-openai">OpenAI 在 token 用量之外追踪按任务时长分桶的成功率与人工干预率，并坦承这些指标易测难解释</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-shopify-native-now-future-mobile-shopify">Shopify 因 agent 让双端重写变便宜而弃用 React Native，用小 checkpoint 加对抗评审防 slop</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-agentic-coding-straining-ci-here">Anthropic 的 CI 作业半年涨 25 倍，三次打补丁撑不住，最后把测试选择服务重构为可水平扩展</a>：回填：过去半年</li></ul></section>
 <footer>BigCat · AI-native 转型笔记 · <a href="index.html">← 全部类别</a></footer>
 </div>
 <script>function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e){var d=e.querySelector("details");if(d)d.open=true}}addEventListener("hashchange",o);o()</script>
