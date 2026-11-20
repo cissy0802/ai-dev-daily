@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>推广打法 — AI-native 转型笔记</title>
 <style>
@@ -66,15 +67,15 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="container">
 <header>
 <span class="tag">AI-NATIVE · ADOPTION-PLAYBOOK</span>
-<h1>推广打法</h1>
-<h2>在一个非 lab 的大组织里，AI-native 转型怎么分步推、怎么度量、怎么管住成本和风险？</h2>
+<h1 data-tts="df75472a8c87fc6e">推广打法</h1>
+<h2 data-tts="7d773c7669fc7c9b">在一个非 lab 的大组织里，AI-native 转型怎么分步推、怎么度量、怎么管住成本和风险？</h2>
 <div class="date">13 篇来源 · 更新于 2026-11-13 · BigCat</div>
 </header>
-<section class="synthesis narrow"><h2>// 目前能学到的</h2><ol><li><strong>输入指标只用来诊断，不能当目标</strong>：token 用量、采纳率、PR 数一旦变成目标，就会催生 tokenmaxxing 和代码行数膨胀。更好的看法是 P10 和 P90 两头：P10 用来找出没用好的团队，P90 用来检验重度用户有没有交付提升（<a href="#e-amazon-update-amazon-engineering-leadership-role">Amazon</a>）。上线前写好预期价值和基线，按月复盘，并追踪节省出的时间被投到了哪里（<a href="#e-microsoft-measuring-impact-ai-investments-micros">Microsoft 度量框架</a>）；反例是 <a href="#e-microsoft-copilot-cowork-adoption-stick">Microsoft Cowork 推广</a>，上线前没埋遥测和活动标记，事后说不清哪次宣传拉动了使用；算 AI 价值时要把审核和返工成本算进去（<a href="#e-openai-building-ai-native-finance-function">OpenAI 财务</a>）。（多个组织）</li><li>转型要<strong>按交付环节逐段改造</strong>，不要一次铺开：<a href="#e-furtherai-building-ai-native-engineering-org">FurtherAI</a> 按月推进「agent 写码→写测试→AI 预审→CI 并行化→bug 自动接入→口头规则写成检查→低风险自动合并」。它同时追踪「每人每日合并变更」（约 5x）和「面向客户的变更」，后者增幅小而且滞后，夏季做工具投入时持平。要预先接受改造期的投入低谷，也要注意这是小型 AI 原生创业公司，流程负担远小于大公司。（单一组织）</li><li>AI 编码成本的治理，各家路线并不一致：<a href="#e-databricks-managing-ai-coding-costs-scale">Databricks</a> 主张用内部评测把用量迁到更便宜的模型，加网关路由，再用「看板→可自解除的闸门→降档→最后才暂停」的渐进摩擦，以免误伤高产用户；<a href="#e-uber-uber-caps-usage-ai-tools">Uber</a> 则在四个月花光全年预算后，按人按工具设每月 1,500 美元硬上限；<a href="#e-openai-building-ai-native-finance-function">OpenAI CFO</a> 主张用预算、路由和审批阈值，像管可变费用一样管 AI 支出。前提是所有 agent 流量走统一网关、可以计量。另外 Databricks 的 30%/50% 节省是自家内部结果，同时它也在卖网关产品。（多个组织）</li><li>试点要<strong>小范围、团队愿意承诺反馈、反馈即刻规则化</strong>。<a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 市场团队</a>先发给 10 人销售小组，每条反馈都写成显式规则（比如「绝不编造 URL」），第一周就积累了 9 条，后来扩到 BDR 只用了两天。安全上的对应做法是「管理员节奏」：先给小群体用、看遥测、再扩大（<a href="#e-anthropic-zero-risk-isn-t-job">Anthropic CISO</a>）。用 hackathon 给一线留出改造时间，请技术人员陪跑（<a href="#e-openai-building-ai-native-finance-function">OpenAI 财务</a>）。全员铺开后，上线日只是起点：<a href="#e-microsoft-copilot-cowork-adoption-stick">Microsoft Cowork</a> 靠征集同事的真实 prompt 和产出、连续数月提醒、补 plugin 接进日常系统来拉动使用（只有采用数据，没有效果数据）。（多个组织）</li><li>领导和员工都要亲手用过，并且承认边界。<a href="#e-amazon-update-amazon-engineering-leadership-role">Amazon</a> 要求技术和管理 leader 在生产工作中用过这些工具，说得出哪些任务帮上了、哪些没有，「AI 帮不上」被当作一种发现而不是失败。职级标准锚定结果，不写具体工具。<a href="#e-anthropic-anthropic-s-approach-teaching-learning">Anthropic</a> 把「按风险高低决定验证力度」这类心态原则放进全员入职培训，代替很快过时的提示技巧。非工程岗挑选首批任务时，可以用 <a href="#e-anthropic-best-practices-getting-started-claude">Cowork 五要素清单</a>判断是否适合交给 agent。（多个组织）</li><li>每个 agent 用例都可以先过一遍<strong>四个问题的安全评审</strong>：会摄入什么不可信内容、能做哪些动作且以谁的身份、失准时的爆炸半径有多大、有什么可观测性。授权按动作粒度裁剪（比如允许起草、不允许发送），agent 所在环境不放值得偷的凭证，要有组织级的一键关停；让非工程团队在受管平台上自建 agent，以减少影子 AI（<a href="#e-anthropic-zero-risk-isn-t-job">Anthropic CISO</a>）。案例里只升级了模型，agent 就主动请另一个 Claude 出修复 PR，可见边界要按权限划，而不是按对模型能力的假设。（单一组织）</li><li>共享 skill 和 plugin 是从「个人用法」走向「组织工作流」的载体：skill 的治理可以去中心化，先放进 sandbox、有了牵引力再进 marketplace，用 hook 统计使用率，先把精力投在验证类 skill 上（<a href="#e-anthropic-lessons-building-claude-code-use">Anthropic skills</a>）。OpenAI 用「每周使用 Plugins 的员工 95%」作为深度采用的参照（<a href="#e-openai-assistance-execution-enterprises-put-ai">OpenAI Enterprise Signals</a>），但它的分母前后不一致（employees vs active users），两篇也都没有效果数据。（厂商自报）</li></ol></section>
-<h2 class="entries-h">// 来源（新的在前）</h2>
+<section class="synthesis narrow"><h2 data-tts="28e39d45b9e97b57">// 目前能学到的</h2><ol><li><strong>输入指标只用来诊断，不能当目标</strong>：token 用量、采纳率、PR 数一旦变成目标，就会催生 tokenmaxxing 和代码行数膨胀。更好的看法是 P10 和 P90 两头：P10 用来找出没用好的团队，P90 用来检验重度用户有没有交付提升（<a href="#e-amazon-update-amazon-engineering-leadership-role">Amazon</a>）。上线前写好预期价值和基线，按月复盘，并追踪节省出的时间被投到了哪里（<a href="#e-microsoft-measuring-impact-ai-investments-micros">Microsoft 度量框架</a>）；反例是 <a href="#e-microsoft-copilot-cowork-adoption-stick">Microsoft Cowork 推广</a>，上线前没埋遥测和活动标记，事后说不清哪次宣传拉动了使用；算 AI 价值时要把审核和返工成本算进去（<a href="#e-openai-building-ai-native-finance-function">OpenAI 财务</a>）。（多个组织）</li><li>转型要<strong>按交付环节逐段改造</strong>，不要一次铺开：<a href="#e-furtherai-building-ai-native-engineering-org">FurtherAI</a> 按月推进「agent 写码→写测试→AI 预审→CI 并行化→bug 自动接入→口头规则写成检查→低风险自动合并」。它同时追踪「每人每日合并变更」（约 5x）和「面向客户的变更」，后者增幅小而且滞后，夏季做工具投入时持平。要预先接受改造期的投入低谷，也要注意这是小型 AI 原生创业公司，流程负担远小于大公司。（单一组织）</li><li>AI 编码成本的治理，各家路线并不一致：<a href="#e-databricks-managing-ai-coding-costs-scale">Databricks</a> 主张用内部评测把用量迁到更便宜的模型，加网关路由，再用「看板→可自解除的闸门→降档→最后才暂停」的渐进摩擦，以免误伤高产用户；<a href="#e-uber-uber-caps-usage-ai-tools">Uber</a> 则在四个月花光全年预算后，按人按工具设每月 1,500 美元硬上限；<a href="#e-openai-building-ai-native-finance-function">OpenAI CFO</a> 主张用预算、路由和审批阈值，像管可变费用一样管 AI 支出。前提是所有 agent 流量走统一网关、可以计量。另外 Databricks 的 30%/50% 节省是自家内部结果，同时它也在卖网关产品。（多个组织）</li><li>试点要<strong>小范围、团队愿意承诺反馈、反馈即刻规则化</strong>。<a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 市场团队</a>先发给 10 人销售小组，每条反馈都写成显式规则（比如「绝不编造 URL」），第一周就积累了 9 条，后来扩到 BDR 只用了两天。安全上的对应做法是「管理员节奏」：先给小群体用、看遥测、再扩大（<a href="#e-anthropic-zero-risk-isn-t-job">Anthropic CISO</a>）。用 hackathon 给一线留出改造时间，请技术人员陪跑（<a href="#e-openai-building-ai-native-finance-function">OpenAI 财务</a>）。全员铺开后，上线日只是起点：<a href="#e-microsoft-copilot-cowork-adoption-stick">Microsoft Cowork</a> 靠征集同事的真实 prompt 和产出、连续数月提醒、补 plugin 接进日常系统来拉动使用（只有采用数据，没有效果数据）。（多个组织）</li><li>领导和员工都要亲手用过，并且承认边界。<a href="#e-amazon-update-amazon-engineering-leadership-role">Amazon</a> 要求技术和管理 leader 在生产工作中用过这些工具，说得出哪些任务帮上了、哪些没有，「AI 帮不上」被当作一种发现而不是失败。职级标准锚定结果，不写具体工具。<a href="#e-anthropic-anthropic-s-approach-teaching-learning">Anthropic</a> 把「按风险高低决定验证力度」这类心态原则放进全员入职培训，代替很快过时的提示技巧。非工程岗挑选首批任务时，可以用 <a href="#e-anthropic-best-practices-getting-started-claude">Cowork 五要素清单</a>判断是否适合交给 agent。（多个组织）</li><li>每个 agent 用例都可以先过一遍<strong>四个问题的安全评审</strong>：会摄入什么不可信内容、能做哪些动作且以谁的身份、失准时的爆炸半径有多大、有什么可观测性。授权按动作粒度裁剪（比如允许起草、不允许发送），agent 所在环境不放值得偷的凭证，要有组织级的一键关停；让非工程团队在受管平台上自建 agent，以减少影子 AI（<a href="#e-anthropic-zero-risk-isn-t-job">Anthropic CISO</a>）。案例里只升级了模型，agent 就主动请另一个 Claude 出修复 PR，可见边界要按权限划，而不是按对模型能力的假设。（单一组织）</li><li>共享 skill 和 plugin 是从「个人用法」走向「组织工作流」的载体：skill 的治理可以去中心化，先放进 sandbox、有了牵引力再进 marketplace，用 hook 统计使用率，先把精力投在验证类 skill 上（<a href="#e-anthropic-lessons-building-claude-code-use">Anthropic skills</a>）。OpenAI 用「每周使用 Plugins 的员工 95%」作为深度采用的参照（<a href="#e-openai-assistance-execution-enterprises-put-ai">OpenAI Enterprise Signals</a>），但它的分母前后不一致（employees vs active users），两篇也都没有效果数据。（厂商自报）</li></ol></section>
+<h2 class="entries-h" data-tts="49ade17fa97d24bd">// 来源（新的在前）</h2>
 <div class="grid">
 <article class="entry-item" id="e-microsoft-copilot-cowork-adoption-stick">
-<h3>Microsoft 内部推 agent 工具的复盘：开通不等于采用，靠同事的真实 prompt 和持续数月的提醒拉动使用，但因为上线前没设基线，说不清哪项动作起了作用</h3>
+<h3 data-tts="03d2ce3a70411e5b">Microsoft 内部推 agent 工具的复盘：开通不等于采用，靠同事的真实 prompt 和持续数月的提醒拉动使用，但因为上线前没设基线，说不清哪项动作起了作用</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-11-12 · <a class="src" href="https://www.microsoft.com/insidetrack/blog/making-ai-adoption-stick-what-we-learned-after-launching-copilot-cowork-at-microsoft/" target="_blank">Making AI adoption stick: What we learned after launching Copilot Cowork at Microsoft</a></div>
 <div class="so"><b>能借鉴的：</b>推 agent 类工具时，把「上线」之后的 2–3 个月当成主战场：先在上线计划里就排好同事案例征集（真实 prompt + 真实产出），比功能清单更能让人想象「我能交给它什么」；同时在上线<strong>之前</strong>埋好使用遥测和活动标记，才能把宣传节奏和采用曲线对上。前提是有一个能持续运营内部社区、并能把反馈回传给产品方的小团队。另一个可借：把文档写成「人和 AI 都搜得到」的形式，把「找到正确答案」而不只是点击量当成指标。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -83,7 +84,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>Microsoft 是 Cowork 的厂商，Inside Track 本身兼具对外营销（文末有销售引流）；只有采用数据，没有效果数据；增长与自然扩散、产品改进无法区分，作者自己也承认。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-microsoft-copilot-cowork-adoption-stick">度量与证据</a></p></article>
 <article class="entry-item" id="e-furtherai-building-ai-native-engineering-org">
-<h3>FurtherAI 按月逐段改造交付环节，同时追踪代码变更和面向客户变更两种吞吐</h3>
+<h3 data-tts="b01ea228415b4d34">FurtherAI 按月逐段改造交付环节，同时追踪代码变更和面向客户变更两种吞吐</h3>
 <div class="meta"><span class="org">FurtherAI</span>2026-10-29 · <a class="src" href="https://twitter.com/sgondala2/status/2115832070274723875" target="_blank">Building an AI-native engineering org</a></div>
 <div class="so"><b>能借鉴的：</b>这是最接近「非实验室公司可照抄」的路线图：按交付环节逐月改造（码→测→审→CI→bug 接入→规则化→低风险自动合并→Slack 代码频道），并同时度量「代码变更」与「面向客户的变更」两种吞吐，接受改造期的投入低谷。把评审口头规则转成会打印修复方法的 CI 检查，是让 agent 自我纠错、放开低风险自动合并的前提。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -92,16 +93,15 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>创业公司 CTO 自述，文末招聘；小团队、AI 原生业务，规模与流程负担远小于大公司；数字未经第三方验证。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-furtherai-building-ai-native-engineering-org">组织与角色</a></p></article>
 <article class="entry-item" id="e-amazon-update-amazon-engineering-leadership-role">
-<h3>Amazon 职级指南不写 AI 工具、只锚定结果，token 等输入指标只用来诊断</h3>
+<h3 data-tts="5801621591bdb0fe">Amazon 职级指南不写 AI 工具、只锚定结果，token 等输入指标只用来诊断</h3>
 <div class="meta"><span class="org">Amazon</span>2026-10-27 · <a class="src" href="https://www.aboutamazon.com/news/company-news/amazon-software-engineer-role-guideline-ai" target="_blank">An update from Amazon engineering leadership on the role of the developer in the age of AI</a></div>
 <div class="so"><b>能借鉴的：</b>对大型非实验室公司最直接的模板：职级/绩效标准锚定结果而非 AI 用量；输入指标只作诊断不作目标；用 P10/P90 分位数而非平均数去找问题团队；要求 leader 有亲手使用经验并能说清边界；允许并鼓励工程师记录「AI 不适用」的场景并分享。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Amazon 资深首席/杰出工程师群体修订 SDE 角色指南并发全员备忘：刻意不把具体 AI 工具或实践写进职级标准（以免一年后过时），而锚定「对客户、业务、团队的结果」。承认在用 token 用量、AI 工具采纳、代码变更与评审数等输入/吞吐指标，并明说这些指标若被当目标会导致 tokenmaxxing 和 LOC 膨胀；建议重点看 AI 采纳的 P10（找出没用好的团队并理解原因）和 P90（重度使用者是否有相应交付提升）。要求技术和管理 leader 亲手在生产工作中用过这些工具，能讲出帮上忙和没帮上忙的任务；「AI 帮不上你的工作」被定义为一种发现而非失败。</p>
-
 <div class="cold"><b>冷水：</b>公司对外发布的内部备忘，有雇主品牌与 AWS 营销成分；无数据支撑其「输入指标与产出相关」的说法。</div></details>
 <p class="also"><a href="https://simonwillison.net/2026/Oct/28/terk-terkowitz/" target="_blank">独立分析</a> · 也见 <a href="org-roles-topic2.html#e-amazon-update-amazon-engineering-leadership-role">组织与角色</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-field-marketer-uses-claude">
-<h3>Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</h3>
+<h3 data-tts="6fb8b877eab0d0bd">Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-24 · <a class="src" href="https://claude.com/resources/articles/how-an-anthropic-field-marketer-uses-claude-code-to-send-weekly-personalized-updates-to-every-sales-rep" target="_blank">How an Anthropic field marketer uses Claude Code to send weekly personalized updates to every sales rep</a></div>
 <div class="so"><b>能借鉴的：</b>可直接借鉴的推广方法：用内部 hackathon 给非工程团队留出改造时间；小规模承诺型试点；把每条用户反馈固化为显式规则（尤其是防编造的硬约束）；prompt 版本化并在多人维护时迁入 Git。注意作者后来取消了发送前审批，非 lab 组织应先评估错误外发的代价。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -110,16 +110,15 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>员工自述+产品推广；截图为合成数据；效果指标为单次轶事。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-anthropic-anthropic-field-marketer-uses-claude">非工程职能</a></p></article>
 <article class="entry-item" id="e-anthropic-anthropic-s-approach-teaching-learning">
-<h3>Anthropic 把 AI 素养放进全员入职，教的是「按风险决定验证力度」等心态，而不是提示技巧</h3>
+<h3 data-tts="4b66ca43b300ed1f">Anthropic 把 AI 素养放进全员入职，教的是「按风险决定验证力度」等心态，而不是提示技巧</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-08-20 · <a class="src" href="https://claude.com/resources/articles/anthropics-approach-to-teaching-and-learning-ai" target="_blank">Anthropic’s approach to teaching and learning AI</a></div>
 <div class="so"><b>能借鉴的：</b>可借鉴：把 AI 素养纳入所有岗位的入职流程（含任务分配判断与 AI 常见错误识别），设持续学习机制；用「按风险高低决定验证力度」这类心态原则代替易过时的提示技巧；为 IT/法务/HR 等内部支持频道配 AI 首答。前提是有内部知识库可供 AI 问答引用。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>（Claude Academy 发布帖，仅取内部实践）Anthropic 从员工入职第一天起教授 AI 素养：所有员工在 onboarding 学 4D AI Fluency 框架、如何管理 agent 掌握的信息、AI 进步速度，练习决定哪些任务交给 AI、哪些自己做，以及了解 AI 常犯的错误以便更好地审查 AI 产出；之后通过「ever-boarding」持续学习项目深入能力边界和人-agent 团队实践。所有员工配有 Claude Tag 等内部问答工具，IT、法务、福利等 Slack 频道由 Claude 值守。教学重心从具体提示技巧转向持久心态（如「今天的 AI 是你用过最差的」「按风险高低决定验证力度」），并强调主动保留重要技能以防退化、向同事和客户披露 AI 使用。</p>
-
 <div class="cold"><b>冷水：</b>产品发布推广文；未给培训效果评估或覆盖率数据。</div></details>
 <p class="also">也见 <a href="org-roles-topic2.html#e-anthropic-anthropic-s-approach-teaching-learning">组织与角色</a></p></article>
 <article class="entry-item" id="e-openai-assistance-execution-enterprises-put-ai">
-<h3>OpenAI 内部每周使用 Plugins 的员工比例达 95%，可作为共享工作流采用深度的对标参照</h3>
+<h3 data-tts="3ea9f7d39bf9e171">OpenAI 内部每周使用 Plugins 的员工比例达 95%，可作为共享工作流采用深度的对标参照</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-08-12 · <a class="src" href="https://openai.com/index/how-enterprises-put-ai-to-work/" target="_blank">From assistance to execution: How enterprises put AI to work</a></div>
 <div class="so"><b>能借鉴的：</b>可作为对标参照：把“每周使用封装好的 plugin/skill 的人数比例”作为从个人用法走向共享工作流的成熟度指标。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -128,7 +127,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>内部数据只有一个点；主体为客户数据和销售导向的建议。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-openai-assistance-execution-enterprises-put-ai">度量与证据</a></p></article>
 <article class="entry-item" id="e-openai-building-ai-native-finance-function">
-<h3>OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</h3>
+<h3 data-tts="8595fceffe38780a">OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</h3>
 <div class="meta"><span class="org">OpenAI</span>2026-08-10 · <a class="src" href="https://openai.com/index/building-an-ai-native-finance-function/" target="_blank">What building an AI-native finance function taught me</a></div>
 <div class="so"><b>能借鉴的：</b>可迁移：黑客松让一线带问题来、技术人员陪跑；从一个高价值决策倒推流程；评估 AI 价值时把审核与返工成本计入；“tokenmaxxing 已过时”，用预算/路由/审批阈值像管理可变费用一样管 AI 支出。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -137,7 +136,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>CFO 署名的观点文，偏方法论，缺乏内部效果数据；“仍在建设中”的目标多于已实现结果。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-openai-building-ai-native-finance-function">非工程职能</a></p></article>
 <article class="entry-item" id="e-databricks-managing-ai-coding-costs-scale">
-<h3>Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</h3>
+<h3 data-tts="035f6f8a76f3ab8d">Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</h3>
 <div class="meta"><span class="org">Databricks</span>2026-08-07 · <a class="src" href="https://www.databricks.com/blog/managing-ai-coding-costs-scale" target="_blank">Managing AI Coding Costs at Scale</a></div>
 <div class="so"><b>能借鉴的：</b>非实验室企业最直接可抄的一篇：建立自己的内部编码评测来决定开放哪些模型；用网关统一计量；以「看板 → 自解除闸门 → 审批 → 降档 → 暂停」的渐进摩擦替代硬预算，避免误伤高产用户。前提是所有 agent 流量走统一网关。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -146,8 +145,8 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>Databricks 在推销自家 Unity Gateway/Omnigent；其他公司做法为访谈转述，非一手数据；文中「velocity 指标提升」未给数字。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-databricks-managing-ai-coding-costs-scale">Agent 运维与编排</a></p></article>
 <article class="entry-item" id="e-anthropic-zero-risk-isn-t-job">
-<h3>Anthropic 副 CISO 用四个问题审批 agent 用例，主张按访问与动作划边界，并假设下一代模型更主动</h3>
-<div class="meta"><span class="org">Anthropic</span>2026-07-17 · <a class="src" href="https://claude.com/resources/articles/ciso-guide-to-agentic-ai" target="_blank">Zero risk isn&#x27;t the job: a CISO&#x27;s guide to agentic AI</a></div>
+<h3 data-tts="166e821142dead52">Anthropic 副 CISO 用四个问题审批 agent 用例，主张按访问与动作划边界，并假设下一代模型更主动</h3>
+<div class="meta"><span class="org">Anthropic</span>2026-07-17 · <a class="src" href="https://claude.com/resources/articles/ciso-guide-to-agentic-ai" target="_blank">Zero risk isn't the job: a CISO's guide to agentic AI</a></div>
 <div class="so"><b>能借鉴的：</b>可直接作为安全评审模板：四问题评估 + 最小代理权限 + 小范围先行；把 agent 当作内部人员风险来治理（身份、最小权限、监控、分钟级响应）；让非工程团队在受管平台上自建 agent 以减少影子 AI；按动作粒度裁剪连接器能力；设计控制时假设下一代模型会更主动。前提是有 IdP/SCIM、SIEM、egress 代理等基础安全设施。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 副 CISO 介绍内部审批 agent 用例的四个问题（摄入什么不可信内容、能做哪些动作且以谁的身份、失准时的爆炸半径、有何可观测性），默认采取「管理员节奏推广」（先给小群体、看遥测、再扩大）。案例：一年多前上线的安全事件响应 agent 只有三项权限（只读无 PII 的生产日志、Slack 开频道、起草 postmortem 文档），所有动作进 SIEM；2025 年 11 月仅升级模型、其他不变后，它首次在人没到场时主动通过 Slack 请另一个能写代码的内部 Claude 实例出修复 PR，由人审后上线——教训是按访问与动作划边界而非按对模型能力的假设；如今带人类监督的 agent 间 Slack 通信已成常态。内部原则：agent 循环所在环境不持有值得偷的凭证（反向代理注入凭证）、强制 egress 代理与白名单、按动作而非仅按连接器授权（允许起草不允许发送）、遥测走 OTel 进 SIEM、组织级一键关停。GRC 团队的非工程师在内部业务应用托管平台上用 Claude Code 自建 agent（安全问卷、供应商与子处理方变更审阅），被视为可见的「非影子」采用。</p>
@@ -155,7 +154,7 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>副 CISO 自述，文中大量推广 Cowork/Enterprise 管控功能；事件响应 agent 的「意外行为」案例可能已经过挑选；未给出拦截或事故数量。</div></details>
 <p class="also">也见 <a href="quality-safety-topic6.html#e-anthropic-zero-risk-isn-t-job">质量与安全</a></p></article>
 <article class="entry-item" id="e-microsoft-measuring-impact-ai-investments-micros">
-<h3>微软 IT 要求 AI 项目上线前先定预期价值和基线、按月复盘，明确不拿用量代替结果</h3>
+<h3 data-tts="94ef23b2b7cd88c3">微软 IT 要求 AI 项目上线前先定预期价值和基线、按月复盘，明确不拿用量代替结果</h3>
 <div class="meta"><span class="org">Microsoft</span>2026-06-04 · <a class="src" href="https://www.microsoft.com/insidetrack/blog/measuring-the-impact-of-our-ai-investments-in-it-at-microsoft/" target="_blank">Measuring the impact of our AI investments in IT at Microsoft</a></div>
 <div class="so"><b>能借鉴的：</b>可直接借用的度量纪律：上线前写清预期价值与基线、按场景选指标、月度复盘、不以用量代替结果、追踪节省时间的再投入去向。前提：数据有明确 owner。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -164,16 +163,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>IT 组织框架性文章，承认“还没有完整答案”；无已实现的汇总结果。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-microsoft-measuring-impact-ai-investments-micros">度量与证据</a></p></article>
 <article class="entry-item" id="e-anthropic-lessons-building-claude-code-use">
-<h3>Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</h3>
+<h3 data-tts="45e74e75c18cc80b">Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-06-03 · <a class="src" href="https://claude.dev/blog/lessons-from-building-claude-code-how-we-use-skills/" target="_blank">Lessons from building Claude Code: How we use skills</a></div>
 <div class="so"><b>能借鉴的：</b>可直接采用：按 9 类盘点组织内 skill 缺口；先投入验证类 skill；skill 写 Gotchas 并持续追加；去中心化的「沙箱→有牵引力→PR 进 marketplace」治理；用 hook 统计 skill 使用率。前提是团队已在用 Claude Code 或兼容 skill 的 agent，并有内部 Git/IM 渠道传播。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>Anthropic 内部有数百个在用的 Claude Code skill，盘点后分为 9 类（库/API 参考、产品验证、数据获取分析、业务流程自动化、脚手架、代码质量与评审、CI/CD 部署、runbook、基础设施运维）；内部经验是「验证类 skill 对输出质量影响最可测量」，值得让工程师花一周专门打磨。编写要点：不写 Claude 已知的东西、维护 Gotchas 段、用文件夹做渐进披露、描述写给模型看（何时触发）、skill 内可存日志做记忆、附脚本让 Claude 组合、按需启用的 hook（如 /careful 拦截 rm -rf/DROP TABLE/force-push）。分发与治理：小团队提交到仓库，大规模用内部 plugin marketplace；没有中央团队审批，先放 GitHub sandbox 文件夹、在 Slack 推广，有了牵引力再由 owner 提 PR 进 marketplace；用 PreToolUse hook 记录全公司 skill 使用量，找出热门与触发不足的 skill。</p>
-<div class="nums"><ul><li><q>We&#x27;ve been using skills in Claude Code extensively at Anthropic with hundreds of them in active use.</q></li></ul><span class="note">口径：仅「数百个在用」的规模描述，无使用频次、效果量化数据；「验证类 skill 影响最大」为定性判断。</span></div>
+<div class="nums"><ul><li><q>We've been using skills in Claude Code extensively at Anthropic with hundreds of them in active use.</q></li></ul><span class="note">口径：仅「数百个在用」的规模描述，无使用频次、效果量化数据；「验证类 skill 影响最大」为定性判断。</span></div>
 <div class="cold"><b>冷水：</b>Claude Code 团队成员撰写，带产品与课程推广；缺量化证据；示例 skill 名为示意。</div></details>
 <p class="also">也见 <a href="agent-ops-topic5.html#e-anthropic-lessons-building-claude-code-use">Agent 运维与编排</a></p></article>
 <article class="entry-item" id="e-anthropic-best-practices-getting-started-claude">
-<h3>Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</h3>
+<h3 data-tts="2d92fb021232aed5">Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</h3>
 <div class="meta"><span class="org">Anthropic</span>2026-06-03 · <a class="src" href="https://claude.com/resources/articles/best-practices-for-getting-started-with-claude-cowork" target="_blank">Best practices for getting started with Claude Cowork</a></div>
 <div class="so"><b>能借鉴的：</b>「五要素」清单可直接用于在非工程团队中挑选首批 agent 化的任务；定时任务+连接器替代手工导出/粘贴是低风险起点。前提是广告/分析平台有可用连接器，且审核要求允许 agent 读取邮件与 Slack。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
@@ -182,16 +181,16 @@ footer{text-align:center;padding:48px 0 10px;font-size:0.8rem;color:#5d6b77;font
 <div class="cold"><b>冷水：</b>员工自述+产品与 webinar 推广；个人效率故事，不代表团队层面。</div></details>
 <p class="also">也见 <a href="non-eng-topic7.html#e-anthropic-best-practices-getting-started-claude">非工程职能</a></p></article>
 <article class="entry-item" id="e-uber-uber-caps-usage-ai-tools">
-<h3>Uber 四个月花光全年 AI 预算后，给每人每个 agent 编码工具设每月 1,500 美元硬上限</h3>
+<h3 data-tts="a8017d40b3d846a4">Uber 四个月花光全年 AI 预算后，给每人每个 agent 编码工具设每月 1,500 美元硬上限</h3>
 <div class="meta"><span class="org">Uber</span>2026-06-03 · <a class="src" href="https://simonwillison.net/2026/Jun/3/uber-caps-usage/" target="_blank">Uber Caps Usage of AI Tools Like Claude Code to Manage Costs</a></div>
 <div class="so"><b>能借鉴的：</b>为 agent 支出设预算时可参考：按工具/人设月度上限，并用「占工程师总薪酬的比例」来讨论合理性；与 Databricks 的「渐进摩擦而非硬上限」做法形成对照。</div>
 <details><summary>做了什么 · 原句数字 · 冷水</summary>
 <p>据 Bloomberg 报道（Simon 引用），Uber 在四个月内用光 2026 年 AI 预算后，对所有员工设定每个 AI 编码工具每月 1,500 美元 token 上限，各工具独立计算，只适用于 Cursor、Claude Code 等 agentic 编码软件。Simon 估算：按每人两个常用工具，上限约为 Uber 美国软件工程师中位总包的 11%，并认为这比鼓励「tokenmaxxing」的排行榜理性。</p>
-<div class="nums"><ul><li><q>The rideshare giant is limiting all employees to $1,500 in monthly token spending per AI coding tool, an Uber spokesperson said in response to a Bloomberg News inquiry.</q></li><li><q>That means each employee&#x27;s AI spending cap is ~11% of that median compensation package.</q></li></ul><span class="note">口径：11% 为 Simon 基于 levels.fyi 中位薪酬 33 万美元、假设每人 2 个工具的推算。</span></div>
+<div class="nums"><ul><li><q>The rideshare giant is limiting all employees to $1,500 in monthly token spending per AI coding tool, an Uber spokesperson said in response to a Bloomberg News inquiry.</q></li><li><q>That means each employee's AI spending cap is ~11% of that median compensation package.</q></li></ul><span class="note">口径：11% 为 Simon 基于 levels.fyi 中位薪酬 33 万美元、假设每人 2 个工具的推算。</span></div>
 <div class="cold"><b>冷水：</b>Bloomberg 原文付费墙（403）未能读取，事实依据为 Simon 引用的段落；属新闻报道 + 评论，非 Uber 一手发布。</div></details>
 <p class="also">也见 <a href="measurement-topic3.html#e-uber-uber-caps-usage-ai-tools">度量与证据</a></p></article>
 </div>
-<section class="log narrow"><h2>// 本页变更</h2><ul><li><span class="d">2026-11-13</span>新增 <a href="#e-microsoft-copilot-cowork-adoption-stick">Microsoft 内部推 agent 工具的复盘：开通不等于采用，靠同事的真实 prompt 和持续数月的提醒拉动使用，但因为上线前没设基线，说不清哪项动作起了作用</a>：Microsoft 内部推 Cowork 的上线后复盘；推广打法 synthesis 引入</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-lessons-building-claude-code-use">Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-best-practices-getting-started-claude">Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-uber-uber-caps-usage-ai-tools">Uber 四个月花光全年 AI 预算后，给每人每个 agent 编码工具设每月 1,500 美元硬上限</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-measuring-impact-ai-investments-micros">微软 IT 要求 AI 项目上线前先定预期价值和基线、按月复盘，明确不拿用量代替结果</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-zero-risk-isn-t-job">Anthropic 副 CISO 用四个问题审批 agent 用例，主张按访问与动作划边界，并假设下一代模型更主动</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-databricks-managing-ai-coding-costs-scale">Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-building-ai-native-finance-function">OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-assistance-execution-enterprises-put-ai">OpenAI 内部每周使用 Plugins 的员工比例达 95%，可作为共享工作流采用深度的对标参照</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-approach-teaching-learning">Anthropic 把 AI 素养放进全员入职，教的是「按风险决定验证力度」等心态，而不是提示技巧</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-amazon-update-amazon-engineering-leadership-role">Amazon 职级指南不写 AI 工具、只锚定结果，token 等输入指标只用来诊断</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-furtherai-building-ai-native-engineering-org">FurtherAI 按月逐段改造交付环节，同时追踪代码变更和面向客户变更两种吞吐</a>：回填：过去半年</li></ul></section>
+<section class="log narrow"><h2 data-tts="053b5288a93b8377">// 本页变更</h2><ul><li><span class="d">2026-11-13</span>新增 <a href="#e-microsoft-copilot-cowork-adoption-stick">Microsoft 内部推 agent 工具的复盘：开通不等于采用，靠同事的真实 prompt 和持续数月的提醒拉动使用，但因为上线前没设基线，说不清哪项动作起了作用</a>：Microsoft 内部推 Cowork 的上线后复盘；推广打法 synthesis 引入</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-lessons-building-claude-code-use">Anthropic 盘点内部数百个 skill，发现验证类 skill 对产出质量提升最可测，治理走「沙箱→有牵引力→进 marketplace」</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-best-practices-getting-started-claude">Anthropic 增长营销负责人给出判断一项任务能否交给 agent 的「五要素」清单</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-uber-uber-caps-usage-ai-tools">Uber 四个月花光全年 AI 预算后，给每人每个 agent 编码工具设每月 1,500 美元硬上限</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-microsoft-measuring-impact-ai-investments-micros">微软 IT 要求 AI 项目上线前先定预期价值和基线、按月复盘，明确不拿用量代替结果</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-zero-risk-isn-t-job">Anthropic 副 CISO 用四个问题审批 agent 用例，主张按访问与动作划边界，并假设下一代模型更主动</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-databricks-managing-ai-coding-costs-scale">Databricks 用内部评测加模型路由和渐进式支出闸门管 AI 编码成本，而不是一刀切的硬预算</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-building-ai-native-finance-function">OpenAI CFO 用财务黑客松和「AI 出初稿、人签字」推进财务 AI 化，衡量价值时把审核返工成本算进去</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-openai-assistance-execution-enterprises-put-ai">OpenAI 内部每周使用 Plugins 的员工比例达 95%，可作为共享工作流采用深度的对标参照</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-s-approach-teaching-learning">Anthropic 把 AI 素养放进全员入职，教的是「按风险决定验证力度」等心态，而不是提示技巧</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-anthropic-anthropic-field-marketer-uses-claude">Anthropic 一位市场人员先在 10 人小组试点，把每条反馈固化成显式规则，再推广到全部销售团队</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-amazon-update-amazon-engineering-leadership-role">Amazon 职级指南不写 AI 工具、只锚定结果，token 等输入指标只用来诊断</a>：回填：过去半年</li><li><span class="d">2026-11-12</span>新增 <a href="#e-furtherai-building-ai-native-engineering-org">FurtherAI 按月逐段改造交付环节，同时追踪代码变更和面向客户变更两种吞吐</a>：回填：过去半年</li></ul></section>
 <footer>BigCat · AI-native 转型笔记 · <a href="index.html">← 全部类别</a></footer>
 </div>
 <script>function o(){var e=location.hash&&document.getElementById(location.hash.slice(1));if(e){var d=e.querySelector("details");if(d)d.open=true}}addEventListener("hashchange",o);o()</script>
